@@ -1,5 +1,10 @@
 # Changelog
 
+## v0.6-bundle1 — 2026-10-10
+- Added local offline feature/model/review modules, CLI, tests and API guide; 23 exact shared paths match Radar Studio v0.6.
+- Preserved the 2.00 m mount-top reference, 15-degree tilt and unknown measured antenna offset.
+- Tests cover offline logic, CLI processes and mocked UI; no physical hardware or real-world accuracy validation. No data/model weights published.
+
 ## 2026-10-10 — Mounting standard documentation
 
 - Selected the 2.00 m floor-to-flat-mount-TOP reference, excluding screws, with a final 15-degree downward tilt for the experimental activity setup.

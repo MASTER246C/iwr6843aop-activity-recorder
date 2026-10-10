@@ -8,7 +8,7 @@ This is the selected experimental activity-collection setup, with a final **15-d
 
 The chip is above the mount in the current photographed arrangement, so its offset is positive, but its numeric value is still unknown. Do not guess it or substitute 2.00 m for chip height. The owner plans to adjust the setup when ready to load the software; that adjustment and calibration have not yet been completed. This is a repeatable experimental standard, not a universal optimum or a proven most-accurate setting. Verify and record the actual geometry before collection; no firmware `sensorPosition` or other configuration value is inferred here.
 
-**Experimental v0.5-bundle1 — original reusable recorder and motion modules.**
+**Experimental v0.6-bundle1 — original reusable recorder and motion modules.**
 
 The reusable collection component of Radar Studio Chromebook, built for the
 **Texas Instruments IWR6843AOPEVM (IWR6843AOP), Rev G**. Planned initial input is
@@ -31,11 +31,11 @@ See [RECORDER_API.md](RECORDER_API.md) for browser/CommonJS APIs and
 Run `node tests/motion.test.js` and `node tests/capture.test.js` from this folder:
 29 motion logic tests and 24 capture tests pass using synthetic inputs.
 
-`SHARED_MODULES.json` pins 14 exact module/test/support files by SHA-256. These
-same bytes ship in Radar Studio v0.5, without runtime remote loading. Changes must
+`SHARED_MODULES.json` pins 23 exact module/test/support files by SHA-256. These
+same bytes ship in Radar Studio v0.6, without runtime remote loading. Changes must
 be reconciled and tested before either copy is updated; do not develop silent
-forks. Source: Radar Studio v0.5 build, ZIP SHA-256
-`599ef0068e198c5ae5756e2936b28fe9a8a9393d4c3e7fadcc61f67677d04e03`.
+forks. Source: Radar Studio v0.6 build, ZIP SHA-256
+`0253759439843f3452aa0c8d5cd152990d3ce8ee0cf08a50921db335cd32a805`.
 
 Planned capture labels include sitting, standing and walking. Sit-to-stand and
 motion-onset events belong on a separate annotation axis with boundaries and
@@ -61,3 +61,14 @@ excluded and keep their own terms.
 
 The separate dataset's intended commercial AI-training/model-sales policy does
 not relicense this software. Final dataset terms remain pending in its repository.
+
+## v0.6 local offline ML
+
+Original offline feature extraction, model save/load, annotation proposals, human
+review overlays and CLI are included. See [OFFLINE_ML.md](OFFLINE_ML.md) and
+[RECORDER_API.md](RECORDER_API.md) for commands, data contracts and tests. The
+browser offline page is supplied by Radar Studio. All processing is local;
+no pretrained weights, participant captures or cloud inference are supplied.
+Automated proposals stay separate from original annotations and human decisions.
+Synthetic tests do not establish real-world accuracy, hardware behavior or
+browser rendering. Dataset terms remain pending and separate from software.
