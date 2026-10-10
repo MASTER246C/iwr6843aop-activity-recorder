@@ -1,74 +1,69 @@
-# Original Radar Sensing 0.2.0
+# Original Radar Sensing 0.2.1-rc1
 
-**Scope: movement/activity measurements toward people tracking, not heart-rate or breathing estimation.** Static returns are retained for stationary subjects; the compiled application has no completed identity tracker or activity classifier and no demonstrated tracking accuracy.
+**Release candidate for supervised hardware acceptance. Not yet board-tested.**
 
-An independently written sensing bring-up application for **IWR6843AOPEVM Rev G**, running on the MSS Cortex-R4F. The bundle contains a compiled sensing BIN, matching configuration, full original application/DSP/spatial source, a dedicated JSONL collector, build recipes and offline test evidence.
+This release corrects a reproducible malformed target instruction sequence in the spatial estimator and adds a deterministic no-RF boot acceptance gate. It is not a calibrated spatial measurement system or an activity classifier. No automatic RF start or configuration was added.
 
-**Status: built and tested offline; never flashed, booted or measured on a board.** This advances the original firmware from telemetry to an implemented RF/acquisition/measurement pipeline. Sitting, walking and standing classification remains unfinished: there is no trained or validated classifier, and no demonstrated accuracy improvement. Every detection has `activity:null`.
+## What changed
 
-## What is implemented
+- Explicit scalar component stores replace the normalization loop's complex aggregate-return assignment.
+- Boot runs a synthetic estimator self-test after UART setup, before acquisition/radio initialization.
+- Failure leaves UART status/stop service available, reports fault 482, and blocks all acquisition/radio initialization and start paths.
+- Identity/version is `0.2.1-rc1`. Identity and status include a generated `build_id`. Status adds `firmware_version`, `selftest_version`, `selftest_ok` and `selftest_mask`.
+- Build identity is generated from application source/config and pinned tool versions; the release BIN SHA-256 is the authoritative artifact checksum.
 
-- Explicit, finite RF sessions through TI's low-level mmWave/mmWaveLink transport, with a fixed 60 GHz profile.
-- ADCBUF plus original event-driven EDMA capture into two 32 KiB L3 buffers; independent frame-start checks, generation/ownership checks and fault reporting.
-- Original, allocation-free range/Doppler FFT measurements that retain stationary energy, eight internal peaks, and uncalibrated per-RX complex coefficients.
-- Original adjacent-pair spatial estimates, with calibration/height validity flags. No TI demo detection, tracker, classifier, DPU/DPC/DPM or signal-processing library is linked.
-- Bounded JSON Lines at 115200 baud, with three transmitted peaks and aggregate total/static/varying measurements across the configured range bins. The cap is explicit; omitted peaks are counted.
-- Original strict configuration parser and separate `start` command. The supplied configuration does not start RF. Boot includes RadarSS clock/APLL startup; RF open/calibration/profile/start only occurs when `start` is explicitly handled.
-- A dedicated Python collector that preserves labels supplied by the recorder, unknown geometry, timing and quality flags. It does not feed this different schema into a TI-trained model.
+## First hardware acceptance, before any sensing
 
-## Files to start with
+Flashing and physical-board actions require the user's separate authorization and supported device procedure. This repository does not flash automatically.
 
-- `build/original_radar_sensing.bin`: packaged MSS plus unmodified TI RadarSS image.
-- `build/original_radar_sensing.xer4f`: produced by a local build; debug ELF is not included in this public package.
-- `config/room64_v1.cfg`: matching configure-only file.
-- `host/README.md`: passive collection, configuration, explicit RF start and offline replay.
-- `PROTOCOL.md`: wire format, command contract, ADC layout and field semantics.
-- `VALIDATION.md`: exactly what was checked and the remaining physical validation gates.
-- `PROVENANCE.md`, `PUBLIC_MANIFEST.json`, `THIRD_PARTY_NOTICES/`: origins, SHA-256 hashes and dependency notices.
+1. Verify the release BIN's SHA-256 against `RELEASE_MANIFEST.json` before using it. Flash only the intended IWR6843AOP image through an approved workflow.
+2. Boot normally and open the correct UART at **115200 baud**. Do not send `start`, load a start-containing configuration, or use an auto-start viewer.
+3. Send only `status` followed by a newline. Require the current response to report:
+   - `firmware_version`: `0.2.1-rc1`
+   - `build_id`: exactly the value in `BUILD_IDENTITY.json` / release manifest
+   - `selftest_version`: `1`
+   - `selftest_ok`: `true`
+   - `selftest_mask`: `0`
+   - `state`: `idle`, all fault fields zero, `configured`: `false` after a fresh boot
+4. Save the identity, status and corresponding status ACK. If the board is silent, reboots, reports a nonzero mask/fault, lacks fields or has the wrong version/build, **stop there**. Do not start RF to troubleshoot it.
+5. A passing code self-test permits planning the next separately approved bounded RF test. It does not prove antenna calibration, axis signs, position accuracy, stack high-water under acquisition, or physical RF behavior.
+6. Because configuration is volatile, a power cycle/unplug requires fresh configuration later. Do not infer configuration from a previous session. The existing published preview with RF Start disabled remains the safe interface until its separately reviewed acceptance gate is available.
 
-This package is independent of the existing TI-compatible v0.5/v0.6 capture path. It is not required for that path; its config and JSON output must not be used as TI CLI/TLV data. The earlier telemetry-only build is preserved separately.
+The status query reports this boot's cached self-test result. It does not rerun the test. Every boot reruns the test before acquisition/radio initialization. Discard status receipts on disconnect, reboot/new identity, transport error or reconnect. The line protocol has no request nonce; status/ACK correlation is best-effort freshness, not cryptographic attestation.
 
-## Concrete profile and mounting
+## Self-test coverage
 
-`room64_v1` uses TX0 and RX0–3, 64 complex 16-bit samples per chirp, 32 chirps per frame, 5 frames/s. Nominal start is 60.25 GHz, slope 30 MHz/us, ADC rate 2.5 Msps, ADC start 6 us, ramp 40 us, idle 210 us, and TX backoff 6 dB. Frequencies and slope are quantized using IWR6843's 60 GHz units; the derived measurements use those quantized values.
+CPU-only synthetic estimator inputs test boresight, known +pi/4 phase differences on both axes, per-RX correction rotations with unequal amplitudes, zero-input rejection, NaN rejection, incoherent-pair rejection, and caller guard words. No private capture is embedded. The normal firmware does not include diagnostic internal-scratch instrumentation; that variant was independently tested offline.
 
-The range-bin spacing is about 0.1953 m; selected bins 4–30 correspond to about 0.78–5.86 m. This is a configured bin span, not proven usable range or accuracy. Analog high-pass filtering attenuates nearer returns, and a person may lie outside the span or field of view. Mounting height and tilt alone do not establish target distance.
+Failure mask bits: 1 boresight; 2 phase plane; 4 correction/amplitudes; 8 zero rejection; 16 NaN rejection; 32 coherence rejection; 64 caller guard. Diagnostic-only builds additionally use bit 128 for internal scratch guards.
+
+SoC/clock/MPU/UART startup occurs before the synthetic test. This integrated image is **not** a hardware-free standalone diagnostic firmware: it is a sensing-capable image whose RF prepare/start path still requires an explicit `start` after configuration and a passed boot gate.
+
+## Public package scope
+
+This public package includes the unchanged RC BIN, source, configs, tests, vendor notices, relative-path manifests and build instructions. Optional debug artifacts (ELF, map, link XML) and raw build/test logs are retained separately for private audit and are not included here. `VALIDATION.md` summarizes the completed checks without build-machine paths.
+
+## Offline verification completed
+
+- Unchanged v0.2.0 rebuilt and repackaged with exact official TI tools: entire public BIN SHA-256 reproduced.
+- TI O2 baseline emitted the defective double increment; scalar candidate emits one correct 8-byte progression with paired stores.
+- Source-listing and ordinary-build estimator instruction sections match exactly.
+- TI-generated code in QEMU Cortex-R5F instruction emulation: baseline O2 fails positive tests (mask 7), baseline O0 and scalar/guarded candidates O0/O2 pass. Final RC estimator + self-test objects also pass.
+- Host suite: 937 spatial plane-wave cases, 706 DSP checks, ASan/UBSan, 11 collector tests; generated main.c peripheral-mock harness checks pending/failing boot gate and no auto-start.
+- BIN CRC32 and ELF memory/dependency structural checks pass.
+
+Emulation is not IWR6843/Cortex-R4F hardware validation. Physical boot/UART/RF/acquisition and calibration remain pending.
+
+## Current mounting guidance
 
 The current user-reported mount reference is **4 feet (1.2192 m) from floor to the flat TOP of the bracket, excluding screws**. The chip-center offset is only an estimate, **+0.003175 to +0.00635 m**, giving an estimated antenna height interval **1.222375–1.22555 m** (midpoint about **1.224 m**, not a calibrated measurement). Actual downward tilt is unconfirmed. The earlier 2 m / 15-degree geometry is a historical example, not the current setup or a universal requirement. `config/room64_v1.cfg` retains that historical reference; do not use it unchanged for the current mount. See `config/current_mount.cfg.template` and `config/current_mount_metadata.json`; measure tilt before completing the template. RX phase and world-axis orientation are also unverified. Thus world coordinates and posture stay unknown, even if a numeric offset is later provided without the other calibration.
 
-## Build and test
+## Rebuild
 
-Use TI mmWave SDK 03.06.02.00-LTS, ARM CGT 16.9.6.LTS, SYS/BIOS 6.73.01.01 and XDC 3.50.08.24. No DSP compiler is needed. The public recipe uses conventional `/opt/ti` defaults; override paths for your machine:
+Use the Makefile with SDK 03.06.02.00-LTS, TI ARM CGT 16.9.6.LTS, SYS/BIOS 6.73.01.01 and XDC 3.50.08.24. Override tool roots as documented in the Makefile. `make all` generates the source/config build identity and ELF/map; `make test` runs host checks. `tools/package_firmware.sh` produces a BIN using official TI image tools and refuses to overwrite existing outputs. It never flashes hardware.
 
-```sh
-make clean
-make -j2 all TI_ROOT=/path/to/ti \
-  SDK=/path/to/ti/mmwave_sdk_03_06_02_00-LTS/packages \
-  BIOS_ROOT=/path/to/ti/bios_6_73_01_01 \
-  XDC_ROOT=/path/to/ti/xdctools_3_50_08_24_core \
-  CGT_ROOT=/path/to/ti/ti-cgt-arm_16.9.6.LTS
-bash tests/run_tests.sh
-python3 tools/verify_sensing.py
-SDK_ROOT=/path/to/ti/mmwave_sdk_03_06_02_00-LTS \
-  MONO=mono bash tools/package_firmware.sh
-```
+Keep the ELF, map, link XML, compiler logs, source hashes and BIN checksum together. Changes require a new build identity and renewed review/testing.
 
-The host test script needs a C99 compiler with AddressSanitizer/UndefinedBehaviorSanitizer and Python 3.10+. Leak detection is disabled for sandbox compatibility; the portable signal-processing path has no heap allocations. The packaging script creates files only and refuses to overwrite an existing BIN/RPRC. A supported native TI build host can run its tools directly. The build here used user-space QEMU for legacy 32-bit tools and Mono for out2rprc; see provenance. Changing paths or host may change ELF debug metadata, so the manifest identifies this exact delivered build.
+## Licensing and history
 
-The source build regenerates TI runtime configuration; generated build caches are intentionally omitted from the ZIP. Retain the vendor dependencies and notices when redistributing a firmware image. No toolchain installers or proprietary compiler executable are included.
-
-## Before physical use
-
-This is a development artifact, not a claim that flashing is safe or that RF operation has passed validation. No flash command or switch-change automation is included. An independently approved board bring-up must establish boot/UART routing, the fixed ADCBUF completed-bank window, event count, RX/IQ order and FFT sign, real timing/stack usage, RF configuration acceptance, stopping behavior and actual emissions. Follow the applicable TI board documentation and local RF requirements. Do not make safety, occupancy, medical or other consequential decisions from this experimental output.
-
-After acquisition is verified, record empty-room, sitting, standing, walking and transition sessions with independent human labels and mounting provenance. A dedicated original model can then be trained and evaluated on held-out people/sessions. This package does not yet establish that result.
-
-## Public distribution and source license
-
-This sensing component lives in the existing activity-recorder repository. See
-[LICENSING.md](LICENSING.md), LICENSE and THIRD_PARTY_NOTICES for the distinction
-between original project code and third-party support inside the BIN. The
-project's no-resale software license does not relicense TI or other components.
-Use the complete distribution with its notices. No SDK/compiler binaries are
-included. The public file manifest identifies shipped bytes; omitted debug/build
-outputs can be regenerated locally with the documented prerequisites.
+`LICENSE`, `LICENSING.md` and `THIRD_PARTY_NOTICES/` are preserved. No TI demo algorithm or proprietary toolchain is bundled. Historical v0.2.0 documentation/manifest are retained under `HISTORY/` and do not describe this candidate's changed BIN.

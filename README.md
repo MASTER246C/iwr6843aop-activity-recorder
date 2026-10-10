@@ -18,11 +18,11 @@ or a pretrained activity model. Use Radar Studio for the integrated application.
 Real-browser rendering, hardware throughput and real-world classification
 accuracy remain unverified. No participant captures are included.
 
-## Original sensing firmware 0.2.0
+## Original sensing firmware 0.2.1-rc1
 
-[Custom BIN, matching configuration, original source and dedicated collector](firmware/original-radar-sensing/README.md) are now included. Download the complete Original Radar Sensing release ZIP with its required notices. This is a separate JSON protocol, not the TI demo CLI/TLV path used by v0.5/v0.6.
+[Corrected candidate BIN, configuration, original source and dedicated collector](firmware/original-radar-sensing/README.md) are included. Version 0.2.1-rc1 repairs the reproduced spatial-estimator defect and adds a no-RF boot self-test gate. It is offline-verified, with physical board acceptance pending. Download the complete Original Radar Sensing release ZIP with its required notices. This is a separate JSON protocol, not the TI demo CLI/TLV path used by v0.5/v0.6.
 
-**Never flashed, booted or hardware-validated.** Movement/position measurements retain stationary returns; no heart/breath estimates, completed people-ID tracker, activity classifier or demonstrated tracking accuracy. The current-mount configuration template requires a measured tilt before use; its offset remains unknown. Read the firmware guide and validation gates before any manual flash/RF start.
+**Never flashed, booted or hardware-validated.** Movement/position measurements retain stationary returns; no heart/breath estimates, completed people-ID tracker, activity classifier or demonstrated tracking accuracy. The current-mount configuration template requires a measured tilt before use; its offset remains unknown. After any separately authorized flash, the first acceptance step is status-only: require the exact version/build identity, successful boot self-test, idle state and zero faults. Do not start RF to troubleshoot a failed or missing result. Read the firmware guide and validation gates before any physical use.
 
 The BIN includes original application code plus identified TI/runtime support. Project no-resale terms cover original portions only; third-party components retain their own licenses and TI-device restrictions. Full notices accompany the package.
 

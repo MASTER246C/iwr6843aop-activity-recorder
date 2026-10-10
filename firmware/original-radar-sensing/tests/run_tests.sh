@@ -10,3 +10,7 @@ make -C dsp test sanitize
 "$CC" "${FLAGS[@]}" tests/test_original_spatial.c spatial/original_spatial.c -lm -o build/test_spatial
 ASAN_OPTIONS=detect_leaks=0 build/test_spatial
 python3 -m unittest discover -s host -p 'test_*.py' -v
+
+"$CC" "${FLAGS[@]}" -DOS_SELFTEST_HOST_MAIN spatial/spatial_selftest.c spatial/original_spatial.c -lm -o build/test_boot_selftest
+ASAN_OPTIONS=detect_leaks=0 build/test_boot_selftest
+python3 tests/test_boot_gate.py

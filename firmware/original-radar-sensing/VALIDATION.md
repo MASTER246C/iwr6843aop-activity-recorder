@@ -1,39 +1,36 @@
-# Offline validation and limits
+# 0.2.1-rc1 verification record
 
-## Completed checks
+Status: offline checks passed; physical-board acceptance pending.
 
-- Clean regeneration of SYS/BIOS/XDC support and Cortex-R4F compile/link with TI ARM CGT 16.9.6.LTS. All original application objects compile with warnings treated as errors; final linker warnings are also errors. See `build/clean-build.log`.
-- Host C99 ASan/UBSan tests of strict staging/commit parsing, integer/line bounds, nonterminated input, embedded NUL/control-byte rejection, signed mount-height validity, finite RF physical units, capture ownership/generation and missing-frame-boundary rejection, bounded energy sums and JSON serialization. Overflowed or invalid required numeric output is rejected rather than transmitted partially.
-- Original DSP: 706 checks covering FFT/DFT agreement, static and moving synthetic tones, physical scaling, thresholds, clipping, incomplete/stale/gapped frames and bounded workspace. Both ordinary and sanitizer builds pass. DSP workspace is 42,552 bytes; result is 560 bytes; each default ADC frame is 32,768 bytes.
-- Original spatial module: 937 synthetic directions plus unknown/signed-offset/tilt/boundary/invalid-input cases, under ASan/UBSan. Synthetic phasors validate mathematics only, not AOP channel order or calibration.
-- Dedicated collector: 11 unit tests including no-write passive mode, explicit start/stop, acknowledgement correlation, configuration that cannot embed start, malformed/oversized/non-finite JSON, unknown geometry and optional three-value energy summaries. No serial hardware was opened in testing.
-- ELF checker verifies ARM ELF32 little-endian format, reset vectors at zero, program/data/L3 bounds, exactly 64 KiB L3 frame storage, expected original sensing/driver symbols, and absence of listed demo/DPU/DPC/DPM/tracker/signal-processing-library symbols.
-- TI tools convert the ELF into an MSS RPRC and a multicore BIN with the unmodified supplied RadarSS image. The appended CRC32 is independently recomputed using Python zlib; exact artifact hashes are in `PUBLIC_MANIFEST.json`.
-- The actual C serializer's synthetic frame was replayed through the actual Python collector. The original audit used synthetic serializer/replay fixtures, never board recordings. Those generated audit outputs are omitted from this public package; the included host tests reproduce synthetic checks.
+## Artifacts
 
-Logs and structural checks are evidence about their stated scope, not proof of physical correctness. The separate private build audit covered code/map/collector behavior; it did not establish physical operation.
+- Firmware version: `0.2.1-rc1`
+- Source/config build ID: `846a3ae3184aa5d26e5d0ea3`
+- BIN: 342,532 bytes; SHA-256 `d534e6b6da25520d911c25bb23593bc5a086becce962186c5e4ffa6cc38d19ec`
+- ELF SHA-256: `9b3c411a123b655782e68eefcd8ba1f26148b1311e1c1996566886e3b8f8a48d`
+- Final appended CRC32: `0x80079b4f`
 
-## UART and timing budget
+## Reproduction and static checks
 
-At 115200 baud, 8N1, theoretical capacity is 11,520 bytes/s or 2,304 bytes per 5 Hz frame. Output is capped at 1,800 bytes including newline, with at most three peaks; the numeric-boundary stress frame including energy summaries is 1,395 bytes. The serializer checks every append and suppresses any record that exceeds its bound. This leaves margin for acknowledgements/status but does not justify flooding commands during acquisition.
+The exact official TI tool versions rebuilt and packaged the old v0.2.0 source into a byte-identical complete public BIN. The rebuilt old estimator at runtime address 0x2680 matches all 1,584 original bytes. Its normalization loop reproduces the wrong double pointer increment.
 
-On-board timing fields use 1 ms BIOS ticks, not a cycle counter. `processing_us` covers DSP and energy aggregation before spatial serialization. `previous_tx_us` describes the last UART write, possibly a status/ack. A separate check covers the complete DSP/spatial-serialization/transmission path and faults at 180 ms. UART has a finite write timeout. If acquisition, processing or transmission cannot keep up, the firmware attempts to stop and reports a fault; it does not silently change the radar frame period. Actual timing, deadline margin, UART behavior, CPU utilization and task-stack high-water have not been measured.
+The scalar correction's ordinary-build executable object sections match its source-correlated listing build. Independent assembly review confirms a single 8-byte writeback, paired real/imaginary stores, same-address subsequent checks, and temporary arrays within the local stack frame. Remaining aggregate-return helpers use paired fixed slots. Diagnostic guards surround both complex and amplitude scratch arrays and are checked after stores.
 
-## Acquisition invariants and unverified hardware assumptions
+Independent final review verified all four MSS BIN payloads against ELF bytes including alignment padding, unchanged RadarSS payload versus the old image, valid CRC32, current source-hash manifest, correct fail-first start gate and initialization ordering. These checks do not read back board flash.
 
-The original double-buffer model has FREE/FILLING/READY/PROCESSING states and generation tokens. Shared interrupt/task state is volatile; claims, releases, stop and arm transitions use interrupt critical sections. Each hardware EDMA completion covers 32 A-sync chirp transfers. A separate SOC frame-start interrupt checks that the preceding frame completed exactly once. Missing completion before the next frame start faults and disables EDMA. Stop invalidates outstanding generations. The processing task's busy guard covers the entire claim/process/transmit lifecycle, including higher-priority command preemption.
+## Tests
 
-This relies on ADCBUF presenting the completed ping/pong bank through the same fixed read window for each chirp event, RX offsets matching the selected format, and each event representing one chirp. The SDK driver returns a fixed channel base plus configured offset; its low-level ADCBUF unit test uses the same source address across repeated bank swaps. The SDK SOC MPU marks L3 at 0x51000000 as normal non-cached memory. These source facts support this design but are **not** a hardware demonstration of the full path. Independent frame boundaries make many lost-event cases fail closed; they cannot prove correct IQ data or detect every analog/digital corruption.
+- Existing host suite: 937 spatial direction cases, 706 DSP checks in ordinary and ASan/UBSan builds, config/ownership/JSON tests, and 11 collector tests: pass.
+- Deterministic self-test on GCC O0/O1/O2/O3: pass.
+- Internal scratch guard diagnostic under ASan/UBSan: pass. Deliberately corrupted guard is detected.
+- TI-generated ARM code under QEMU Cortex-R5F user-mode instruction emulation: baseline O0 passes; baseline O2 returns failure mask 7; scalar and guarded O0/O2 pass. Final RC estimator/self-test build objects also return zero.
+- Host peripheral-mock harness compiles actual application functions: pending test and every individual failure bit (all 32 bits) block all acquisition/radio calls; status/stop remain available; successful boot emits status without RF start or configuration. Pass under ASan/UBSan (leak detection disabled for execution-environment compatibility).
+- ELF structural checker: ARM architecture, reset vector, MSS/L3 allocation bounds, expected dependencies and absence of listed TI demo processing/tracking libraries: pass.
 
-Positive-half range FFT convention and velocity sign must be tested with a known reflector and controlled motion. A wrong IQ/sign convention could suppress real returns even while all synthetic tests pass. Quality value 44 only indicates uncalibrated RX phase/power and unverified motion sign, not acquisition certification.
+## Limits and next gate
 
-## Remaining physical validation gates
+No physical boot, UART, RF, ADCBUF/EDMA, timing, stack high-water, physical axis/IQ/phase/calibration or classification claim is made. Instruction emulation uses Cortex-R5F, not the IWR6843's real Cortex-R4F/peripherals. A passing code test cannot certify hardware or spatial accuracy.
 
-1. Verify correct board revision, power, boot mode and UART routing without assuming connector/switch state. SDK N5/N4 pad aliases mean AOP U16/V16; actual board routing/baud has not been measured.
-2. Verify SOC/RadarSS APLL startup and identity/status output. Some low-level clock/startup calls may block before telemetry is available.
-3. On an approved bounded RF run, verify accepted profile settings, one frame-start per frame, exactly 32 chirp events/transfers, alternating-buffer content, RX ordering and real/imag ordering with a known target or suitable driver test pattern.
-4. Measure RF behavior/emissions, stop and finite-frame/session behavior, async fault responses, processing deadlines and task-stack high-water. Standard API ranges are not regulatory certification.
-5. Establish range bias, positive-frequency/velocity conventions, inter-RX phase corrections, world axes and the signed antenna-center offset after tilt. Until then, spatial output remains exploratory and world height stays unknown.
-6. Collect labeled real sessions, design/train an original posture/motion classifier, and evaluate on held-out sessions/people and difficult stationary cases. There is currently no classifier or accuracy result.
+Follow README's first acceptance step: after a separately authorized flash, query `status` only and verify exact version/build, self-test pass, zero faults and idle state before considering any separately approved bounded RF test. Fresh configuration is required after power loss. Keep all calibration/trust flags unverified until measured.
 
-No board boot, UART capture, RF emissions, actual ADC acquisition, real point cloud, activity classification, flashing, or deployment was performed. The BIN is a compiled development implementation with these outstanding gates.
+Historical implementation assumptions and original validation details are preserved in `HISTORY/v0.2.0_VALIDATION.md`; its historical artifact links do not identify this RC.

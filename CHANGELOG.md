@@ -1,5 +1,12 @@
 # Changelog
 
+## Original sensing 0.2.1-rc1 — 2026-10-10
+- Corrected the reproducible spatial-estimator target instruction defect with explicit scalar stores; added a synthetic boot self-test before acquisition/radio initialization.
+- Added exact build identity and status self-test fields; failure blocks acquisition and RF start while preserving UART status/stop service. No automatic configuration or RF start.
+- Reproduced the old public BIN byte-for-byte; corrected TI-generated code passes offline emulation and host/boot-gate tests. Physical board/RF acceptance remains pending; first board step is status-only after a separately authorized flash.
+- Published original source, candidate BIN, configuration, tests, notices, portable build instructions and sanitized validation summary. Private build/debug diagnostics and all private captures remain excluded.
+- Existing shared JavaScript modules, mounting guidance, software license, third-party notices and previous release assets remain unchanged.
+
 ## Original sensing 0.2.0-public1 — 2026-10-10
 - Added custom experimental BIN, original source/collector, historical matching CFG and incomplete current-mount template under firmware/original-radar-sensing.
 - Preserved BIN/application bytes; portable build paths and public docs updated. Complete TI/Sun/BIOS/XDC notices accompany distribution; third-party rights remain separate.

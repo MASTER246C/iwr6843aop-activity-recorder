@@ -1,13 +1,5 @@
 # Original Radar v1 serial protocol
 
-**Mount height is configurable. Current user-reported reference: 4 feet (1.2192 m) from floor to the flat TOP of the bracket, excluding screws.**
-
-The chip center is above that reference in the photographed arrangement. Its signed vertical offset is **estimated at +0.003175 to +0.00635 m**, giving an **estimated antenna-height interval of 1.222375–1.22555 m**. The midpoint is about **1.224 m**; it is not a calibrated measurement. **Actual downward tilt is unconfirmed.** Measure the final geometry after setting the physical tilt, and preserve the uncertainty in capture metadata.
-
-**Antenna-center height = measured mount-top reference height + measured signed vertical chip-center offset after final tilt.** The mount reference is not the chip height. Do not guess the offset, replace it with zero, or apply an extra cosine to an already vertical offset. Verify point and track coordinate conventions separately before applying a transform; do not infer a firmware `sensorPosition` or claim calibrated angles from these estimates.
-
-The earlier **2.00 m / 15-degree** arrangement was a planned experimental reference and remains in historical examples and frozen releases. It is **not the current setup, a mandatory height, a universal optimum or a proven most-accurate setting**. Earlier underside-to-board-bottom measurements are not used for the chip-center offset. Physical calibration remains unverified.
-
 This original sensing firmware speaks **JSON Lines over MSS UARTA at115200 baud,8N1**. It is not the TI-TLV protocol. Each JSON object has `protocol:"original-radar-v1"`, one LF-terminated line. JSON never contains NaN/Infinity; unknown quantities are `null`. Do not send this configuration to a TI demo or decode this output as TI TLV.
 
 ## Configuration and RF commands
@@ -17,7 +9,6 @@ Send `config/room64_v1.cfg` line by line, waiting for an ack after each non-comm
 ```
 orConfig 1
 profile room64_v1
-# Historical 2 m / 15-degree syntax example, NOT the current mount.
 mount 2000 15000 unknown
 detect 4 30 64 8
 session 60
@@ -86,6 +77,18 @@ Quality bits are defined in `dsp/radar_dsp.h`; spatial bits in `spatial/original
 
 `complete:true` means the original software's event-count, frame-boundary and buffer-generation checks passed. It is not certification of ADCBUF bank mapping, IQ order, actual RF data, or target truth. Those require a physical known-reflector/acquisition test. Quality value44 marks uncalibrated phase/power and unverified velocity sign only. Fixed-window bank exposure and the positive-half FFT convention remain explicit hardware-validation gates; synthetic test tones cannot establish them.
 
-## Current-mount configuration boundary
+## 0.2.1-rc1 boot self-test gate (additive)
 
-For the current 1.2192 m bracket reference, the protocol's integer-millimeter field uses 1219 mm (rounded); retain the exact 1219.2 mm reference and offset interval in metadata. The current template uses `mount 1219 REPLACE_WITH_MEASURED_TILT_MILLIDEGREES unknown` and is intentionally invalid until the tilt placeholder is replaced by an actual measurement. Keep the uncertain antenna offset `unknown`; a nominal estimate is not a calibration. This documentation does not change the firmware defaults, historical CFG, published BIN or release ZIP. See `config/current_mount.cfg.template` and `config/current_mount_metadata.json`.
+No new command is introduced. Identity `version` is `0.2.1-rc1`; identity/status include `build_id` (24 lowercase hexadecimal characters). The ID identifies canonical source/config plus pinned tool versions, not the complete BIN bytes.
+
+A `status` response additionally carries:
+- `firmware_version`: string, `0.2.1-rc1`
+- `selftest_version`: integer, `1`
+- `selftest_ok`: JSON boolean, true only after completed boot self-test returns zero
+- `selftest_mask`: unsigned 32-bit integer, zero for pass; `4294967295` indicates not completed
+
+Synthetic test runs once per boot, after UART opens and before acquisition/radio initialization. Failure sets `state:"fault"`, `fault:482`; only command/status service starts. Status and stop remain usable without invoking radio/acquisition calls. Start cannot proceed. A fresh successful boot reports `configured:false`; users must query current status before proposing any separately approved sensing test.
+
+Failure bits: 1 boresight; 2 known phase plane; 4 nontrivial corrections/unequal amplitudes; 8 zero-input rejection; 16 NaN rejection; 32 low-coherence rejection; 64 caller guards. Bit 128 is reserved for the separately compiled internal-scratch diagnostic variant and is not produced by the normal RC self-test.
+
+Status responses use the existing trailing `ack` for `command:"status"`. There is no nonce; clear buffered/stale receipts after disconnect, reboot/identity, transport error or reconnection. A passed cached receipt concerns only the current boot and does not establish physical calibration or RF safety. Fault-free idle state and matching version/build are also required before later configuration/start consideration.

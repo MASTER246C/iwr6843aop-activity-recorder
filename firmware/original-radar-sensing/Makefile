@@ -19,8 +19,9 @@ DRIVERS := osal esm soc pinmux uart dma adcbuf edma crc mailbox
 LIBS := $(foreach driver,$(DRIVERS),-i$(SDK)/ti/drivers/$(driver)/lib -llib$(driver)_xwr68xx.aer4f) \
  -i$(SDK)/ti/control/mmwave/lib -llibmmwave_xwr68xx.aer4f \
  -i$(SDK)/ti/control/mmwavelink/lib -llibmmwavelink_xwr68xx.aer4f
-HEADERS := $(wildcard src/*.h dsp/*.h spatial/*.h)
-OBJECTS := $(addprefix $(BUILD)/,main.oer4f serial_line.oer4f sensing_config.oer4f capture_model.oer4f acquisition.oer4f radio.oer4f rf_profile.oer4f energy_summary.oer4f json_output.oer4f radar_dsp.oer4f original_spatial.oer4f)
+HEADERS := $(wildcard src/*.h dsp/*.h spatial/*.h) src/build_identity.h
+IDENTITY_INPUTS := $(filter-out src/build_identity.h,$(wildcard src/*.c src/*.h dsp/*.c dsp/*.h spatial/*.c spatial/*.h)) Makefile sensing.cfg application.cmd tools/update_build_identity.py
+OBJECTS := $(addprefix $(BUILD)/,main.oer4f serial_line.oer4f sensing_config.oer4f capture_model.oer4f acquisition.oer4f radio.oer4f rf_profile.oer4f energy_summary.oer4f json_output.oer4f radar_dsp.oer4f original_spatial.oer4f spatial_selftest.oer4f)
 .PHONY: all configure test verify clean
 all: $(OUT)
 configure: $(CFG)/.configured
@@ -30,6 +31,8 @@ $(CFG)/.configured: sensing.cfg
 	 -t ti.targets.arm.elf.R4Ft -p ti.platforms.cortexR:IWR68XX:false:200 \
 	 -r release -c $(CGT_ROOT) --compileOptions "--enum_type=int" -o $(CFG) sensing.cfg
 	touch $(CFG)/.configured
+src/build_identity.h: $(IDENTITY_INPUTS)
+	python3 tools/update_build_identity.py
 vpath %.c src dsp spatial
 $(BUILD)/%.oer4f: %.c $(HEADERS) $(CFG)/.configured Makefile
 	$(CC) $(CFLAGS) --cmd_file=$(CFG)/compiler.opt -c $< --output_file=$@

@@ -20,6 +20,8 @@
 #include "radio.h"
 #include "json_output.h"
 #include "energy_summary.h"
+#include "spatial_selftest.h"
+#include "build_identity.h"
 #define PROTOCOL "original-radar-v1"
 enum {APP_IDLE=0,APP_STARTING,APP_RUNNING,APP_STOPPING,APP_FAULT};
 static SOC_Handle soc;
@@ -30,6 +32,8 @@ static OrConfig config;
 static RadarDsp dsp;
 static RadarDspResult result;
 static os_config spatial;
+static volatile uint32_t boot_selftest_mask=0xffffffffU;
+static volatile uint32_t boot_selftest_completed;
 static volatile uint32_t app_state=APP_IDLE;
 static volatile uint32_t app_fault;
 static volatile uint32_t dsp_busy;
@@ -38,6 +42,10 @@ static volatile uint32_t deadline_misses,previous_tx_us;
 /* Preserved debugger indication for startup failures before the UART is usable. */
 volatile int32_t g_original_sensing_boot_fault;
 
+static int selftest_passed(void)
+{
+    return boot_selftest_completed && boot_selftest_mask==0U;
+}
 static const char *state_name(void)
 {
     static const char *names[]={"idle","starting","running","stopping","fault"};
@@ -55,12 +63,17 @@ static int send_text(const char *text,size_t length)
 }
 static void status_message(void)
 {
-    char text[384];int n=snprintf(text,sizeof(text),
+    char text[512];int n=snprintf(text,sizeof(text),
         "{\"type\":\"status\",\"protocol\":\"%s\",\"state\":\"%s\",\"configured\":%s,"
         "\"fault\":%lu,\"capture_fault\":%lu,\"rf_fault\":%lu,\"rf_error\":%ld,"
-        "\"frames\":%lu,\"deadline_misses\":%lu}\n",PROTOCOL,state_name(),config.committed?"true":"false",
-        (unsigned long)app_fault,(unsigned long)or_acquisition_fault(),(unsigned long)or_radio_fault(),
-        (long)or_radio_error(),(unsigned long)or_acquisition_completed(),(unsigned long)deadline_misses);
+        "\"frames\":%lu,\"deadline_misses\":%lu,"
+        "\"firmware_version\":\"" OR_FIRMWARE_VERSION "\",\"build_id\":\"" OR_BUILD_ID "\",\"selftest_version\":%u,"
+        "\"selftest_ok\":%s,\"selftest_mask\":%lu}\n",PROTOCOL,state_name(),config.committed?"true":"false",
+        (unsigned long)app_fault,(unsigned long)(selftest_passed()?or_acquisition_fault():0U),
+        (unsigned long)(selftest_passed()?or_radio_fault():0U),
+        (long)(selftest_passed()?or_radio_error():0),
+        (unsigned long)(selftest_passed()?or_acquisition_completed():0U),(unsigned long)deadline_misses,
+        OR_SPATIAL_SELFTEST_VERSION,selftest_passed()?"true":"false",(unsigned long)boot_selftest_mask);
     if(n>0&&(size_t)n<sizeof(text))(void)send_text(text,(size_t)n);
 }
 static void ack(const char *command,int code)
@@ -97,6 +110,7 @@ static int end_run(void)
 static int begin_run(void)
 {
     OrRfPhysical physical;RadarDspConfig settings;int status;unsigned i;
+    if(!selftest_passed())return -25;
     if(app_state!=APP_IDLE || dsp_busy || !config.committed || !or_config_valid(&config))return -20;
     app_state=APP_STARTING;
     status=or_radio_prepare(&config,&physical);
@@ -174,7 +188,7 @@ static void handle_line(char *line)
     if(cmd<0){ack(name,(int)cmd);return;}
     if(cmd==OR_CMD_START)code=begin_run();
     else if(cmd==OR_CMD_STOP) {
-        if(app_state==APP_RUNNING||app_state==APP_STARTING||app_state==APP_FAULT)code=end_run();
+        if(selftest_passed() && (app_state==APP_RUNNING||app_state==APP_STARTING||app_state==APP_FAULT))code=end_run();
     } else if(cmd==OR_CMD_STATUS)status_message();
     ack(name,code);
 }
@@ -200,7 +214,7 @@ static void fail_boot(int32_t code)
 static void init_task(UArg unused0,UArg unused1)
 {
     UART_Params uart_options;Task_Params task;Semaphore_Params sem;
-    const char *identity="{\"type\":\"identity\",\"protocol\":\"original-radar-v1\",\"app\":\"original-radar-sensing\",\"version\":\"0.2.0\",\"baud\":115200,\"sensing\":true,\"classifier\":false}\n";
+    const char *identity="{\"type\":\"identity\",\"protocol\":\"original-radar-v1\",\"app\":\"original-radar-sensing\",\"version\":\"" OR_FIRMWARE_VERSION "\",\"build_id\":\"" OR_BUILD_ID "\",\"baud\":115200,\"sensing\":true,\"classifier\":false}\n";
     (void)unused0;(void)unused1;
     /* SDK N5/N4 PADBE/PADBD aliases correspond to AOP U16/V16 pads. */
     if(Pinmux_Set_OverrideCtrl(SOC_XWR68XX_PINN5_PADBE,PINMUX_OUTEN_RETAIN_HW_CTRL,PINMUX_INPEN_RETAIN_HW_CTRL)<0 ||
@@ -215,6 +229,17 @@ static void init_task(UArg unused0,UArg unused1)
     uart_options.dmaHandle=NULL;
     uart=UART_open(0U,&uart_options);if(uart==NULL)fail_boot(-4);
     or_config_reset(&config);(void)send_text(identity,strlen(identity));
+    /* Deterministic CPU-only acceptance gate BEFORE all acquisition/radio init.
+     * Failure leaves status/stop service alive but no hardware tasks/resources. */
+    boot_selftest_mask=os_spatial_no_rf_selftest();
+    boot_selftest_completed=1U;
+    if(!selftest_passed()) {
+        app_fault=482U;app_state=APP_FAULT;
+        Task_Params_init(&task);task.priority=4;task.stackSize=6144U;
+        if(Task_create(command_task,&task,NULL)==NULL)fail_boot(-10);
+        status_message();
+        return;
+    }
     Semaphore_Params_init(&sem);sem.mode=Semaphore_Mode_COUNTING;
     frame_ready=Semaphore_create(0,&sem,NULL);if(frame_ready==NULL)fail_boot(-5);
     if(or_acquisition_init(soc,frame_ready)<0){app_fault=480U;app_state=APP_FAULT;status_message();fail_boot(-6);}

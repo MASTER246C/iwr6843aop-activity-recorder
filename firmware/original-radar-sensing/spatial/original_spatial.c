@@ -9,12 +9,6 @@
 #define OS_PI 3.14159265358979323846f
 #define OS_C 299792458.0f
 static int finite_number(float x) { return isfinite(x) != 0; }
-static os_complex multiply(os_complex a, os_complex b) {
-    os_complex r;
-    r.real=a.real*b.real-a.imag*b.imag;
-    r.imag=a.real*b.imag+a.imag*b.real;
-    return r;
-}
 static os_complex conjugate_product(os_complex a, os_complex b) {
     os_complex r;
     r.real=a.real*b.real+a.imag*b.imag;
@@ -69,8 +63,13 @@ int os_estimate(const os_config *cfg, const os_complex rx[4], float range_m,
     }
     if(largest<1.0e-20f) return 0;
     for(i=0;i<4;i++) {
-        os_complex scaled; scaled.real=rx[i].real/largest; scaled.imag=rx[i].imag/largest;
-        r[i]=multiply(scaled,cfg->rx_correction[i]);
+        /* Candidate workaround: avoid aggregate-return assignment to r[i].
+         * Keep component stores explicit; inspect TI target assembly before use.
+         * This does not establish a compiler defect or validate target code. */
+        const float sr=rx[i].real/largest, si=rx[i].imag/largest;
+        const float cr=cfg->rx_correction[i].real, ci=cfg->rx_correction[i].imag;
+        r[i].real=sr*cr-si*ci;
+        r[i].imag=sr*ci+si*cr;
         if(!finite_number(r[i].real)||!finite_number(r[i].imag)) return 0;
         amplitudes[i]=length(r[i]);
         if(!finite_number(amplitudes[i])||amplitudes[i]<1.0e-12f) return 0;
