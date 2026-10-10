@@ -18,6 +18,14 @@ or a pretrained activity model. Use Radar Studio for the integrated application.
 Real-browser rendering, hardware throughput and real-world classification
 accuracy remain unverified. No participant captures are included.
 
+## Original sensing firmware 0.2.0
+
+[Custom BIN, matching configuration, original source and dedicated collector](firmware/original-radar-sensing/README.md) are now included. Download the complete Original Radar Sensing release ZIP with its required notices. This is a separate JSON protocol, not the TI demo CLI/TLV path used by v0.5/v0.6.
+
+**Never flashed, booted or hardware-validated.** Movement/position measurements retain stationary returns; no heart/breath estimates, completed people-ID tracker, activity classifier or demonstrated tracking accuracy. The current-mount configuration template requires a measured tilt before use; its offset remains unknown. Read the firmware guide and validation gates before any manual flash/RF start.
+
+The BIN includes original application code plus identified TI/runtime support. Project no-resale terms cover original portions only; third-party components retain their own licenses and TI-device restrictions. Full notices accompany the package.
+
 ## Three related projects
 
 - [Radar Studio Chromebook: visualizer and easy-to-run package](https://github.com/MASTER246C/radar-studio-chromebook)

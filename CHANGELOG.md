@@ -1,5 +1,11 @@
 # Changelog
 
+## Original sensing 0.2.0-public1 — 2026-10-10
+- Added custom experimental BIN, original source/collector, historical matching CFG and incomplete current-mount template under firmware/original-radar-sensing.
+- Preserved BIN/application bytes; portable build paths and public docs updated. Complete TI/Sun/BIOS/XDC notices accompany distribution; third-party rights remain separate.
+- Current reported mount is 1.2192 m with estimated positive chip offset 0.003175–0.00635 m; tilt unconfirmed. Prior 2 m/15-degree plan is not the current mount.
+- No vitals estimates; stationary returns retained. No completed tracker/classifier or hardware validation. Existing v0.6 shared modules unchanged.
+
 ## v0.6-bundle1 — 2026-10-10
 - Added local offline feature/model/review modules, CLI, tests and API guide; 23 exact shared paths match Radar Studio v0.6.
 - Preserved the 2.00 m mount-top reference, 15-degree tilt and unknown measured antenna offset.

@@ -1,0 +1,15 @@
+# TEMPLATE ONLY: intentionally invalid until measured tilt replaces placeholder.
+# Current bracket top 1219.2 mm rounded to integer-mm protocol value1219.
+# Keep uncertain offset unknown; do not encode estimated midpoint as calibrated.
+# Original firmware protocol, not a TI demo CLI configuration.
+# Configure only. No RF calibration or transmission until a separate explicit "start".
+orConfig 1
+profile room64_v1
+# Floor-to-bracket-flat-top mm, downward tilt millidegrees,
+# signed world-vertical antenna-center offset AFTER tilt: not yet known.
+mount 1219 REPLACE_WITH_MEASURED_TILT_MILLIDEGREES unknown
+# First/last range bins (inclusive), absolute power floor, median noise multiplier.
+detect 4 30 64 8
+# Finite run limit in seconds; firmware also supports explicit stop.
+session 60
+commit

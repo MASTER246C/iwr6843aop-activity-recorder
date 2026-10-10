@@ -1,0 +1,19 @@
+{
+  "status": "user-reported estimate, not calibrated",
+  "bracket_top_m": 1.2192,
+  "reference": "floor to flat top of bracket excluding screws",
+  "antenna_vertical_offset_m_interval": [
+    0.003175,
+    0.00635
+  ],
+  "estimated_antenna_height_m_interval": [
+    1.222375,
+    1.22555
+  ],
+  "estimated_midpoint_antenna_height_m": 1.2239625,
+  "downward_tilt_degrees": null,
+  "discarded_measurement": "earlier underside-to-board-bottom measurement is not used",
+  "protocol_bracket_top_mm_integer": 1219,
+  "protocol_offset": "unknown",
+  "note": "Measure final tilt/offset and validate coordinates before geometry use; template intentionally incomplete."
+}

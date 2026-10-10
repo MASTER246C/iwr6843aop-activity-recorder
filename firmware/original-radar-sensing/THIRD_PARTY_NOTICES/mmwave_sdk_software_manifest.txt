@@ -1,0 +1,463 @@
+Manifest File
+code{white-space: pre;}
+MMWAVE_SDK Manifest
+2024-09-01
+Manifest ID -
+SRAS00010734
+Legend
+(explanation of the fields in the Manifest Table below)
+Software Name
+The name of the application or file
+Version
+Version of the application or file
+License Type
+Type of license(s) under which TI will be providing
+
+software to the licensee (e.g. BSD-3-Clause, GPL-2.0, TI TSPA License, TI
+
+Commercial License). The license could be under Commercial terms or Open Source. See Open Source Reference License Disclaimer in
+
+the Disclaimers Section. Whenever possible, TI will use an
+SPDX Short Identifier
+for an Open Source
+
+License. TI Commercial license terms are not usually included in the manifest and are conveyed through a variety 
+
+of means such as a clickwrap license upon install, 
+
+a signed license agreement and so forth.
+Location
+The directory name and path on the media or a specific file where the Software is located. Typically fully qualified path names 
+
+are not used and instead the relevant top level directory of the application is given. 
+
+A notation often used in the manifests is [as installed]/directory/*. Note that the asterisk implies that all
+
+files under that directory are licensed as the License Type field denotes. Any exceptions to this will 
+
+generally be denoted as [as installed]/directory/* except as noted below which means as shown in subsequent rows of 
+
+the manifest.
+Delivered As
+This field will either be “Source”, “Binary” or “Source
+
+and Binary” and is the primary form the content of the Software is delivered
+
+in. If the Software is delivered in an archive format, this field
+
+applies to the contents of the archive. If the word Limited is used
+
+with Source, as in “Limited Source” or “Limited Source and Binary” then
+
+only portions of the Source for the application are provided.
+Modified by TI
+This field will either be “Yes” or “No”. A “Yes” means
+
+TI has made changes to the Software. A “No” means TI has not made any
+
+changes. Note: This field is not applicable for Software “Obtained
+
+from” TI.
+Obtained from
+This field specifies from where or from whom TI obtained
+
+the Software. It may be a URL to an Open Source site, a 3
+rd
+party licensor, or TI. See Links Disclaimer in the Disclaimers
+
+Section.
+Disclaimers
+Export Control Classification Number (ECCN)
+Any use of ECCNs listed in the Manifest is at the user’s risk
+
+and without recourse to TI. Your
+
+company, as the exporter of record, is responsible for determining the
+
+correct classification of any item at
+
+the time of export. Any export classification by TI of Software is for
+
+TI’s internal use only and shall not be construed as a representation
+
+or warranty
+
+regarding the proper export classification for such Software or whether
+
+an export
+
+license or other documentation is required for exporting such Software
+Links in the Manifest
+Any
+
+links appearing on this Manifest
+
+(for example in the “Obtained from” field) were verified at the time
+
+the Manifest was created. TI makes no guarantee that any listed links
+
+will
+
+remain active in the future.
+Open Source License References
+Your company is responsible for confirming the
+
+applicable license terms for any open source Software
+
+listed in this Manifest that was not “Obtained from” TI. Any open
+
+source license
+
+specified in this Manifest for Software that was
+
+not “Obtained from” TI is for TI’s internal use only and shall not be
+
+construed as a representation or warranty regarding the proper open
+
+source license terms
+
+for such Software.
+Export Information
+ECCN for Software included in this release:
+5D992
+MMWAVE_SDK Manifest Table
+See the Legend above for a description of these columns.
+Software Name
+Version
+License Type
+Delivered As
+Modified by TI
+mmwave  algorithms
+03.03.00
+BSD-3-Clause
+Source and Binary
+N/A
+Location
+mmwave_sdk_[ver]\packages\ti\alg
+Obtained from
+Texas Instruments
+Out2rprc
+2.0
+TI Text File
+Binary
+N/A
+Location
+mmwave_sdk_[ver]\scripts\ImageCreator\out2rprc
+Obtained from
+Texas Instruments
+Ftd2xx.lib
+2.12.28
+FTDI Driver License
+Library
+No
+Location
+mmwave_sdk_[ver]\tools\ftdi
+Obtained from
+http://www.ftdichip.com/FTDrivers.htm
+Crc multicore image
+1.0
+TI Text File
+Binary
+N/A
+Location
+mmwave_sdk_[ver]\scripts\ImageCreator\crc_multicore_image
+Obtained from
+Texas Instruments
+Multicore image generator
+1.0
+TI Text File
+Binary
+N/A
+Location
+mmwave_sdk_[ver]\scripts\ImageCreator\multicore_image_generator
+Obtained from
+Texas Instruments
+mmwave crypto driver
+1.0.0
+BSD-3-Clause
+Source and Binary
+N/A
+Location
+mmwave_sdk_[ver]\packages\tidrivers\crypto
+Obtained from
+Texas Instruments
+mmWave Link Framework
+1.2.x.0
+BSD-3-Clause
+Source and Library
+N/A
+Location
+mmwave_sdk_[ver]\packages\ti\control\mmwavelink
+Obtained from
+Texas Instruments
+Crc unit test Note:1
+Public domain
+Source and Binary
+Yes
+Location
+mmwave_sdk_[ver]\packages\ti\drivers\crc\test\common\crcmodel.c, mmwave_sdk_[ver]\packages\ti\drivers\crc\test\common\crcmodel.h
+Obtained from
+Public Domain
+www.repairfaq.org/filipg/LINK/crcmodel.h, www.repairfaq.org/filipg/LINK/crcmodel.c
+crc16.h
+BSD-3-Clause
+Source
+Yes
+Location
+mmwave_sdk_[ver]\packages\ti\utils\sbl\include
+Obtained from
+https://www.menie.org/georges/embedded/crc16.html
+crc16.c
+BSD-3-Clause
+Source and Object
+Yes
+Location
+mmwave_sdk_[ver]\packages\ti\utils\sbl\src
+Obtained from
+https://www.menie.org/georges/embedded/crc16.html
+Radar SS Firmware Patch for XWR14xx, XWR16xx, xWR18xx
+1.2.x.x
+TI Text File
+Binary
+N/A
+Location
+mmwave_sdk_[ver]\firmware\radarss
+Obtained from
+Texas Instruments
+Radar SS Firmware for IWR68xx
+6.2.0.x
+TI Text File
+Binary
+N/A
+Location
+mmwave_sdk_[ver]\firmware\radarss
+Obtained from
+Texas Instruments
+gen_bincrc32
+1.0
+TI Text File (this binary uses the crc unit test above which is public domain)
+Binary
+N/A
+Location
+mmwave_sdk_[ver]\scripts\ImageCreator\append_bin_crc
+Obtained from
+Uses crc unit test (in one of the preceding lines). Wrapper is TI’s with BSD-3 license.
+create_ConfigRPRC
+1.0
+TI Text File
+Binary
+N/A
+Location
+mmwave_sdk_[ver]\scripts\ ImageCreator\create_ConfigRPRC
+Obtained from
+Texas Instruments
+HW USB Drivers
+2.12.28
+FTDI Driver License
+Binary and Source (INF, CAT)
+Yes
+Location
+mmwave_sdk_[ver]\tools\ftdi
+Obtained from
+http://www.ftdichip.com/FTDrivers.htm
+mmwave drivers, control, datapath, utils & demo
+03.03.00
+BSD-3-Clause
+Source and Binary
+N/A
+Location
+mmwave_sdk_[ver]\packages\ti\drivers (all except crypto driver and crc unit test files covered below), mmwave_sdk_[ver]\packages\ti\platform, mmwave_sdk_[ver]\packages\ti\utils (except crc16.c and crc16.h covered below), mmwave_sdk_[ver]\packages\ti\common,  mmwave_sdk_[ver]\packages\ti\control\mmwave, mmwave_sdk_[ver]\packages\ti\demo, mmwave_sdk_[ver]\packages\ti\datapath
+Obtained from
+Texas Instruments
+1. CRC model is unit test code used to test crc driver and in gen_bincrc32 to generate crc that is appended to binary image
+Credits
+Licenses
+MMWAVE_SDK Licenses
+BSD 3 Clause
+/*
+*
+* Copyright (C) 2018 Texas Instruments Incorporated - http://www.ti.com/
+*
+*
+*  Redistribution and use in source and binary forms, with or without
+*  modification, are permitted provided that the following conditions
+*  are met:
+*
+*    Redistributions of source code must retain the above copyright
+*    notice, this list of conditions and the following disclaimer.
+*
+*    Redistributions in binary form must reproduce the above copyright
+*    notice, this list of conditions and the following disclaimer in the
+*    documentation and/or other materials provided with the
+*    distribution.
+*
+*    Neither the name of Texas Instruments Incorporated nor the names of
+*    its contributors may be used to endorse or promote products derived
+*    from this software without specific prior written permission.
+*
+*  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+*  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+*  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+*  A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+*  OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+*  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+*  LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+*  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+*  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+*  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+*  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+*
+*/
+crc16.c/crc16.h
+/*
+* Copyright 2001-2010 Georges Menie (www.menie.org)
+* All rights reserved.
+* Redistribution and use in source and binary forms, with or without
+* modification, are permitted provided that the following conditions are met:
+*
+*     * Redistributions of source code must retain the above copyright
+*       notice, this list of conditions and the following disclaimer.
+*     * Redistributions in binary form must reproduce the above copyright
+*       notice, this list of conditions and the following disclaimer in the
+*       documentation and/or other materials provided with the distribution.
+*     * Neither the name of the University of California, Berkeley nor the
+*       names of its contributors may be used to endorse or promote products
+*       derived from this software without specific prior written permission.
+*
+* THIS SOFTWARE IS PROVIDED BY THE REGENTS AND CONTRIBUTORS ``AS IS"" AND ANY
+* EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+* WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+* DISCLAIMED. IN NO EVENT SHALL THE REGENTS AND CONTRIBUTORS BE LIABLE FOR ANY
+* DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+* (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+* ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+* (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+* SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
+TI TEXT LICENSE
+/*
+Copyright (c) 2016 - 2018 Texas Instruments Incorporated
+All rights reserved not granted herein.
+Limited License.
+Texas Instruments Incorporated grants a world-wide, royalty-free, non-exclusive license under copyrights and patents it now or hereafter owns or controls to make, have made, use, import, offer to sell and sell ("Utilize") this software subject to the terms herein.  With respect to the foregoing patent license, such license is granted  solely to the extent that any such patent is necessary to Utilize the software alone.  The patent license shall not apply to any combinations which include this software, other than combinations with devices manufactured by or for TI ("TI Devices").  No hardware patent is licensed hereunder.
+Redistributions must preserve existing copyright notices and reproduce this license (including the above copyright notice and the disclaimer and (if applicable) source code license limitations below) in the documentation and/or other materials provided with the distribution
+Redistribution and use in binary form, without modification, are permitted provided that the following conditions are met:
+*	No reverse engineering, decompilation, or disassembly of this software is permitted with respect to any software provided in binary form.
+*	any redistribution and use are licensed by TI for use only with TI Devices.
+*	Nothing shall obligate TI to provide you with source code for the software licensed and provided to you in object code.
+If software source code is provided to you, modification and redistribution of the source code are permitted provided that the following conditions are met:
+*	any redistribution and use of the source code, including any resulting derivative works, are licensed by TI for use only with TI Devices.
+*	any redistribution and use of any object code compiled from the source code and any resulting derivative works, are licensed by TI for use only with TI Devices.
+Neither the name of Texas Instruments Incorporated nor the names of its suppliers may be used to endorse or promote products derived from this software without specific prior written permission.
+DISCLAIMER.
+THIS SOFTWARE IS PROVIDED BY TI AND TI"S LICENSORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL TI AND TI"S LICENSORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
+/******************************************************************************/
+/*                             Start of crcmodel.c                            */
+/******************************************************************************/
+/*                                                                            */
+/* Author : Ross Williams (ross@guest.adelaide.edu.au.).                      */
+/* Date   : 3 June 1993.                                                      */
+/* Status : Public domain.                                                    */
+/*                                                                            */
+/* Description : This is the implementation (.c) file for the reference       */
+/* implementation of the Rocksoft^tm Model CRC Algorithm. For more            */
+/* information on the Rocksoft^tm Model CRC Algorithm, see the document       */
+/* titled "A Painless Guide to CRC Error Detection Algorithms" by Ross        */
+/* Williams (ross@guest.adelaide.edu.au.). This document is likely to be in   */
+/* "ftp.adelaide.edu.au/pub/rocksoft".                                        */
+/*                                                                            */
+/* Note: Rocksoft is a trademark of Rocksoft Pty Ltd, Adelaide, Australia.    */
+/*                                                                            */
+/******************************************************************************/
+/*                                                                            */
+/* Implementation Notes                                                       */
+/* --------------------                                                       */
+/* To avoid inconsistencies, the specification of each function is not echoed */
+/* here. See the header file for a description of these functions.            */
+/* This package is light on checking because I want to keep it short and      */
+/* simple and portable (i.e. it would be too messy to distribute my entire    */
+/* C culture (e.g. assertions package) with this package.                     */
+/*                                                                            */
+/******************************************************************************/
+/******************************************************************************/
+/*                             Start of crcmodel.h                            */
+/******************************************************************************/
+/*                                                                            */
+/* Author : Ross Williams (ross@guest.adelaide.edu.au.).                      */
+/* Date   : 3 June 1993.                                                      */
+/* Status : Public domain.                                                    */
+/*                                                                            */
+/* Description : This is the header (.h) file for the reference               */
+/* implementation of the Rocksoft^tm Model CRC Algorithm. For more            */
+/* information on the Rocksoft^tm Model CRC Algorithm, see the document       */
+/* titled "A Painless Guide to CRC Error Detection Algorithms" by Ross        */
+/* Williams (ross@guest.adelaide.edu.au.). This document is likely to be in   */
+/* "ftp.adelaide.edu.au/pub/rocksoft".                                        */
+/*                                                                            */
+/* Note: Rocksoft is a trademark of Rocksoft Pty Ltd, Adelaide, Australia.    */
+/*                                                                            */
+/******************************************************************************/
+/*                                                                            */
+/* How to Use This Package                                                    */
+/* -----------------------                                                    */
+/* Step 1: Declare a variable of type cm_t. Declare another variable          */
+/*         (p_cm say) of type p_cm_t and initialize it to point to the first  */
+/*         variable (e.g. p_cm_t p_cm = &cm_t).                               */
+/*                                                                            */
+/* Step 2: Assign values to the parameter fields of the structure.            */
+/*         If you don"t know what to assign, see the document cited earlier.  */
+/*         For example:                                                       */
+/*            p_cm->cm_width = 16;                                            */
+/*            p_cm->cm_poly  = 0x8005L;                                       */
+/*            p_cm->cm_init  = 0L;                                            */
+/*            p_cm->cm_refin = TRUE;                                          */
+/*            p_cm->cm_refot = TRUE;                                          */
+/*            p_cm->cm_xorot = 0L;                                            */
+/*         Note: Poly is specified without its top bit (18005 becomes 8005).  */
+/*         Note: Width is one bit less than the raw poly width.               */
+/*                                                                            */
+/* Step 3: Initialize the instance with a call cm_ini(p_cm);                  */
+/*                                                                            */
+/* Step 4: Process zero or more message bytes by placing zero or more         */
+/*         successive calls to cm_nxt. Example: cm_nxt(p_cm,ch);              */
+/*                                                                            */
+/* Step 5: Extract the CRC value at any time by calling crc = cm_crc(p_cm);   */
+/*         If the CRC is a 16-bit value, it will be in the bottom 16 bits.    */
+/*                                                                            */
+/******************************************************************************/
+/*                                                                            */
+/* Design Notes                                                               */
+/* ------------                                                               */
+/* PORTABILITY: This package has been coded very conservatively so that       */
+/* it will run on as many machines as possible. For example, all external     */
+/* identifiers have been restricted to 6 characters and all internal ones to  */
+/* 8 characters. The prefix cm (for Crc Model) is used as an attempt to avoid */
+/* namespace collisions. This package is endian independent.                  */
+/*                                                                            */
+/* EFFICIENCY: This package (and its interface) is not designed for           */
+/* speed. The purpose of this package is to act as a well-defined reference   */
+/* model for the specification of CRC algorithms. If you want speed, cook up  */
+/* a specific table-driven implementation as described in the document cited  */
+/* above. This package is designed for validation only; if you have found or  */
+/* implemented a CRC algorithm and wish to describe it as a set of parameters */
+/* to the Rocksoft^tm Model CRC Algorithm, your CRC algorithm implementation  */
+/* should behave identically to this package under those parameters.          */
+/*                                                                            */
+/******************************************************************************/
+FTDI Driver License
+FTDIPORT.INF, FTD2xx.lib
+Copyright (c) 2000-2012 FTDI Ltd.
+Custom FTDIPORT.INF file generated using "FT INF Generator" for FTDI
+USB serial converter driver installation for Windows 2000, XP, Server 2003, Vista, Server 2008, Windows 7 and Server 2008 R2 (x86 and x64).
+THIS SOFTWARE IS PROVIDED BY FUTURE TECHNOLOGY DEVICES INTERNATIONAL LIMITED ``AS IS"" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL FUTURE TECHNOLOGY DEVICES INTERNATIONAL LIMITED BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+FTDI DRIVERS MAY BE USED ONLY IN CONJUNCTION WITH PRODUCTS BASED ON FTDI PARTS.
+FTDI DRIVERS MAY BE DISTRIBUTED IN ANY FORM AS LONG AS LICENSE INFORMATION IS NOT MODIFIED.
+IF A CUSTOM VENDOR ID AND/OR PRODUCT ID OR DESCRIPTION STRING ARE USED, IT IS THE RESPONSIBILITY OF THE PRODUCT MANUFACTURER TO MAINTAIN ANY CHANGES AND SUBSEQUENT WHQL RE-CERTIFICATION AS A RESULT OF MAKING THESE CHANGES.
+For more detail on FTDI Chip Driver license terms, see  http://www.ftdichip.com/Drivers/FTDriverLicenceTerms.htm
+TI is a global semiconductor design and manufacturing company. Innovate
+
+  with 100,000+ analog ICs and embedded processors, along with software, tools
+
+  and the industry's largest sales/support staff.

@@ -1,0 +1,1378 @@
+{
+  "scope": "Exact frozen sensing ELF runtime members plus transitive source notices; not full firmware redistribution clearance",
+  "elf_sha256": "32ea6c3861dde198a7e3513647d3e1b8aaa5bc4411041122c51c2bb9560ae6b8",
+  "bin_sha256": "ef945c247cb5fe6bb7dacbf0e6dba5431b57418544bbaf2cf81673be94de7841",
+  "map_sha256": "c66cf724b01d3b6759417606534cc7f7b707bf597258dfe1854e13f97eee2e33",
+  "rts_archive_sha256": "b81542b2afeb5528f1d36d25b2899f106a14172645e378efc112f7725cf09e15",
+  "selected_arm_rts_count": 40,
+  "selected_target_startup_count": 2,
+  "conservative_rts_source_closure_count": 74,
+  "vendor_spdx_path": "arm_rts_16_9_0_LTS-5D08A7C6-FD5E-4de4-8222-962F213D6F88.spdx",
+  "vendor_spdx_sha256": "967667cfe37b9ce386ccf964ae277aeefd91b6441ebd7110ea13576b57d9d66f",
+  "objects": [
+    {
+      "archive_member": null,
+      "source": "ti-cgt-arm_16.9.6.LTS/lib/src/_data_synch.h",
+      "source_sha256": "b0406ff489b8421b7473e2daae4c94cb807e055342ad0eb1bf1f0bf226e910d9",
+      "source_notice_lines": [
+        1,
+        36
+      ],
+      "notice_file": "arm_rts___data_synch.h.notice.txt",
+      "notice_sha256": "920051f9a37d0a3b5c4ec6c3a87b7b251e8c071c2844ab0c45b16a0e05946cbc",
+      "role": "transitive_runtime_header",
+      "vendor_spdx_license_concluded": [
+        "BSD-3-Clause"
+      ],
+      "actual_notice_families": [
+        "TI-BSD-3-Clause"
+      ]
+    },
+    {
+      "archive_member": null,
+      "source": "ti-cgt-arm_16.9.6.LTS/lib/src/_defs.h",
+      "source_sha256": "07802c06bb445ca707715eebbe05b403430eb1bc8a1141e58f711fc8ce517eb6",
+      "source_notice_lines": [
+        1,
+        36
+      ],
+      "notice_file": "arm_rts___defs.h.notice.txt",
+      "notice_sha256": "c8fcb4637ac6e718119fe552c95030639b139b2df2021c26cfddfd6b95c1ade0",
+      "role": "transitive_runtime_header",
+      "vendor_spdx_license_concluded": [
+        "BSD-3-Clause"
+      ],
+      "actual_notice_families": [
+        "TI-BSD-3-Clause"
+      ]
+    },
+    {
+      "archive_member": null,
+      "source": "ti-cgt-arm_16.9.6.LTS/lib/src/_fmt_specifier.h",
+      "source_sha256": "bdad079baad2d66622eab76ec74b4fc548484db13e30b0ec5c4732917f8393a7",
+      "source_notice_lines": [
+        1,
+        37
+      ],
+      "notice_file": "arm_rts___fmt_specifier.h.notice.txt",
+      "notice_sha256": "c63774e53d42eabf72eb859b30b575c23561ff08fa06d8b0c8a8d50a02e48150",
+      "role": "transitive_runtime_header",
+      "vendor_spdx_license_concluded": [
+        "BSD-3-Clause"
+      ],
+      "actual_notice_families": [
+        "TI-BSD-3-Clause"
+      ]
+    },
+    {
+      "archive_member": null,
+      "source": "ti-cgt-arm_16.9.6.LTS/lib/src/_isfuncdcl.h",
+      "source_sha256": "2bded430e546b45e77be11d1299c2e1c2e697584b6667732b32763891c2d1519",
+      "source_notice_lines": [
+        1,
+        36
+      ],
+      "notice_file": "arm_rts___isfuncdcl.h.notice.txt",
+      "notice_sha256": "c43815ecff4903da3e279c459c4de895f2ec4342d42690335e5c6a10cb8bde48",
+      "role": "transitive_runtime_header",
+      "vendor_spdx_license_concluded": [
+        "BSD-3-Clause"
+      ],
+      "actual_notice_families": [
+        "TI-BSD-3-Clause"
+      ]
+    },
+    {
+      "archive_member": null,
+      "source": "ti-cgt-arm_16.9.6.LTS/lib/src/_isfuncdef.h",
+      "source_sha256": "38b929f402d951e393f06014165ccda902c0737a003d3f620a014409cbd814c2",
+      "source_notice_lines": [
+        1,
+        36
+      ],
+      "notice_file": "arm_rts___isfuncdef.h.notice.txt",
+      "notice_sha256": "bd46c6816011101bc2a91f42c3d70086e034533cff69abd376418cc6534a2dd9",
+      "role": "transitive_runtime_header",
+      "vendor_spdx_license_concluded": [
+        "BSD-3-Clause"
+      ],
+      "actual_notice_families": [
+        "TI-BSD-3-Clause"
+      ]
+    },
+    {
+      "archive_member": "_lock.obj",
+      "source": "ti-cgt-arm_16.9.6.LTS/lib/src/_lock.c",
+      "source_sha256": "6047fd6cd9ad7749cfe6cf0c803c10be7cefb59fdfb8eac7fc8cc5b106926768",
+      "source_notice_lines": [
+        1,
+        37
+      ],
+      "notice_file": "arm_rts___lock.c.notice.txt",
+      "notice_sha256": "49b327245c28d073b57b1060f505d6b6f06c0df5ff5a008359b02103211c2b82",
+      "role": "selected_archive_member",
+      "vendor_spdx_license_concluded": [
+        "BSD-3-Clause"
+      ],
+      "actual_notice_families": [
+        "TI-BSD-3-Clause"
+      ]
+    },
+    {
+      "archive_member": null,
+      "source": "ti-cgt-arm_16.9.6.LTS/lib/src/_lock.h",
+      "source_sha256": "e8ec9e6445c67f2f48236fae16882a5f8fd1b3f2e41a0d24f2b39237ed20222c",
+      "source_notice_lines": [
+        1,
+        36
+      ],
+      "notice_file": "arm_rts___lock.h.notice.txt",
+      "notice_sha256": "a241e4288cd600a1b45a03fd81fa6f598674c1ed5e5305159f07424e2dcad5a0",
+      "role": "transitive_runtime_header",
+      "vendor_spdx_license_concluded": [
+        "BSD-3-Clause"
+      ],
+      "actual_notice_families": [
+        "TI-BSD-3-Clause"
+      ]
+    },
+    {
+      "archive_member": null,
+      "source": "ti-cgt-arm_16.9.6.LTS/lib/src/_mutex.h",
+      "source_sha256": "9692579b0b85521ca614a0b0152be428ad87d53167d1e77c7b3c74733c77ac21",
+      "source_notice_lines": [
+        1,
+        36
+      ],
+      "notice_file": "arm_rts___mutex.h.notice.txt",
+      "notice_sha256": "3f2acb8eaaa0cc91793a19d7c89cdd9d85eb8ce8bf0cbc896d95d1f9acb73522",
+      "role": "transitive_runtime_header",
+      "vendor_spdx_license_concluded": [
+        "BSD-3-Clause"
+      ],
+      "actual_notice_families": [
+        "TI-BSD-3-Clause"
+      ]
+    },
+    {
+      "archive_member": "_printfi.obj",
+      "source": "ti-cgt-arm_16.9.6.LTS/lib/src/_printfi.c",
+      "source_sha256": "89ac7446dbb064cf4bf22b106db99ef560fcc6f6e7219b6648537cc2eb91159a",
+      "source_notice_lines": [
+        1,
+        36
+      ],
+      "notice_file": "arm_rts___printfi.c.notice.txt",
+      "notice_sha256": "65dd5ea3d32564af5f51fa420b6506c24eef26eaaa4ac6f975f6b6a1efcf0d29",
+      "role": "selected_archive_member",
+      "vendor_spdx_license_concluded": [
+        "BSD-3-Clause"
+      ],
+      "actual_notice_families": [
+        "TI-BSD-3-Clause"
+      ]
+    },
+    {
+      "archive_member": null,
+      "source": "ti-cgt-arm_16.9.6.LTS/lib/src/_tls.h",
+      "source_sha256": "e1cf88b6620ba25dbdbdcd01d8b134db0764fea7fb5dd5bdac53b00abf355a12",
+      "source_notice_lines": [
+        1,
+        38
+      ],
+      "notice_file": "arm_rts___tls.h.notice.txt",
+      "notice_sha256": "da29b777b919ae1be15bc67af2cfdf22aa0ba577ed5c1864ebdd4edf037be0cf",
+      "role": "transitive_runtime_header",
+      "vendor_spdx_license_concluded": [
+        "BSD-3-Clause"
+      ],
+      "actual_notice_families": [
+        "TI-BSD-3-Clause"
+      ]
+    },
+    {
+      "archive_member": "args_main.obj",
+      "source": "ti-cgt-arm_16.9.6.LTS/lib/src/args_main.c",
+      "source_sha256": "cafaf94fcbac4df818f30830877a37b8bf5dde23c91d9de76d69f0d013f7596f",
+      "source_notice_lines": [
+        1,
+        56
+      ],
+      "notice_file": "arm_rts__args_main.c.notice.txt",
+      "notice_sha256": "8f69733abb43262845dedb15b1ef9e8d73ac6bfe78d408da308957e52e8be618",
+      "role": "selected_archive_member",
+      "vendor_spdx_license_concluded": [
+        "BSD-3-Clause"
+      ],
+      "actual_notice_families": [
+        "TI-BSD-3-Clause"
+      ]
+    },
+    {
+      "archive_member": "atoi.obj",
+      "source": "ti-cgt-arm_16.9.6.LTS/lib/src/atoi.c",
+      "source_sha256": "1b3c583db4bd9e2b8a05a0ae64515fd4dd2b99ad02e30282ed0bc91618a68caa",
+      "source_notice_lines": [
+        1,
+        38
+      ],
+      "notice_file": "arm_rts__atoi.c.notice.txt",
+      "notice_sha256": "f58b6d2b708a7d7b7c251792ea5fae688cc5cf37c45d9074d76f5e9de6413946",
+      "role": "selected_archive_member",
+      "vendor_spdx_license_concluded": [
+        "BSD-3-Clause"
+      ],
+      "actual_notice_families": [
+        "TI-BSD-3-Clause"
+      ]
+    },
+    {
+      "archive_member": null,
+      "source": "ti-cgt-arm_16.9.6.LTS/lib/src/autoinit.h",
+      "source_sha256": "208d84a29cde08f543ab7492bb6338bbf2b27472c8fc073f2952c40f54bc9ace",
+      "source_notice_lines": [
+        1,
+        38
+      ],
+      "notice_file": "arm_rts__autoinit.h.notice.txt",
+      "notice_sha256": "9d3e213eedfdc772e26cbab0586c8b33ac95c821ebf46e3e6c8e3c912a0d9cef",
+      "role": "transitive_runtime_header",
+      "vendor_spdx_license_concluded": [
+        "BSD-3-Clause"
+      ],
+      "actual_notice_families": [
+        "TI-BSD-3-Clause"
+      ]
+    },
+    {
+      "archive_member": null,
+      "source": "ti-cgt-arm_16.9.6.LTS/lib/src/cargs.h",
+      "source_sha256": "526f77971fa5091789c350e9d4888b7a0d9a450d639313bffa23822f00ce1591",
+      "source_notice_lines": [
+        1,
+        38
+      ],
+      "notice_file": "arm_rts__cargs.h.notice.txt",
+      "notice_sha256": "8ad64dc409a2039b03d0cf71f0a0b64655a247123c08296e3cdc1feb3c5fa21e",
+      "role": "transitive_runtime_header",
+      "vendor_spdx_license_concluded": [
+        "BSD-3-Clause"
+      ],
+      "actual_notice_families": [
+        "TI-BSD-3-Clause"
+      ]
+    },
+    {
+      "archive_member": "copy_decompress_lzss.obj",
+      "source": "ti-cgt-arm_16.9.6.LTS/lib/src/copy_decompress_lzss.c",
+      "source_sha256": "5af3652a9dfb7d003575a3135d15d3e93f835d2be3bd83cfe859eb88823d91e6",
+      "source_notice_lines": [
+        1,
+        52
+      ],
+      "notice_file": "arm_rts__copy_decompress_lzss.c.notice.txt",
+      "notice_sha256": "476f22ba535b0ca1c954762adb158b9817892254b2a8978b956c28db7b1259c4",
+      "role": "selected_archive_member",
+      "vendor_spdx_license_concluded": [
+        "BSD-3-Clause"
+      ],
+      "actual_notice_families": [
+        "TI-BSD-3-Clause"
+      ]
+    },
+    {
+      "archive_member": "copy_decompress_none.obj",
+      "source": "ti-cgt-arm_16.9.6.LTS/lib/src/copy_decompress_none.c",
+      "source_sha256": "271e1d979ee7020e72e4968040a29cf3b94060715bce8e6d8bbc3f9c650da6c4",
+      "source_notice_lines": [
+        1,
+        52
+      ],
+      "notice_file": "arm_rts__copy_decompress_none.c.notice.txt",
+      "notice_sha256": "5b91e1497d296b421d80d6325ba77ae6cd41b1b904b7b8f918425ad898078e19",
+      "role": "selected_archive_member",
+      "vendor_spdx_license_concluded": [
+        "BSD-3-Clause"
+      ],
+      "actual_notice_families": [
+        "TI-BSD-3-Clause"
+      ]
+    },
+    {
+      "archive_member": "copy_zero_init.obj",
+      "source": "ti-cgt-arm_16.9.6.LTS/lib/src/copy_zero_init.c",
+      "source_sha256": "2598ac58054e239e1596eaf5c51f3d029d3664336f5d59e06c2830e20052d881",
+      "source_notice_lines": [
+        1,
+        51
+      ],
+      "notice_file": "arm_rts__copy_zero_init.c.notice.txt",
+      "notice_sha256": "0629c70973f1e6ec672c23c36ea9802d792d9d0b7f50efc36ff1388a3d9ca091",
+      "role": "selected_archive_member",
+      "vendor_spdx_license_concluded": [
+        "BSD-3-Clause"
+      ],
+      "actual_notice_families": [
+        "TI-BSD-3-Clause"
+      ]
+    },
+    {
+      "archive_member": "cpy_tbl.obj",
+      "source": "ti-cgt-arm_16.9.6.LTS/lib/src/cpy_tbl.c",
+      "source_sha256": "48ba6cbbe65d81cd9488c64ca0ac615d59dbb7fa23ec0cd9da0af0a755a52b67",
+      "source_notice_lines": [
+        1,
+        44
+      ],
+      "notice_file": "arm_rts__cpy_tbl.c.notice.txt",
+      "notice_sha256": "e7622e7dc32e8eef69c3238b70c75b98a3a184e4ecadbfc175a80001e62aca8a",
+      "role": "selected_archive_member",
+      "vendor_spdx_license_concluded": [
+        "BSD-3-Clause"
+      ],
+      "actual_notice_families": [
+        "TI-BSD-3-Clause"
+      ]
+    },
+    {
+      "archive_member": null,
+      "source": "ti-cgt-arm_16.9.6.LTS/lib/src/cpy_tbl.h",
+      "source_sha256": "c2150aa0c486ca76e33353da35de28e9ca98cd363e6eadba89fdc7b2e4bee666",
+      "source_notice_lines": [
+        1,
+        39
+      ],
+      "notice_file": "arm_rts__cpy_tbl.h.notice.txt",
+      "notice_sha256": "aa244e332d16a784ba120f332b807ba25020711ed9d16f410039ec968ae24f22",
+      "role": "transitive_runtime_header",
+      "vendor_spdx_license_concluded": [
+        "BSD-3-Clause"
+      ],
+      "actual_notice_families": [
+        "TI-BSD-3-Clause"
+      ]
+    },
+    {
+      "archive_member": "ctype.obj",
+      "source": "ti-cgt-arm_16.9.6.LTS/lib/src/ctype.c",
+      "source_sha256": "69787f3f9cc6497bea06cbd14f0cc59b7a5baa23b97570c3f3318297178b8e06",
+      "source_notice_lines": [
+        1,
+        37
+      ],
+      "notice_file": "arm_rts__ctype.c.notice.txt",
+      "notice_sha256": "dc61ac65569b6a2bdbf841502f0e0ade68412dc542d52ae1af949bf144c932cb",
+      "role": "selected_archive_member",
+      "vendor_spdx_license_concluded": [
+        "BSD-3-Clause"
+      ],
+      "actual_notice_families": [
+        "TI-BSD-3-Clause"
+      ]
+    },
+    {
+      "archive_member": null,
+      "source": "ti-cgt-arm_16.9.6.LTS/lib/src/ctype.h",
+      "source_sha256": "288aedc52197caa3956be4c4c79cef0b62ea78ef4a1ce072f3437352ad90e958",
+      "source_notice_lines": [
+        1,
+        36
+      ],
+      "notice_file": "arm_rts__ctype.h.notice.txt",
+      "notice_sha256": "7f9e0696515dd91df04ff886068f50f316ab16d5d42db0136d8e4638169350c8",
+      "role": "transitive_runtime_header",
+      "vendor_spdx_license_concluded": [
+        "BSD-3-Clause"
+      ],
+      "actual_notice_families": [
+        "TI-BSD-3-Clause"
+      ]
+    },
+    {
+      "archive_member": "e_atan2f.obj",
+      "source": "ti-cgt-arm_16.9.6.LTS/lib/src/e_atan2f.c",
+      "source_sha256": "462e25dbe1756dda5e410e2c81180410059e19c22ac925d074dabfdac3864e04",
+      "source_notice_lines": [
+        1,
+        17
+      ],
+      "notice_file": "arm_rts__e_atan2f.c.notice.txt",
+      "notice_sha256": "1e6afd9204526ceb05c84f4dfa51e25561bee37f0f3370e3a34692738d0c64ee",
+      "role": "selected_archive_member",
+      "vendor_spdx_license_concluded": [
+        "NOASSERTION"
+      ],
+      "actual_notice_families": [
+        "Sun-permission-preserve-notice"
+      ]
+    },
+    {
+      "archive_member": null,
+      "source": "ti-cgt-arm_16.9.6.LTS/lib/src/e_rem_pio2f.c",
+      "source_sha256": "dd159649efbc78cf1c1b6880a578d8fe4c273e6ca24f595dc3cf99337205ae14",
+      "source_notice_lines": [
+        1,
+        18
+      ],
+      "notice_file": "arm_rts__e_rem_pio2f.c.notice.txt",
+      "notice_sha256": "c37127db76d2d259e0bc5baf3bf19a0859561eebdea9cee6f2b5fced13fd9509",
+      "role": "directly_included_math_implementation",
+      "vendor_spdx_license_concluded": [
+        "NOASSERTION"
+      ],
+      "actual_notice_families": [
+        "Sun-permission-preserve-notice"
+      ]
+    },
+    {
+      "archive_member": "e_sqrtf.obj",
+      "source": "ti-cgt-arm_16.9.6.LTS/lib/src/e_sqrtf.c",
+      "source_sha256": "026c13cc5cd18d80844cee236fecf32b0f53c329c9bc78bb49b3708d5d3a12d0",
+      "source_notice_lines": [
+        1,
+        17
+      ],
+      "notice_file": "arm_rts__e_sqrtf.c.notice.txt",
+      "notice_sha256": "cd26a268ee3fef2eb9a421c21d0b032e6587a05bead89f6ab321545ba279a23e",
+      "role": "selected_archive_member",
+      "vendor_spdx_license_concluded": [
+        "NOASSERTION"
+      ],
+      "actual_notice_families": [
+        "Sun-permission-preserve-notice"
+      ]
+    },
+    {
+      "archive_member": "errno.obj",
+      "source": "ti-cgt-arm_16.9.6.LTS/lib/src/errno.c",
+      "source_sha256": "bbabf0e6171a6d009a2955e48d7401e281312828ae74d6653e866b177fb1b366",
+      "source_notice_lines": [
+        1,
+        37
+      ],
+      "notice_file": "arm_rts__errno.c.notice.txt",
+      "notice_sha256": "e37283898d0a073f12eb7f3083598a1e62b448be2fd84068a6a1d98bdbedc662",
+      "role": "selected_archive_member",
+      "vendor_spdx_license_concluded": [
+        "BSD-3-Clause"
+      ],
+      "actual_notice_families": [
+        "TI-BSD-3-Clause"
+      ]
+    },
+    {
+      "archive_member": null,
+      "source": "ti-cgt-arm_16.9.6.LTS/lib/src/errno.h",
+      "source_sha256": "4f9ff1a59fb33b6f42f7ca7703849f8541b171c1b8e248bf16734e6ea146ed04",
+      "source_notice_lines": [
+        1,
+        36
+      ],
+      "notice_file": "arm_rts__errno.h.notice.txt",
+      "notice_sha256": "f22ea0a6032428fd7dce10c9acf6d8eeafd972eb5b18c8a4881caa1e92ba9aac",
+      "role": "transitive_runtime_header",
+      "vendor_spdx_license_concluded": [
+        "BSD-3-Clause"
+      ],
+      "actual_notice_families": [
+        "TI-BSD-3-Clause"
+      ]
+    },
+    {
+      "archive_member": "exit.obj",
+      "source": "ti-cgt-arm_16.9.6.LTS/lib/src/exit.c",
+      "source_sha256": "5839e5effb60304cb36dc4384d2894602a312bd896ebc860e010f4bcc66d6ffe",
+      "source_notice_lines": [
+        1,
+        39
+      ],
+      "notice_file": "arm_rts__exit.c.notice.txt",
+      "notice_sha256": "7f23d7d62227b9c7c1cb97cb4ad3c66c9342dd390dd0cea900238b4511ede70f",
+      "role": "selected_archive_member",
+      "vendor_spdx_license_concluded": [
+        "BSD-3-Clause"
+      ],
+      "actual_notice_families": [
+        "TI-BSD-3-Clause"
+      ]
+    },
+    {
+      "archive_member": null,
+      "source": "ti-cgt-arm_16.9.6.LTS/lib/src/fenv-softfloat.h",
+      "source_sha256": "d6203cbb709c44887b8f245425595863b1e53ee17b1226f7e0a08e8281c62d68",
+      "source_notice_lines": [
+        1,
+        29
+      ],
+      "notice_file": "arm_rts__fenv-softfloat.h.notice.txt",
+      "notice_sha256": "15bdc0de672fe835e8735ccde3f89e09d21fe11e438f4d21021c65d76a7f70ce",
+      "role": "inactive_conditional_include_conservatively_retained",
+      "vendor_spdx_license_concluded": [
+        "BSD-2-Clause"
+      ],
+      "actual_notice_families": [
+        "David-Schultz-BSD-2-Clause"
+      ]
+    },
+    {
+      "archive_member": null,
+      "source": "ti-cgt-arm_16.9.6.LTS/lib/src/fenv.h",
+      "source_sha256": "a8063b883c6ce3a0f8170ad133c7fe8ec2e223de5c804ded55984a73b9076730",
+      "source_notice_lines": [
+        1,
+        29
+      ],
+      "notice_file": "arm_rts__fenv.h.notice.txt",
+      "notice_sha256": "8a2775f2bfaab97068fc1d800b16764f7048c160d3c75ed0f9115693c42a5550",
+      "role": "inactive_conditional_include_conservatively_retained",
+      "vendor_spdx_license_concluded": [
+        "BSD-2-Clause"
+      ],
+      "actual_notice_families": [
+        "David-Schultz-BSD-2-Clause"
+      ]
+    },
+    {
+      "archive_member": null,
+      "source": "ti-cgt-arm_16.9.6.LTS/lib/src/float.h",
+      "source_sha256": "d62d0de80c2160094f8edea4b9fcabe0b62237071881f97403e0712a2c5298ce",
+      "source_notice_lines": [
+        1,
+        36
+      ],
+      "notice_file": "arm_rts__float.h.notice.txt",
+      "notice_sha256": "8221002dcba251f709f2488de4ec5eb918daba4240fa38e9706ae3c1acc3fad7",
+      "role": "transitive_runtime_header",
+      "vendor_spdx_license_concluded": [
+        "BSD-3-Clause"
+      ],
+      "actual_notice_families": [
+        "TI-BSD-3-Clause"
+      ]
+    },
+    {
+      "archive_member": null,
+      "source": "ti-cgt-arm_16.9.6.LTS/lib/src/format.h",
+      "source_sha256": "9e48a228f46cb2a492b23e4d978485a7500d5b9c0244ba980dba10caeb926ca1",
+      "source_notice_lines": [
+        1,
+        36
+      ],
+      "notice_file": "arm_rts__format.h.notice.txt",
+      "notice_sha256": "83989de4ea2058282d5b981958272c8342e4071c1f4a3c4e924054113a4c1aed",
+      "role": "transitive_runtime_header",
+      "vendor_spdx_license_concluded": [
+        "BSD-3-Clause"
+      ],
+      "actual_notice_families": [
+        "TI-BSD-3-Clause"
+      ]
+    },
+    {
+      "archive_member": "hostopen.obj",
+      "source": "ti-cgt-arm_16.9.6.LTS/lib/src/hostopen.c",
+      "source_sha256": "8a93b41a814b860e0b4e265da75d633fb9eaba60b97e93372a749873c2a814e0",
+      "source_notice_lines": [
+        1,
+        36
+      ],
+      "notice_file": "arm_rts__hostopen.c.notice.txt",
+      "notice_sha256": "2b0fc54a5bf5a452bd738b5579af918bb3f3a42b0a5e50a02ae17cb77d0b9e31",
+      "role": "selected_archive_member",
+      "vendor_spdx_license_concluded": [
+        "NO_ENTRY_IN_BUNDLED_16.9.0_SPDX"
+      ],
+      "actual_notice_families": [
+        "TI-BSD-3-Clause"
+      ]
+    },
+    {
+      "archive_member": "hostwrite.obj",
+      "source": "ti-cgt-arm_16.9.6.LTS/lib/src/hostwrite.c",
+      "source_sha256": "7573e6b2f9fd0e62d2c4f93bf6e9cb17ce6e82a919d60d2631c01dca63da1b9a",
+      "source_notice_lines": [
+        1,
+        36
+      ],
+      "notice_file": "arm_rts__hostwrite.c.notice.txt",
+      "notice_sha256": "0b6e12f857d7972a34dffc4ebd989f407d4bd698998910dedc67984505423479",
+      "role": "selected_archive_member",
+      "vendor_spdx_license_concluded": [
+        "NO_ENTRY_IN_BUNDLED_16.9.0_SPDX"
+      ],
+      "actual_notice_families": [
+        "TI-BSD-3-Clause"
+      ]
+    },
+    {
+      "archive_member": "i_div0.obj",
+      "source": "ti-cgt-arm_16.9.6.LTS/lib/src/i_div0.c",
+      "source_sha256": "9569b8c581e1057c571710cd35745d785bb6c00d6f3967503000ce5ecfbb85b1",
+      "source_notice_lines": [
+        1,
+        36
+      ],
+      "notice_file": "arm_rts__i_div0.c.notice.txt",
+      "notice_sha256": "0665bf43afe2158b72f1af2460cd7eb2dba962a17862088b8312ca2d7190fa00",
+      "role": "selected_archive_member",
+      "vendor_spdx_license_concluded": [
+        "BSD-3-Clause"
+      ],
+      "actual_notice_families": [
+        "TI-BSD-3-Clause"
+      ]
+    },
+    {
+      "archive_member": null,
+      "source": "ti-cgt-arm_16.9.6.LTS/lib/src/inttypes.h",
+      "source_sha256": "5f268e748ab5fd50e7b21beb0308d6d942fae89cea437d7d3595d7f3c48bcf53",
+      "source_notice_lines": [
+        1,
+        38
+      ],
+      "notice_file": "arm_rts__inttypes.h.notice.txt",
+      "notice_sha256": "da7ff385da1aa02624b8a974fc3fdddede65374ccaf07a4b01785074b60dcb55",
+      "role": "transitive_runtime_header",
+      "vendor_spdx_license_concluded": [
+        "BSD-3-Clause"
+      ],
+      "actual_notice_families": [
+        "TI-BSD-3-Clause"
+      ]
+    },
+    {
+      "archive_member": null,
+      "source": "ti-cgt-arm_16.9.6.LTS/lib/src/k_cosf.c",
+      "source_sha256": "80822da03c6bea57217032b5f322bd9fe084711c9150f102a2372de62665ad07",
+      "source_notice_lines": [
+        1,
+        18
+      ],
+      "notice_file": "arm_rts__k_cosf.c.notice.txt",
+      "notice_sha256": "fa176e983e63556e6daa52f0f08da8decf781f8b002df91f1f1498e50a64d5a2",
+      "role": "directly_included_math_implementation",
+      "vendor_spdx_license_concluded": [
+        "NOASSERTION"
+      ],
+      "actual_notice_families": [
+        "Sun-permission-preserve-notice"
+      ]
+    },
+    {
+      "archive_member": "k_rem_pio2.obj",
+      "source": "ti-cgt-arm_16.9.6.LTS/lib/src/k_rem_pio2.c",
+      "source_sha256": "cef43d383ce93a71422951304b40f66cd26cb4ba6bc0e171f22f199f5d9413ba",
+      "source_notice_lines": [
+        1,
+        12
+      ],
+      "notice_file": "arm_rts__k_rem_pio2.c.notice.txt",
+      "notice_sha256": "772c639ebd798f80dbfc483c3cd12ac6b10d7cd7ee4c306dd7400a72bc045b43",
+      "role": "selected_archive_member",
+      "vendor_spdx_license_concluded": [
+        "LicenseRef-15"
+      ],
+      "actual_notice_families": [
+        "Sun-permission-preserve-notice"
+      ]
+    },
+    {
+      "archive_member": null,
+      "source": "ti-cgt-arm_16.9.6.LTS/lib/src/k_sinf.c",
+      "source_sha256": "7d48404bc6ade199b7344ce8de64835e31d04b728065d961749e38b67fa5f4fb",
+      "source_notice_lines": [
+        1,
+        18
+      ],
+      "notice_file": "arm_rts__k_sinf.c.notice.txt",
+      "notice_sha256": "5c4356f131aec461483e55ece03f5a1527c2498db77b5c114d364bd3891a73eb",
+      "role": "directly_included_math_implementation",
+      "vendor_spdx_license_concluded": [
+        "NOASSERTION"
+      ],
+      "actual_notice_families": [
+        "Sun-permission-preserve-notice"
+      ]
+    },
+    {
+      "archive_member": null,
+      "source": "ti-cgt-arm_16.9.6.LTS/lib/src/limits.h",
+      "source_sha256": "145e7b3dc0258f5c9740d941f09ac196a3587a441fd889021fa81fc2ab0dbf8b",
+      "source_notice_lines": [
+        1,
+        36
+      ],
+      "notice_file": "arm_rts__limits.h.notice.txt",
+      "notice_sha256": "7b1446dff7e17e2a38b84c4ca86a664cee8ab6c776f4d26ee862d061225a0440",
+      "role": "transitive_runtime_header",
+      "vendor_spdx_license_concluded": [
+        "BSD-3-Clause"
+      ],
+      "actual_notice_families": [
+        "TI-BSD-3-Clause"
+      ]
+    },
+    {
+      "archive_member": null,
+      "source": "ti-cgt-arm_16.9.6.LTS/lib/src/linkage.h",
+      "source_sha256": "e3555bc80b598c998f53954cd59d97ae84f9ae411aeb149189ab294077dc6355",
+      "source_notice_lines": [
+        1,
+        36
+      ],
+      "notice_file": "arm_rts__linkage.h.notice.txt",
+      "notice_sha256": "8bd7730cfc61db6b2fc56003303e5b2407b2361a727616b99e75bb933242f9eb",
+      "role": "transitive_runtime_header",
+      "vendor_spdx_license_concluded": [
+        "BSD-3-Clause"
+      ],
+      "actual_notice_families": [
+        "TI-BSD-3-Clause"
+      ]
+    },
+    {
+      "archive_member": "ltoa.obj",
+      "source": "ti-cgt-arm_16.9.6.LTS/lib/src/ltoa.c",
+      "source_sha256": "460b19c45cc13fbde2efdfa658ac1c7013a65b0fcaba0f62e402fef3c7fb60a4",
+      "source_notice_lines": [
+        1,
+        38
+      ],
+      "notice_file": "arm_rts__ltoa.c.notice.txt",
+      "notice_sha256": "ef3b81470dc784a862c3901e03e654dc38506a2eff27014cf9ff6ea9a83f4049",
+      "role": "selected_archive_member",
+      "vendor_spdx_license_concluded": [
+        "BSD-3-Clause"
+      ],
+      "actual_notice_families": [
+        "TI-BSD-3-Clause"
+      ]
+    },
+    {
+      "archive_member": null,
+      "source": "ti-cgt-arm_16.9.6.LTS/lib/src/math.h",
+      "source_sha256": "f71546fc1661b8d6384a94983c1e9596c27703954db7eb48eb1faf853f325021",
+      "source_notice_lines": [
+        1,
+        12
+      ],
+      "notice_file": "arm_rts__math.h.notice.txt",
+      "notice_sha256": "539ee21a81819a3c435921c340aeb638a21584baa347656f26bf7030eb35896a",
+      "role": "transitive_runtime_header",
+      "vendor_spdx_license_concluded": [
+        "NOASSERTION"
+      ],
+      "actual_notice_families": [
+        "Sun-permission-preserve-notice"
+      ]
+    },
+    {
+      "archive_member": null,
+      "source": "ti-cgt-arm_16.9.6.LTS/lib/src/math_private.h",
+      "source_sha256": "8b2d1cdd466b3db7e5d4090d7c31dcb67f13839a0e7fc8bda8e87d24ca29eb58",
+      "source_notice_lines": [
+        1,
+        12
+      ],
+      "notice_file": "arm_rts__math_private.h.notice.txt",
+      "notice_sha256": "539ee21a81819a3c435921c340aeb638a21584baa347656f26bf7030eb35896a",
+      "role": "transitive_runtime_header",
+      "vendor_spdx_license_concluded": [
+        "NOASSERTION"
+      ],
+      "actual_notice_families": [
+        "Sun-permission-preserve-notice"
+      ]
+    },
+    {
+      "archive_member": "memccpy.obj",
+      "source": "ti-cgt-arm_16.9.6.LTS/lib/src/memccpy.c",
+      "source_sha256": "3ace7b62c5e17b593fdadc86b35dd0e8e40ed3afe24e2ea5d6640791e40a21c6",
+      "source_notice_lines": [
+        1,
+        37
+      ],
+      "notice_file": "arm_rts__memccpy.c.notice.txt",
+      "notice_sha256": "4744dcd80024e229846561a1323f848a8213c8d72bb5140695ddcb2fa3b26751",
+      "role": "selected_archive_member",
+      "vendor_spdx_license_concluded": [
+        "BSD-3-Clause"
+      ],
+      "actual_notice_families": [
+        "TI-BSD-3-Clause"
+      ]
+    },
+    {
+      "archive_member": "memcpy_t2.obj",
+      "source": "ti-cgt-arm_16.9.6.LTS/lib/src/memcpy_t2.asm",
+      "source_sha256": "5797e10577eff6e5c6d45b54ed241063a5afe5bd3d7b38fbec8e2b4b2ce992f4",
+      "source_notice_lines": [
+        1,
+        36
+      ],
+      "notice_file": "arm_rts__memcpy_t2.asm.notice.txt",
+      "notice_sha256": "e1ee24bae59f36ee253dea96b1532d241f93afd6ae574dffc5bae77b82171db4",
+      "role": "selected_archive_member",
+      "vendor_spdx_license_concluded": [
+        "BSD-3-Clause"
+      ],
+      "actual_notice_families": [
+        "TI-BSD-3-Clause"
+      ]
+    },
+    {
+      "archive_member": "memset_t2.obj",
+      "source": "ti-cgt-arm_16.9.6.LTS/lib/src/memset_t2.asm",
+      "source_sha256": "350271b62e3916d9f8281e4093740a56b90bc1d0768f8c3cd7ce0035cf819d49",
+      "source_notice_lines": [
+        1,
+        36
+      ],
+      "notice_file": "arm_rts__memset_t2.asm.notice.txt",
+      "notice_sha256": "112a7149c4c08e273c5533d539693b8053df3383abac632dde53d583401e572f",
+      "role": "selected_archive_member",
+      "vendor_spdx_license_concluded": [
+        "BSD-3-Clause"
+      ],
+      "actual_notice_families": [
+        "TI-BSD-3-Clause"
+      ]
+    },
+    {
+      "archive_member": null,
+      "source": "ti-cgt-arm_16.9.6.LTS/lib/src/pprof.h",
+      "source_sha256": "fb90da2d1d97369f38afda98af2b7b3f64911698e101f64d1b6c9b7f73fe5bee",
+      "source_notice_lines": [
+        1,
+        36
+      ],
+      "notice_file": "arm_rts__pprof.h.notice.txt",
+      "notice_sha256": "9fbdeee0670ea75682a4add769d5af2a06af661b9f6187d23508074f8ad7cebd",
+      "role": "transitive_runtime_header",
+      "vendor_spdx_license_concluded": [
+        "BSD-3-Clause"
+      ],
+      "actual_notice_families": [
+        "TI-BSD-3-Clause"
+      ]
+    },
+    {
+      "archive_member": "s_atanf.obj",
+      "source": "ti-cgt-arm_16.9.6.LTS/lib/src/s_atanf.c",
+      "source_sha256": "534f2b3b2ee1e5da0e52ca923216320fdd8f8d62720d5bfd8b364abeb4e35e87",
+      "source_notice_lines": [
+        1,
+        17
+      ],
+      "notice_file": "arm_rts__s_atanf.c.notice.txt",
+      "notice_sha256": "0d89036d98b815b81065897a3e430e7d44c74b9128b824e4136d86db9855abc8",
+      "role": "selected_archive_member",
+      "vendor_spdx_license_concluded": [
+        "NOASSERTION"
+      ],
+      "actual_notice_families": [
+        "Sun-permission-preserve-notice"
+      ]
+    },
+    {
+      "archive_member": "s_copysign.obj",
+      "source": "ti-cgt-arm_16.9.6.LTS/lib/src/s_copysign.c",
+      "source_sha256": "96bb7a3ea418806bdbad17c9841c11ca8d6b5cb7c9fb6633ab2a47a5d5f89798",
+      "source_notice_lines": [
+        1,
+        12
+      ],
+      "notice_file": "arm_rts__s_copysign.c.notice.txt",
+      "notice_sha256": "b73ddc4727e945e780219dfa3832b896cb78807b4fc6d2b91393dcecc89fc87e",
+      "role": "selected_archive_member",
+      "vendor_spdx_license_concluded": [
+        "NOASSERTION"
+      ],
+      "actual_notice_families": [
+        "Sun-permission-preserve-notice"
+      ]
+    },
+    {
+      "archive_member": "s_cosf.obj",
+      "source": "ti-cgt-arm_16.9.6.LTS/lib/src/s_cosf.c",
+      "source_sha256": "994b84e538943723c215a92677b4b9f9a5bc5e711c5c994e6a4786dff1df5218",
+      "source_notice_lines": [
+        1,
+        51
+      ],
+      "notice_file": "arm_rts__s_cosf.c.notice.txt",
+      "notice_sha256": "45212ce475db5c46ec5b8823edd1867c89e017b8ecda9243e49a3a3a23a1971b",
+      "role": "selected_archive_member",
+      "vendor_spdx_license_concluded": [
+        "BSD-3-Clause"
+      ],
+      "actual_notice_families": [
+        "TI-BSD-3-Clause",
+        "Sun-permission-preserve-notice"
+      ]
+    },
+    {
+      "archive_member": "s_floor.obj",
+      "source": "ti-cgt-arm_16.9.6.LTS/lib/src/s_floor.c",
+      "source_sha256": "1ff47af913acf780f088367bc41495fe07c56c0f535f0d5cf5cb9341b96e6771",
+      "source_notice_lines": [
+        1,
+        12
+      ],
+      "notice_file": "arm_rts__s_floor.c.notice.txt",
+      "notice_sha256": "539ee21a81819a3c435921c340aeb638a21584baa347656f26bf7030eb35896a",
+      "role": "selected_archive_member",
+      "vendor_spdx_license_concluded": [
+        "NOASSERTION"
+      ],
+      "actual_notice_families": [
+        "Sun-permission-preserve-notice"
+      ]
+    },
+    {
+      "archive_member": "s_frexp.obj",
+      "source": "ti-cgt-arm_16.9.6.LTS/lib/src/s_frexp.c",
+      "source_sha256": "b9db3059868b7f09b5d0c0e68a7fb90c45a27f04f7778d45d618b1c44b4ba9fa",
+      "source_notice_lines": [
+        1,
+        12
+      ],
+      "notice_file": "arm_rts__s_frexp.c.notice.txt",
+      "notice_sha256": "539ee21a81819a3c435921c340aeb638a21584baa347656f26bf7030eb35896a",
+      "role": "selected_archive_member",
+      "vendor_spdx_license_concluded": [
+        "NOASSERTION"
+      ],
+      "actual_notice_families": [
+        "Sun-permission-preserve-notice"
+      ]
+    },
+    {
+      "archive_member": "s_scalbn.obj",
+      "source": "ti-cgt-arm_16.9.6.LTS/lib/src/s_scalbn.c",
+      "source_sha256": "034148a2d5ba11b6e8e79ccbd971d936855900b687a78720d7e2a531bc2981f9",
+      "source_notice_lines": [
+        1,
+        12
+      ],
+      "notice_file": "arm_rts__s_scalbn.c.notice.txt",
+      "notice_sha256": "539ee21a81819a3c435921c340aeb638a21584baa347656f26bf7030eb35896a",
+      "role": "selected_archive_member",
+      "vendor_spdx_license_concluded": [
+        "NOASSERTION"
+      ],
+      "actual_notice_families": [
+        "Sun-permission-preserve-notice"
+      ]
+    },
+    {
+      "archive_member": "s_sinf.obj",
+      "source": "ti-cgt-arm_16.9.6.LTS/lib/src/s_sinf.c",
+      "source_sha256": "642b98c7edc9b1fc2041754fac7f63a31c82d9c957e9d8a79ccfb4ad29bfc576",
+      "source_notice_lines": [
+        1,
+        51
+      ],
+      "notice_file": "arm_rts__s_sinf.c.notice.txt",
+      "notice_sha256": "9b9b50fdc63d1b0702525f31aa31bf86668f504ef80ff52d9bea4c12c6e493f0",
+      "role": "selected_archive_member",
+      "vendor_spdx_license_concluded": [
+        "BSD-3-Clause"
+      ],
+      "actual_notice_families": [
+        "TI-BSD-3-Clause",
+        "Sun-permission-preserve-notice"
+      ]
+    },
+    {
+      "archive_member": "snprintf.obj",
+      "source": "ti-cgt-arm_16.9.6.LTS/lib/src/snprintf.c",
+      "source_sha256": "18e8e1b9d1e3c77641916900594b1bdaa1099fd9c1d8274dca4e5778f0c7f309",
+      "source_notice_lines": [
+        1,
+        36
+      ],
+      "notice_file": "arm_rts__snprintf.c.notice.txt",
+      "notice_sha256": "b087a2fe542bb5b6ca11f3c25f6e43d12535b2a6ce19e65647dcc9e39bfc561d",
+      "role": "selected_archive_member",
+      "vendor_spdx_license_concluded": [
+        "BSD-3-Clause"
+      ],
+      "actual_notice_families": [
+        "TI-BSD-3-Clause"
+      ]
+    },
+    {
+      "archive_member": null,
+      "source": "ti-cgt-arm_16.9.6.LTS/lib/src/stdarg.h",
+      "source_sha256": "ca5961f924070e6c922506f381ef81474c89f2a4d9884cd1108208f6905470b9",
+      "source_notice_lines": [
+        1,
+        36
+      ],
+      "notice_file": "arm_rts__stdarg.h.notice.txt",
+      "notice_sha256": "2f230ae559e5713b0c31870850b602343d887fb2ee034aa18c8f571a07544fb3",
+      "role": "transitive_runtime_header",
+      "vendor_spdx_license_concluded": [
+        "BSD-3-Clause"
+      ],
+      "actual_notice_families": [
+        "TI-BSD-3-Clause"
+      ]
+    },
+    {
+      "archive_member": null,
+      "source": "ti-cgt-arm_16.9.6.LTS/lib/src/stddef.h",
+      "source_sha256": "009e6b501f5ada2d36aba18c4cabf913dafc5eb541abff11f859faca5c5e2887",
+      "source_notice_lines": [
+        1,
+        36
+      ],
+      "notice_file": "arm_rts__stddef.h.notice.txt",
+      "notice_sha256": "ac866ce23b03cacb9da851462e34b1f40700a1c2e000fa5a98ca352b4cab2325",
+      "role": "transitive_runtime_header",
+      "vendor_spdx_license_concluded": [
+        "BSD-3-Clause"
+      ],
+      "actual_notice_families": [
+        "TI-BSD-3-Clause"
+      ]
+    },
+    {
+      "archive_member": null,
+      "source": "ti-cgt-arm_16.9.6.LTS/lib/src/stdint.h",
+      "source_sha256": "fcb4f736fc84331fa4db36284b36c3268da008b91e6c498df909ec87ddd2a01c",
+      "source_notice_lines": [
+        1,
+        38
+      ],
+      "notice_file": "arm_rts__stdint.h.notice.txt",
+      "notice_sha256": "a47b4c48c8b081ddf2732451e3d4a7ed1a268200af35c7249dea0bbce81052f5",
+      "role": "transitive_runtime_header",
+      "vendor_spdx_license_concluded": [
+        "BSD-3-Clause"
+      ],
+      "actual_notice_families": [
+        "TI-BSD-3-Clause"
+      ]
+    },
+    {
+      "archive_member": null,
+      "source": "ti-cgt-arm_16.9.6.LTS/lib/src/stdio.h",
+      "source_sha256": "af3f48c69566c4016c03b3ce5eb0349c9cbf501487b97a9fa2133bb821b9444d",
+      "source_notice_lines": [
+        1,
+        38
+      ],
+      "notice_file": "arm_rts__stdio.h.notice.txt",
+      "notice_sha256": "1edf279504bbfe55d96727fcb7a772e19ac204f4d0edd7df16d498d282857f4e",
+      "role": "transitive_runtime_header",
+      "vendor_spdx_license_concluded": [
+        "BSD-3-Clause"
+      ],
+      "actual_notice_families": [
+        "TI-BSD-3-Clause"
+      ]
+    },
+    {
+      "archive_member": null,
+      "source": "ti-cgt-arm_16.9.6.LTS/lib/src/stdlib.h",
+      "source_sha256": "c3b2041b823394a7b46598be6f1141dd10ef8c2a51353f43692cb095c9db3a9c",
+      "source_notice_lines": [
+        1,
+        36
+      ],
+      "notice_file": "arm_rts__stdlib.h.notice.txt",
+      "notice_sha256": "acc93a2718e7059ffd1a9ad036c4afbaa1ec50cb06df637715f3b0d01135da2f",
+      "role": "transitive_runtime_header",
+      "vendor_spdx_license_concluded": [
+        "BSD-3-Clause"
+      ],
+      "actual_notice_families": [
+        "TI-BSD-3-Clause"
+      ]
+    },
+    {
+      "archive_member": "stkdepth_vars.obj",
+      "source": "ti-cgt-arm_16.9.6.LTS/lib/src/stkdepth_vars.c",
+      "source_sha256": "36d6780e2d3319d06ca2453f55e64b3db08ab7af42023156a4a0164de83ee722",
+      "source_notice_lines": [
+        1,
+        43
+      ],
+      "notice_file": "arm_rts__stkdepth_vars.c.notice.txt",
+      "notice_sha256": "4c8036d6dc0ab0fa6ae9f1d8eb525a32dbaa647ab18af13af76528acb99eb68c",
+      "role": "selected_archive_member",
+      "vendor_spdx_license_concluded": [
+        "BSD-3-Clause"
+      ],
+      "actual_notice_families": [
+        "TI-BSD-3-Clause"
+      ]
+    },
+    {
+      "archive_member": "strchr.obj",
+      "source": "ti-cgt-arm_16.9.6.LTS/lib/src/strchr.c",
+      "source_sha256": "cb754f6c97fc574cae796fe085ebff7d1095cbc655db959415294885b1434111",
+      "source_notice_lines": [
+        1,
+        36
+      ],
+      "notice_file": "arm_rts__strchr.c.notice.txt",
+      "notice_sha256": "12199711a210c2c72ee10028c5ca96af8b3f1d5ea7c287030255f1bfc3c94540",
+      "role": "selected_archive_member",
+      "vendor_spdx_license_concluded": [
+        "BSD-3-Clause"
+      ],
+      "actual_notice_families": [
+        "TI-BSD-3-Clause"
+      ]
+    },
+    {
+      "archive_member": "strcmp.obj",
+      "source": "ti-cgt-arm_16.9.6.LTS/lib/src/strcmp.c",
+      "source_sha256": "6764fac083d6ecb9390f938abb553fd0b48399be51992b83cc0c6eafc192d2bb",
+      "source_notice_lines": [
+        1,
+        36
+      ],
+      "notice_file": "arm_rts__strcmp.c.notice.txt",
+      "notice_sha256": "870a3212d4b4071d8561195d3141af9e2d2c27ee179c90945f82828357add2e1",
+      "role": "selected_archive_member",
+      "vendor_spdx_license_concluded": [
+        "BSD-3-Clause"
+      ],
+      "actual_notice_families": [
+        "TI-BSD-3-Clause"
+      ]
+    },
+    {
+      "archive_member": null,
+      "source": "ti-cgt-arm_16.9.6.LTS/lib/src/string.h",
+      "source_sha256": "c92c156797081254ea635fc50dbeaa99adb54ef242d97b8e6f31ebd7f841f6e5",
+      "source_notice_lines": [
+        1,
+        36
+      ],
+      "notice_file": "arm_rts__string.h.notice.txt",
+      "notice_sha256": "626578e69335cf1a111ba36cce73f93c8d3f72507ba0648f176075fb07c86a30",
+      "role": "transitive_runtime_header",
+      "vendor_spdx_license_concluded": [
+        "BSD-3-Clause"
+      ],
+      "actual_notice_families": [
+        "TI-BSD-3-Clause"
+      ]
+    },
+    {
+      "archive_member": "strlen.obj",
+      "source": "ti-cgt-arm_16.9.6.LTS/lib/src/strlen.c",
+      "source_sha256": "857b41ad16e5004b6e1cd307dd796a84e75c8e1584cb28885e68584758e91030",
+      "source_notice_lines": [
+        1,
+        36
+      ],
+      "notice_file": "arm_rts__strlen.c.notice.txt",
+      "notice_sha256": "fbd58cad623b957fa57934776326e52f34ab2a00688c243f5c9c076865574710",
+      "role": "selected_archive_member",
+      "vendor_spdx_license_concluded": [
+        "BSD-3-Clause"
+      ],
+      "actual_notice_families": [
+        "TI-BSD-3-Clause"
+      ]
+    },
+    {
+      "archive_member": "strncmp.obj",
+      "source": "ti-cgt-arm_16.9.6.LTS/lib/src/strncmp.c",
+      "source_sha256": "6a190ded76da501a0751ec06e540fe8dacd70ee1ec91bfae8918de792e7d88e9",
+      "source_notice_lines": [
+        1,
+        36
+      ],
+      "notice_file": "arm_rts__strncmp.c.notice.txt",
+      "notice_sha256": "2a6c8e37091597fe81feb7766317a5f1e0219a360a22d07270986ac92b633328",
+      "role": "selected_archive_member",
+      "vendor_spdx_license_concluded": [
+        "BSD-3-Clause"
+      ],
+      "actual_notice_families": [
+        "TI-BSD-3-Clause"
+      ]
+    },
+    {
+      "archive_member": "strtol.obj",
+      "source": "ti-cgt-arm_16.9.6.LTS/lib/src/strtol.c",
+      "source_sha256": "148813a7dd6daf75f0b0d0b0f89325d36d72e600004f5b50c837b917e79d00e7",
+      "source_notice_lines": [
+        1,
+        41
+      ],
+      "notice_file": "arm_rts__strtol.c.notice.txt",
+      "notice_sha256": "4c2ac268b5ca2708ce3ac9b5f4a87f0bb593f90cdfa583f2d1c8a9cea4ac9597",
+      "role": "selected_archive_member",
+      "vendor_spdx_license_concluded": [
+        "BSD-3-Clause"
+      ],
+      "actual_notice_families": [
+        "TI-BSD-3-Clause"
+      ]
+    },
+    {
+      "archive_member": "ti_fmax.obj",
+      "source": "ti-cgt-arm_16.9.6.LTS/lib/src/ti_fmax.c",
+      "source_sha256": "f358031557c8d88134a15c67905144153099d6cdf97ae6fda16ff4a91179fc30",
+      "source_notice_lines": [
+        1,
+        36
+      ],
+      "notice_file": "arm_rts__ti_fmax.c.notice.txt",
+      "notice_sha256": "6098a5e2c6678155bc76100735e0ee5b463899a5da14676820f1ddfb0a296785",
+      "role": "selected_archive_member",
+      "vendor_spdx_license_concluded": [
+        "BSD-3-Clause"
+      ],
+      "actual_notice_families": [
+        "TI-BSD-3-Clause"
+      ]
+    },
+    {
+      "archive_member": null,
+      "source": "ti-cgt-arm_16.9.6.LTS/lib/src/trgcio.h",
+      "source_sha256": "076f0175b470e74793da4a80290ef460ca09ccea7fa8fc22292f730445dfd859",
+      "source_notice_lines": [
+        1,
+        38
+      ],
+      "notice_file": "arm_rts__trgcio.h.notice.txt",
+      "notice_sha256": "2b5dffe7fe7d9822e22d8cffe35092344714d5f51068787897e598b049e48062",
+      "role": "transitive_runtime_header",
+      "vendor_spdx_license_concluded": [
+        "BSD-3-Clause"
+      ],
+      "actual_notice_families": [
+        "TI-BSD-3-Clause"
+      ]
+    },
+    {
+      "archive_member": null,
+      "source": "ti-cgt-arm_16.9.6.LTS/lib/src/trgdrv.h",
+      "source_sha256": "13f7dd725db545925edb87188018cf23f4942c2914900498b7c88262b838ad4f",
+      "source_notice_lines": [
+        1,
+        36
+      ],
+      "notice_file": "arm_rts__trgdrv.h.notice.txt",
+      "notice_sha256": "1896e0ac5d359c3efc1f49ede6022cbc7bdb7b82dba26d326a18ad8b27870f86",
+      "role": "transitive_runtime_header",
+      "vendor_spdx_license_concluded": [
+        "NO_ENTRY_IN_BUNDLED_16.9.0_SPDX"
+      ],
+      "actual_notice_families": [
+        "TI-BSD-3-Clause"
+      ]
+    },
+    {
+      "archive_member": "trgmsg.obj",
+      "source": "ti-cgt-arm_16.9.6.LTS/lib/src/trgmsg.c",
+      "source_sha256": "83d396e760dd4b108435eafe801532ddf663fa6f98e972bb7f7426d0f7f71e8b",
+      "source_notice_lines": [
+        1,
+        36
+      ],
+      "notice_file": "arm_rts__trgmsg.c.notice.txt",
+      "notice_sha256": "78418d0b96be4b35821121fbecf817fd653ad064b2f028f4f623f721d3ac8e41",
+      "role": "selected_archive_member",
+      "vendor_spdx_license_concluded": [
+        "BSD-3-Clause"
+      ],
+      "actual_notice_families": [
+        "TI-BSD-3-Clause"
+      ]
+    },
+    {
+      "archive_member": "u_div32.obj",
+      "source": "ti-cgt-arm_16.9.6.LTS/lib/src/u_div32.asm",
+      "source_sha256": "7b429ad2725aa4782987dc858a29b48eea4d9a7bb5fc3b77e833ed7a33a130d3",
+      "source_notice_lines": [
+        1,
+        36
+      ],
+      "notice_file": "arm_rts__u_div32.asm.notice.txt",
+      "notice_sha256": "99669234417d649b68b3caa2ef1c4f456736525f8325e7584d28601ed5f1a725",
+      "role": "selected_archive_member",
+      "vendor_spdx_license_concluded": [
+        "BSD-3-Clause"
+      ],
+      "actual_notice_families": [
+        "TI-BSD-3-Clause"
+      ]
+    },
+    {
+      "archive_member": "ull_div32.obj",
+      "source": "ti-cgt-arm_16.9.6.LTS/lib/src/ull_div32.asm",
+      "source_sha256": "6ef3ab5e825061c3f4ee3f0e4643d817a99c5a4d48e21f7d7255ba8b1448e63c",
+      "source_notice_lines": [
+        1,
+        36
+      ],
+      "notice_file": "arm_rts__ull_div32.asm.notice.txt",
+      "notice_sha256": "b6fa2f782025ba53803646a404380dc96047f04836af25085229ea4bca081d41",
+      "role": "selected_archive_member",
+      "vendor_spdx_license_concluded": [
+        "BSD-3-Clause"
+      ],
+      "actual_notice_families": [
+        "TI-BSD-3-Clause"
+      ]
+    },
+    {
+      "archive_member": "vsnprintf.obj",
+      "source": "ti-cgt-arm_16.9.6.LTS/lib/src/vsnprintf.c",
+      "source_sha256": "aee54ff169a5ebf76cf429da12e00749aa4a55e92e3e50a1e2151ca44a03381c",
+      "source_notice_lines": [
+        1,
+        36
+      ],
+      "notice_file": "arm_rts__vsnprintf.c.notice.txt",
+      "notice_sha256": "c932d2b14bef62d1ab5e7cf68f7af9cb9ddd5eb116a49d74c1d651d57c503479",
+      "role": "selected_archive_member",
+      "vendor_spdx_license_concluded": [
+        "BSD-3-Clause"
+      ],
+      "actual_notice_families": [
+        "TI-BSD-3-Clause"
+      ]
+    },
+    {
+      "archive_member": "boot.aer4ft:boot.oer4ft",
+      "source": "bios_6_73_01_01/packages/ti/targets/arm/rtsarm/boot.asm",
+      "source_sha256": "24fcf387c4e2aa957014d1867a01d3a35bbfb8081f3240fcf9d4552a9770062d",
+      "source_notice_lines": [
+        1,
+        36
+      ],
+      "notice_file": "ti_target__boot.asm.notice.txt",
+      "notice_sha256": "c6362342521353adb02411e856ae5f39af860b3b38efb6830fc49d280bec21b8",
+      "role": "selected_target_startup",
+      "actual_notice_families": [
+        "TI-BSD-3-Clause"
+      ]
+    },
+    {
+      "archive_member": "auto_init.aer4ft:auto_init.oer4ft",
+      "source": "bios_6_73_01_01/packages/ti/targets/arm/rtsarm/auto_init.asm",
+      "source_sha256": "403c4a4bf3f0ed8c6984f182cc6f1310ebb5668a49773c4208bf2167915d1af7",
+      "source_notice_lines": [
+        1,
+        36
+      ],
+      "notice_file": "ti_target__auto_init.asm.notice.txt",
+      "notice_sha256": "a3c6a8f0b303972cf8cd50d591e485d6b1c65da5edee337d045c351e649bf2bd",
+      "role": "selected_target_startup",
+      "actual_notice_families": [
+        "TI-BSD-3-Clause"
+      ]
+    }
+  ]
+}
