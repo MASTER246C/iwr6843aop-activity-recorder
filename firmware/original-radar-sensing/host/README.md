@@ -18,8 +18,10 @@ Without command flags this only reads the selected UART. An output file must not
 
 ## Configure without starting RF
 
+First copy `config/current_mount.cfg.template` to `config/current_mount_verified.cfg`, measure the actual downward tilt and replace its placeholder in millidegrees. Leave the uncertain offset as `unknown`. The parser accepts integer millimeters, so 1219 mm is the rounded 1219.2 mm reference; retain the exact value and uncertainty in the supplied metadata. The historical `room64_v1.cfg` is not the current setup. Do not run the intentionally incomplete template unchanged.
+
 ```
-python host/original_capture.py --port YOUR_PORT --configure config/room64_v1.cfg --output configured_001.jsonl --duration 2
+python host/original_capture.py --port YOUR_PORT --configure config/current_mount_verified.cfg --output configured_001.jsonl --duration 2
 ```
 
 Before configuration the collector sends a harmless `status` query and requires a correctly tagged, command-correlated original-protocol acknowledgement. TI firmware or an unknown protocol fails closed. Each configure-only line must be acknowledged; a rejection or timeout stops further commands. The config validator explicitly rejects `start`, `stop` and unknown command families in config files. Config alone never requests RF calibration or transmission.
@@ -27,7 +29,7 @@ Before configuration the collector sends a harmless `status` query and requires 
 ## Explicit start, only after hardware bring-up is approved
 
 ```
-python host/original_capture.py --port YOUR_PORT --configure config/room64_v1.cfg --start --output walking_001.jsonl --label walking --duration 65
+python host/original_capture.py --port YOUR_PORT --configure config/current_mount_verified.cfg --start --output walking_001.jsonl --label walking --duration 65
 ```
 
 `--start` explicitly requests RF calibration/transmission. Do not run this against unreviewed/unvalidated hardware simply because the image compiled. The supplied board config has a finite 60-second run, independent of the host duration. If this collector requested start, it attempts stop on exit/interruption even if start acknowledgement was lost. A failed stop acknowledgement is logged rather than called successful. `--stop` separately requests stopping a pre-existing original-firmware run; it is never sent in passive mode.
@@ -47,6 +49,6 @@ Replay accepts raw UART JSONL lines, not the wrapped capture file it produces, a
 
 The new JSONL file starts with `schema:"original-radar-jsonl-capture", version:1`, distinct from the TI-derived capture schema. It records source kind, user label, config content/hash, and optional user-supplied BIN hash. The hash is provenance, not attestation of the running device. Each accepted UART line becomes a `board_record` envelope with UTC reception time, elapsed host time, label and unchanged decoded record. Invalid lines retain bounded base64 bytes and a reason. The summary counts frames, invalid/oversized/partial lines and host-observed sequence gaps.
 
-Calibration must be respected. Default antenna height is unknown: the measured bracket flat top is 2 m and tilt is 15 degrees, but the signed vertical antenna-center offset after tilt is not known. No zero-offset substitution is allowed. RX phase and coordinate axes are also unverified. Exploratory sensor coordinates are not calibrated TI points. A supplied user label may still be useful ground truth for later dedicated training; this collector intentionally does not pass the data into a TI-trained model.
+Calibration must be respected. Default antenna height is unknown: current reported bracket flat top is 1.2192 m, tilt is unconfirmed, and the positive offset interval 0.003175–0.00635 m is only an estimate. No zero-offset substitution is allowed. RX phase and coordinate axes are also unverified. Exploratory sensor coordinates are not calibrated TI points. A supplied user label may still be useful ground truth for later dedicated training; this collector intentionally does not pass the data into a TI-trained model.
 
 The additive `profile_energy:[total,static,variance]` frame field preserves aggregate selected-range-bin measurements even when the three strongest serialized peaks are stationary. These are uncalibrated mean-square/coherent-mean-square/residual-variance summaries, not probabilities or physical object classes. See `PROTOCOL.md` for exact normalization.
