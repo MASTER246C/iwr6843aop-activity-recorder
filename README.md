@@ -1,5 +1,18 @@
 # IWR6843AOP Activity Recorder
 
+## Hosted viewer
+
+**[Open Radar Studio](https://radar-studio.master246c.chatgpt.site)** · [Hosted help](https://radar-studio.master246c.chatgpt.site/help) · [Local offline ML](https://radar-studio.master246c.chatgpt.site/offline) · [Versioned viewer downloads](https://github.com/MASTER246C/radar-studio-chromebook/releases)
+
+Use a full tab in **Chrome on desktop or ChromeOS**, with Web Serial available and permitted by your browser/device administrator. USB access requires your explicit browser port selection. The hosted viewer does not need a Linux file server, Python, Node.js or Developer Mode.
+
+Use only the viewer workflow matching the firmware already on your IWR6843AOP board and its exact configuration. TI demos and the original JSON firmware are different protocols. Hosting does not flash firmware or establish compatibility with every demo or device.
+
+Recordings are handled in your browser and saved through explicit local downloads; opening the site does not submit recordings to GitHub or the dataset. Review consent and privacy before sharing any export. The software remains **source-available under its existing no-resale license**; required notices and separate third-party terms still apply.
+
+For original firmware, first query status only. The reviewed preview gate remains pinned to **0.2.1-rc1 / build 846a3ae3184aa5d26e5d0ea3**, successful boot self-test and fault-free idle, then current-connection configuration and a separate manual **1–5 second** Start. Legacy firmware and longer runs remain blocked. Physical hardware/RF acceptance and measurement accuracy are not established by hosting.
+
+
 **Mount height is configurable. Current user-reported reference: 4 feet (1.2192 m) from floor to the flat TOP of the bracket, excluding screws.**
 
 The chip center is above that reference in the photographed arrangement. Its signed vertical offset is **estimated at +0.003175 to +0.00635 m**, giving an **estimated antenna-height interval of 1.222375–1.22555 m**. The midpoint is about **1.224 m**; it is not a calibrated measurement. **Actual downward tilt is unconfirmed.** Measure the final geometry after setting the physical tilt, and preserve the uncertainty in capture metadata.

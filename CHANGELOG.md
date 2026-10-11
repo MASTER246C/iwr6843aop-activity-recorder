@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-10-11 — Hosted Radar Studio launch
+
+- Linked the public hosted viewer for desktop/ChromeOS Chrome with Web Serial; local versioned downloads remain available.
+- Clarified matching firmware/configuration, browser-local recording/export and unchanged source-available/no-resale terms.
+- Hosting does not broaden hardware/demo compatibility, firmware acceptance or dataset-publication permission. Existing release tags, artifacts, licenses and notices are unchanged; release manifests continue to describe their frozen packages.
+
+
 ## Original sensing 0.2.1-rc1 — 2026-10-10
 - Corrected the reproducible spatial-estimator target instruction defect with explicit scalar stores; added a synthetic boot self-test before acquisition/radio initialization.
 - Added exact build identity and status self-test fields; failure blocks acquisition and RF start while preserving UART status/stop service. No automatic configuration or RF start.
