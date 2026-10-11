@@ -10,7 +10,7 @@ Use only the viewer workflow matching the firmware already on your IWR6843AOP bo
 
 Recordings are handled in your browser and saved through explicit local downloads; opening the site does not submit recordings to GitHub or the dataset. Review consent and privacy before sharing any export. The software remains **source-available under its existing no-resale license**; required notices and separate third-party terms still apply.
 
-The hosted viewer must match the installed firmware and its exact reviewed build. The new **0.3.0-rc1 dual-UART candidate requires a matching v2 viewer, forthcoming**; do not use the older single-port viewer or its 0.2.1-rc1 gate for this image. Initial physical acceptance is a no-RF control/data pairing capture, followed by review before any separately authorized 1–5 second sensing test. Hosting does not establish hardware acceptance or measurement accuracy.
+The hosted viewer must match the installed firmware and its exact reviewed build. The **0.3.0-rc1 dual-UART candidate requires [Radar Studio v0.8.0-preview.1](https://github.com/MASTER246C/radar-studio-chromebook/releases/tag/v0.8.0-preview.1)**; check the displayed version when using the hosted site. Do not use the older single-port viewer or its 0.2.1-rc1 gate for this image. Initial physical acceptance is a no-RF control/data pairing capture, followed by review before any separately authorized 1–5 second sensing test. Hosting does not establish hardware acceptance or measurement accuracy.
 
 
 **Mount height is configurable. Current user-reported reference: 4 feet (1.2192 m) from floor to the flat TOP of the bracket, excluding screws.**
@@ -33,7 +33,7 @@ accuracy remain unverified. No participant captures are included.
 
 ## Original sensing firmware 0.3.0-rc1
 
-[Dual-UART acceptance candidate, source, configuration and notices](firmware/original-radar-sensing/README.md) are included. Download the complete [sensing-v0.3.0-rc1 prerelease](https://github.com/MASTER246C/iwr6843aop-activity-recorder/releases/tag/sensing-v0.3.0-rc1) and verify its checksum. The matching dual-port viewer is forthcoming; the existing single-port viewer and legacy collector are not compatible controllers for this image.
+[Dual-UART acceptance candidate, source, configuration and notices](firmware/original-radar-sensing/README.md) are included. Download the complete [sensing-v0.3.0-rc1 prerelease](https://github.com/MASTER246C/iwr6843aop-activity-recorder/releases/tag/sensing-v0.3.0-rc1) and verify its checksum. The matching dual-port viewer is [Radar Studio v0.8.0-preview.1](https://github.com/MASTER246C/radar-studio-chromebook/releases/tag/v0.8.0-preview.1); the existing single-port viewer and legacy collector are not compatible controllers for this image.
 
 This candidate uses **original-radar-v2**, with Enhanced control at **115200 baud** and Standard data at **921600 baud**. Strict newline framing, lane separation and a fresh per-run nonce bind control receipts to a data-only probe. Pairing never starts RF. Firmware and viewer acceptance are restricted to separately initiated **1–5 second** tests; longer sessions are rejected.
 
