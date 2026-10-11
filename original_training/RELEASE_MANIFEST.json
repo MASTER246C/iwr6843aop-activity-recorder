@@ -1,13 +1,13 @@
 {
   "package": "original-radar-host-training-tools",
-  "version": "0.1.0-preview.1",
+  "version": "0.1.0-preview.2",
   "schema_version": 1,
   "host_tools_only": true,
   "flashable_firmware": false,
   "contains_private_data": false,
   "contains_trained_weights": false,
   "tests": "python -m unittest discover -s tests -v",
-  "test_count": 28,
+  "test_count": 33,
   "files": [
     {
       "path": "LICENSE",
@@ -21,8 +21,8 @@
     },
     {
       "path": "README.md",
-      "bytes": 9912,
-      "sha256": "10a6ee014818085e9a7a95a3ef891830d784dfd6b907cb360fe6c4bbb40754b9"
+      "bytes": 10146,
+      "sha256": "2e33d7cb8a869a49a6f28daffa2aea0a7eca2caf7191421ee67b47b2388c2522"
     },
     {
       "path": "INTEGRATION_CONTRACT.md",
@@ -31,23 +31,23 @@
     },
     {
       "path": "VERIFICATION.md",
-      "bytes": 1660,
-      "sha256": "8e0634a820c9a381f683ad363d23438c58a94457d9fcd31ccf86a4c9483cfc90"
+      "bytes": 1211,
+      "sha256": "5687a1c3626d62c9dfb2831e9ac109ef60283ccb9d5ac7dda2885cf6ee9eb897"
     },
     {
       "path": "PROVENANCE.md",
       "bytes": 1314,
-      "sha256": "0d45b7c853aaf6043c533e6493ef769edf680d5ec3608328f82a36e591db6547"
+      "sha256": "53bb7c96af87c04dfd886e11d5960650568db2b80c659f3d5a389d81a1dd5567"
     },
     {
       "path": "radar_ml.py",
-      "bytes": 20912,
-      "sha256": "a477053238dd34b787d8817c407eed8815dea9c2fc583148c517586e47b09a95"
+      "bytes": 21322,
+      "sha256": "5152ca2c4826bea257956b2e843d9c42e76453d1aa7ed45b131bb6f840158cca"
     },
     {
       "path": "tests/test_radar_ml.py",
-      "bytes": 9883,
-      "sha256": "9a9aa4edcc8ca12f64bd818fcca07f69fa8bb1a69779d8343da646e1fbab29f3"
+      "bytes": 13044,
+      "sha256": "0528be854db93201f8d09cd2db88bc48fedbcef9523bb98c1e235c5395c4adf2"
     }
   ]
 }

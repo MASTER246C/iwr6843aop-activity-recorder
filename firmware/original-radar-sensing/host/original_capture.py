@@ -316,9 +316,17 @@ def main(argv: list[str] | None = None) -> int:
         print(reason,file=sys.stderr)
     finally:
         if stream is not None:
-            if started_by_us and stream.is_open:
-                try: command(stream,"stop",framer,recorder)
-                except Exception as exc: recorder.write({"type":"stop_not_confirmed","error":str(exc)})
+            if started_by_us:
+                try:
+                    if not stream.is_open:
+                        raise CaptureError("Serial port closed before Stop could be confirmed")
+                    command(stream,"stop",framer,recorder)
+                except Exception as exc:
+                    recorder.write({"type":"stop_not_confirmed","error":str(exc)})
+                    # Preserve an earlier failure/interrupt while refusing false success.
+                    if result == 0:
+                        reason="stop_not_confirmed"; result=1
+                        print(f"Stop not confirmed: {exc}",file=sys.stderr)
             try: stream.close()
             except Exception as exc: recorder.write({"type":"serial_close_error","error":str(exc)})
         recorder.finish(reason,framer.oversized,len(framer.buffer))

@@ -124,6 +124,60 @@ class Tests(unittest.TestCase):
     def test_gap_rejected(self):
         d=fixture('a','b');d['segments'][0]['frames'][7]['sequence']=20
         self.assertIn('frame_gap',m.prepare(d)['records'][2]['rejection_reasons'])
+    def test_timestamp_gap_across_window_boundary_rejects_both_windows(self):
+        d=fixture('a','b')
+        frames=[f for f in d['segments'][0]['frames'] if not 2850000 <= f['relative_us'] <= 3600000]
+        # Keep sequences consecutive to independently exercise timestamp continuity.
+        for sequence,f in enumerate(frames):f['sequence']=sequence
+        d['segments'][0]['frames']=frames
+        rows=m.prepare(d)['records']
+        for row in rows:
+            if row['start_us'] in (250000,3250000):
+                self.assertIn('frame_gap',row['rejection_reasons'])
+                self.assertIsNone(row['features'])
+            elif row['start_us']==6250000:
+                self.assertNotIn('frame_gap',row['rejection_reasons'])
+                self.assertIsNotNone(row['features'])
+    def test_sequence_gap_across_window_boundary_rejects_both_windows(self):
+        d=fixture('a','b')
+        for f in d['segments'][0]['frames']:
+            if f['relative_us'] >= 3250000:f['sequence']+=1
+        rows=m.prepare(d)['records']
+        for row in rows:
+            if row['start_us'] in (250000,3250000):
+                self.assertIn('frame_gap',row['rejection_reasons'])
+                self.assertIsNone(row['features'])
+            elif row['start_us']==6250000:
+                self.assertNotIn('frame_gap',row['rejection_reasons'])
+                self.assertIsNotNone(row['features'])
+    def test_five_second_take_boundary_gap_rejects_usable_window(self):
+        d=fixture('a','b');d['segments'][0]['frames']=d['segments'][0]['frames'][:101]
+        d['segments'][0]['frames']=[f for f in d['segments'][0]['frames'] if not 2850000 <= f['relative_us'] <= 3600000]
+        d['labels']=[dict(d['labels'][0],start_us=0,end_us=5000000,timing_uncertainty_ms=None)]
+        rows=m.prepare(d)['records']
+        usable_activity=next(r for r in rows if r['task']=='activity' and r['start_us']==250000)
+        self.assertEqual(usable_activity['label'],'sitting')
+        self.assertEqual(usable_activity['rejection_reasons'],['frame_gap'])
+        self.assertIsNone(usable_activity['features'])
+    def test_sequence_gap_from_boundary_context_rejects_first_window(self):
+        d=fixture('a','b')
+        for f in d['segments'][0]['frames']:
+            if f['relative_us'] >= 250000:f['sequence']+=1
+        rows=m.prepare(d)['records']
+        for row in rows:
+            if row['start_us'] in (0,250000):
+                self.assertIn('frame_gap',row['rejection_reasons'])
+                self.assertIsNone(row['features'])
+            elif row['start_us']==3250000:
+                self.assertNotIn('frame_gap',row['rejection_reasons'])
+                self.assertIsNotNone(row['features'])
+    def test_gap_spanning_empty_window_rejects_all_touched_windows(self):
+        d=fixture('a','b')
+        d['segments'][0]['frames']=[f for f in d['segments'][0]['frames'] if not 2850000 <= f['relative_us'] <= 6600000]
+        for row in m.prepare(d)['records']:
+            if row['start_us'] in (250000,3250000,6250000):
+                self.assertIn('frame_gap',row['rejection_reasons'])
+                self.assertIsNone(row['features'])
     def test_two_detections_not_person_identity(self):
         d=fixture('a','b');f=d['segments'][0]['frames'][6];f['detections']*=2
         self.assertIsNone(m.prepare(d)['records'][2]['features'])

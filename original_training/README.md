@@ -1,4 +1,4 @@
-# Original radar local training scaffold (v0.1.0-preview.1)
+# Original radar local training scaffold (v0.1.0-preview.2)
 
 Modified/new project component, 2026-10-11. Private local analysis only. This is
 **software scaffolding tested with explicitly synthetic fixtures**, not a useful
@@ -15,7 +15,7 @@ rename original firmware detections as TI tracks or reuse its TI extractor.
 It accepts only the new original-radar dataset export v1 from the candidate
 `original_sessions.js` session/replay/review module. Existing recorder and dataset
 planning material was inspected; this is the concrete original-protocol bridge.
-No final viewer or published Site was edited by this work.
+The current host-tool patch repairs continuity checks. The matching viewer update is maintained separately in Radar Studio.
 
 ## Run locally
 
@@ -54,7 +54,7 @@ turns it into validation; collect new people/takes for final testing.
 ## Admission and labels
 
 - Fixed, nonoverlapping 3-second sensor-relative windows starting 250 ms after each segment begins. The initial 250 ms is retained as rejected boundary context; a five-second take can supply one full window.
-- Minimum 12 frames; maximum adjacent gap 500 ms; sequence continuity required.
+- Minimum 12 frames; maximum adjacent gap 500 ms; sequence continuity required across the full segment, including adjacent windows and initial boundary context. Every window touched by a discontinuity is rejected; clean later windows remain usable.
 - Require explicit good acquisition status, no truncation, exactly one detection,
   valid spatial flags and finite sensor xyz/range/radial speed. Reject inconsistent
   range/xyz, missing coordinates and multiple detections. A single detection does

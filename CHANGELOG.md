@@ -1,5 +1,12 @@
 # Changelog
 
+## Correctness and workflow patch — 2026-10-11
+
+- Host training tools v0.1.0-preview.2 check timestamps and sequences across whole segments and reject all windows touched by discontinuities, including window boundaries and five-second takes. 33 synthetic training tests cover the corrected admission.
+- Historical original-radar-v1 collector fails its result when Stop cannot be confirmed, including a closed port, without hiding prior errors or interrupts. 13 synthetic collector tests pass. This collector is not a controller for current original-radar-v2 firmware.
+- Shared TI offline extractor v0.6-bundle2 keeps unfinished/incomplete events as ambiguity coverage and matches the current Radar Studio v0.9.0-preview.3 source. All 23 shared file hashes are reconciled.
+- Current collection instructions stop for initial no-RF receipt review before later separately authorized manual RF tests. Earlier archives, firmware BIN/build identity, schemas and licenses remain unchanged; no physical acceptance is claimed.
+
 ## Host training tools v0.1.0-preview.1 — 2026-10-11
 
 - Add isolated original_training/ Python standard-library tools for original-radar dataset v1 validation, quality-gated features, deterministic baseline training and independent evaluation.

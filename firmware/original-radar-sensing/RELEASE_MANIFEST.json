@@ -673,8 +673,8 @@
     },
     {
       "path": "host/original_capture.py",
-      "bytes": 17365,
-      "sha256": "e6f286fb394f53d4927d60ff425564dd7a167f485c7c7765602336dc726f84c5"
+      "bytes": 17789,
+      "sha256": "425513f7b015a05716209433a67f5e870039e1cfef834b07e8c5779d3022ce96"
     },
     {
       "path": "host/requirements.txt",
@@ -683,8 +683,8 @@
     },
     {
       "path": "host/test_original_capture.py",
-      "bytes": 7654,
-      "sha256": "902ee91d450b38b65ef88ad5fb59b4c4f751ed2ac4cb98915622b1acaa8a97f5"
+      "bytes": 11104,
+      "sha256": "d1a36446a6cc2e872e72856f6e7d827b799bfa15903f206bc7cc204e5ad5ad9f"
     },
     {
       "path": "sensing.cfg",
@@ -896,5 +896,11 @@
       "bytes": 1528,
       "sha256": "7e9d67e5cbbd0ce275560b7f1d51241da6f73537ea9c6abd7c7212076d2ec362"
     }
-  ]
+  ],
+  "source_patch": {
+    "date_utc": "2026-10-11",
+    "scope": "Historical original-radar-v1 host collector Stop-confirmation correction only; firmware build and BIN unchanged",
+    "legacy_host_synthetic_tests": 13,
+    "historical_release_assets": "unchanged"
+  }
 }

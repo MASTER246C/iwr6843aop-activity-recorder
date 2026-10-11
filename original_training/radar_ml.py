@@ -8,7 +8,7 @@ import math
 from pathlib import Path
 import statistics
 
-TOOL_VERSION = '0.1.0-preview.1'
+TOOL_VERSION = '0.1.0-preview.2'
 VERSION = 1
 WINDOW_US = 3_000_000
 LABELS = {'activity': ['sitting', 'standing', 'walking'],
@@ -164,6 +164,14 @@ def prepare(data):
         buckets = {}
         for f in fs:
             buckets.setdefault(max(-1,(f['relative_us']-origin)//WINDOW_US), []).append(f)
+        # Continuity belongs to the segment, including pairs across bucket boundaries.
+        # Reject every window touched by a gap, including empty windows it spans.
+        gap_windows = set()
+        for left, right in zip(fs, fs[1:]):
+            if right['relative_us']-left['relative_us'] > 500000 or right['sequence'] != left['sequence']+1:
+                first = max(-1,(left['relative_us']-origin)//WINDOW_US)
+                last = max(-1,(right['relative_us']-origin)//WINDOW_US)
+                gap_windows.update(range(first,last+1))
         for i in range(-1,max(0,int((fs[-1]['relative_us']-origin)//WINDOW_US)+1)):
             a, b = (fs[0]['relative_us'],origin) if i==-1 else (origin+i*WINDOW_US,origin+(i+1)*WINDOW_US)
             frames = buckets.get(i, [])
@@ -174,9 +182,8 @@ def prepare(data):
                 reasons.add('insufficient_frames')
             if not frames or frames[0]['relative_us']-a > 500000 or b-frames[-1]['relative_us'] > 500000 or fs[-1]['relative_us'] < b:
                 reasons.add('incomplete_window')
-            for left, right in zip(frames, frames[1:]):
-                if right['relative_us']-left['relative_us'] > 500000 or right['sequence'] != left['sequence']+1:
-                    reasons.add('frame_gap')
+            if i in gap_windows:
+                reasons.add('frame_gap')
             vector = None if reasons else features(frames)
             for task in LABELS:
                 touching = [l for l in label_index.get((seg['id'],task),[]) if l['start_us'] < b and l['end_us'] > a]
