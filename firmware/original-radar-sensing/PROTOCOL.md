@@ -1,6 +1,6 @@
 # Original Radar v2 dual-UART contract
 
-Version 0.3.0-rc1. Every record is one LF-terminated JSON object, with protocol `original-radar-v2`. Unknown numeric quantities are null, never NaN/Infinity. Strict framing is required; concatenated JSON is an error, not a successful receipt.
+Version 0.3.1-rc1. Every record is one LF-terminated JSON object, with protocol `original-radar-v2`. Unknown numeric quantities are null, never NaN/Infinity. Strict framing is required; concatenated JSON is an error, not a successful receipt.
 
 ## Physical channels
 
@@ -22,7 +22,7 @@ No config or pairing command starts RF. Explicit `start` performs calibration an
 2. Control command: `pair <nonce>`. Allowed only idle, not processing, valid committed config, passing boot self-test, neither transport latch failed, no app fault. It revokes prior permission and reserves a new session_id. A successful full data transmission emits:
 
 ```
-{"type":"data_probe","channel":"data","protocol":"original-radar-v2","firmware_version":"0.3.0-rc1","build_id":"<24 hex>","pair_nonce":"<32 lowercase hex>","config_generation":1,"session_id":1}
+{"type":"data_probe","channel":"data","protocol":"original-radar-v2","firmware_version":"0.3.1-rc1","build_id":"<24 hex>","pair_nonce":"<32 lowercase hex>","config_generation":1,"session_id":1}
 ```
 
 3. The control ACK for pair has code 0 only after successful data transmission. It does not prove the host received the probe. The host must separately observe the exact probe on its chosen data connection, matching the accepted build/protocol/nonce and generation/session.
@@ -39,7 +39,7 @@ Identity includes type=identity, app=original-radar-sensing, version, build_id, 
 
 ACK includes type=ack, command (canonical recognized token or invalid), integer code, state and configured, plus common control fields. Code 0 is successful handling; negative is rejection/failure. Comments/empty lines get no ACK. ACKs have no request ID; hosts must serialize requests and check fresh corresponding records.
 
-Status includes type=status, state (idle/starting/running/stopping/fault), configured:boolean, fault/capture_fault/rf_fault:uint32, rf_error:int32, frames/deadline_misses:uint32, firmware_version:string, build_id:24-hex string, selftest_version:1, selftest_ok:boolean, selftest_mask:uint32, paired:boolean, pair_nonce:string (empty before first probe), config_generation/session_id:uint32, control_tx_fault/data_tx_fault:boolean, and common control fields.
+Status includes type=status, state (idle/starting/running/stopping/fault), configured:boolean, fault/capture_fault/rf_fault:uint32, rf_error:int32, frames/deadline_misses:uint32, firmware_version:string, build_id:24-hex string, selftest_version:2, selftest_ok:boolean, selftest_mask:uint32, paired:boolean, pair_nonce:string (empty before first probe), config_generation/session_id:uint32, control_tx_fault/data_tx_fault:boolean, and common control fields.
 
 Start error -25: no passing boot self-test; -26: application/transport fault; -20: invalid state/config; -27: no unconsumed paired permission. Pair errors -29: state/gate failure, -30: malformed nonce, -31: missing/mismatched probe confirmation, -32: exhausted session counter, -33: failed probe transmission. Faults 401/483/484/485 mean control transport/data setup/data transport/config-counter exhaustion. Boot self-test failure is fault 482.
 
@@ -61,3 +61,7 @@ The original frame payload is retained, with protocol v2 and mandatory channel="
 Each lane has an independent mutex, SDK SCI register readiness check and latched failure. Readiness uses at most six polls and five elapsed 1-ms ticks, with wrap-safe subtraction. Existing writeTimeout is 200 ticks. Failure releases the lock and blocks subsequent writes on that lane until reset. Data failure sets app fault and the command watchdog stops the run while control remains usable if healthy. Control failure can prevent any fault receipt. UART completion does not prove USB receipt.
 
 First board acceptance is status/ACK framing plus no-RF cross-port probes only. Require exact accepted build and passing boot self-test before configuration, then matching data probe and fresh paired control status before considering a separately authorized 1–5 second run. Never synthesize success from malformed or missing records.
+
+## v0.3.1-rc1 fixed AOP polarity
+
+The physical RX0..3 estimator corrections are (+1,−1,+1,−1), the fixed AOP feed-polarity relationship documented in [TI SWRU546E Figure4-8](https://www.ti.com/lit/ug/swru546e/swru546e.pdf#page=51) and SDK03.06.02.00-LTS AOP profile. The serialized phasors remain uncompensated input measurements. selftest_version2 adds bit256 for known-angle synthetic input with this inversion. No new status fields or commands; original-radar-v2, both UART gates and1–5second cap remain. Fixed polarity does not set measured phase calibration, axes verification or world-height validity flags.

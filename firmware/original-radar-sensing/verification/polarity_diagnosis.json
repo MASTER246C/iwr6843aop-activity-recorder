@@ -1,0 +1,52 @@
+{
+  "finding": "Documented fixed AOP alternating receiver feed polarity was omitted from production spatial initialization",
+  "source_evidence": {
+    "official_board_guide": "https://www.ti.com/lit/ug/swru546e/swru546e.pdf#page=51",
+    "sdk_profile": "ti/demo/xwr64xx/mmw/profiles/profile_3d_aop.cfg:55",
+    "sdk_version": "03.06.02.00-LTS",
+    "physical_rx_order": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "fixed_correction_real": [
+      1,
+      -1,
+      1,
+      -1
+    ],
+    "not_measured_calibration": true
+  },
+  "index_chain": [
+    "ADCBuf channel rx at offset rx*64*4",
+    "non-interleaved channels; sampleInterleave0 gives little-endian I then Q",
+    "EDMA copies contiguous1024-byte chirp block",
+    "DSP input index(chirp*4+rx)*64",
+    "FFT cube[range][rx][doppler]",
+    "detection.rx_phasor[rx]"
+  ],
+  "private_input_derived_replay": {
+    "sample_count": 3,
+    "released_host_accepts": 0,
+    "released_target_rejects_all_with_high_coherence": true,
+    "documented_polarity_host_accepts": 3,
+    "flags_after": 3,
+    "world_coordinates_valid": false
+  },
+  "production_changes": [
+    "AOP-specific config initializer",
+    "call initializer in begin_run",
+    "boot selftest2 adds synthetic inversion test failurebit256"
+  ],
+  "unchanged": [
+    "generic estimator",
+    "FOV0.85",
+    "coherence0.8",
+    "physical direction disk",
+    "1\u20135second RF cap",
+    "dual UART and pairing/fault gates",
+    "uncalibrated phase and axis flags"
+  ],
+  "physical_validation_pending": true
+}

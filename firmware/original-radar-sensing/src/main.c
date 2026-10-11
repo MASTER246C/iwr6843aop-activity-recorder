@@ -167,7 +167,7 @@ static int begin_run(void)
     settings.chirp_period_s=0.000250f;settings.carrier_hz=(float)physical.carrier_hz;
     settings.minimum_power=(float)config.minimum_power;settings.noise_multiplier=(float)config.noise_multiplier;
     if(radar_dsp_init(&dsp,&settings)!=RADAR_DSP_OK){app_fault=440U;(void)end_run();return -22;}
-    os_default_config(&spatial,settings.carrier_hz);
+    os_iwr6843aop_config(&spatial,settings.carrier_hz);
     spatial.bracket_height_m=config.bracket_top_mm/1000.0f;
     spatial.down_tilt_deg=config.down_tilt_mdeg/1000.0f;
     spatial.antenna_offset_known=config.antenna_offset_known;

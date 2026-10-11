@@ -21,3 +21,6 @@ ASAN_OPTIONS=detect_leaks=0 build/test_record_transport
 ASAN_OPTIONS=detect_leaks=0 build/test_link_session
 
 python3 tests/test_independent_dual_framing.py .
+
+"$CC" "${FLAGS[@]}" tests/test_aop_polarity_grid.c spatial/original_spatial.c -lm -o build/test_aop_polarity_grid
+ASAN_OPTIONS=detect_leaks=0 build/test_aop_polarity_grid

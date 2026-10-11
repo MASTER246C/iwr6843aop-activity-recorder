@@ -1,37 +1,37 @@
 {
   "result": "PASS",
   "source_manifest_matches": true,
-  "build_id": "e0ce9b95204dee4ecbf0b9e0",
-  "firmware_version": "0.3.0-rc1",
-  "bin_sha256": "e945b06a120f63dcb9c76625983940686f3cecc5c69781d9a24eb02228ff5deb",
-  "elf_sha256": "429cf27fe202df4237e63fd326495663b622aafa371ac23b1cb8493396b98e34",
-  "bin_size": 344644,
-  "crc32": "0x4c12f1de",
+  "build_id": "abb27b48c1bdb956c0de704b",
+  "firmware_version": "0.3.1-rc1",
+  "bin_sha256": "668476d4130f659cef4c1fea3b8eb436d5025f20853dc30ca83380f9bd38a6bf",
+  "elf_sha256": "9a0ee0978ebac27b07918628f81952eb670c652cd7a0f6feda46d3793eced7ca",
+  "bin_size": 344836,
+  "crc32": "0x3ab0f587",
   "mss_rprc_exact_in_bin": true,
   "rprc_sections_match_elf": [
     {
       "address": "0x0",
       "bytes": 60,
       "elf_section": ".vecs",
-      "sha256": "983e16544726c38121d9eca312f7196fce1f4ac7d103e166cc818356ddc39f41"
+      "sha256": "75966324e8626e32428561b99c27d852a57124ad01c6b6261ec531227c9e45c8"
     },
     {
       "address": "0x100",
-      "bytes": 85636,
+      "bytes": 85796,
       "elf_section": ".text",
-      "sha256": "09f112553eda5e8f887ce24a571abf49fc7ea35c64810d85d45b580a2c49acc2"
+      "sha256": "2d7390053e8e07a27bde3c49f81dbe558f0d0c401662ee87985ce747ad072067"
     },
     {
-      "address": "0x14f88",
+      "address": "0x15028",
       "bytes": 10408,
       "elf_section": ".const",
-      "sha256": "6652a1b192fde0fb8fe53bfe78f7b98154270ecbb719f56851bb32dcf9a6b0a5"
+      "sha256": "7bedbcc359c42fda4f48fadcb44274676cb0d67d58080484415c39f18e6f67a1"
     },
     {
-      "address": "0x17830",
+      "address": "0x178d0",
       "bytes": 856,
       "elf_section": ".cinit",
-      "sha256": "923bf694ceea6682ef9dc778d27420fa556c09fb667aeb8fc65302036f665da8"
+      "sha256": "d64e01671a9a43fa6e391f619869e95e6a650801edc883a2db0bba68a23add77"
     }
   ],
   "disassembly_review": {
@@ -41,5 +41,7 @@
     "begin_run": "selftest, app fault and both transport latches; valid config and one-shot or_link_consume before radio_prepare",
     "init_task": "UART0 at115200; UART1 at921600; AOP E2/PADAJ index9 function6; writeTimeout200 retained"
   },
+  "aop_initializer_review": "os_default_config then -1 real coefficient stores at44/60; production begin_run and selftest use it; selftest failurebit256, flags3 and unknown world height enforced",
+  "generic_estimator_object_bytes_unchanged": true,
   "hardware_verified": false
 }

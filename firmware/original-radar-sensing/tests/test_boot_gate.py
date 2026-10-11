@@ -98,7 +98,7 @@ int main(void){
   init_task(0,0);
   assert(!selftest_passed());assert(app_state==APP_FAULT);assert(app_fault==482);
   assert(hardware_calls==0);assert(starts==0);assert(task_creates==1);
-  assert(strstr(last_message,"\"selftest_ok\":false"));assert(strstr(last_message,"\"firmware_version\":\"0.3.0-rc1\""));
+  assert(strstr(last_message,"\"selftest_ok\":false"));assert(strstr(last_message,"\"firmware_version\":\"0.3.1-rc1\""));
   {char status[]="status";char stop[]="stop";char start[]="start";handle_line(status);handle_line(stop);handle_line(start);}
   assert(hardware_calls==0);assert(starts==0);assert(app_state==APP_FAULT);
  }
@@ -148,6 +148,8 @@ int main(void){
  ack("pair",0);status_message();assert(control_writes==2 && data_writes==1);
  assert(pairing_command("pairConfirm","pairConfirm 0123456789abcdef0123456789abcdef")==0);
  assert(begin_run()==0 && starts==1 && !link_session.start_permit && link_session.paired);
+ assert(spatial.rx_correction[1].real==-1.0f && spatial.rx_correction[3].real==-1.0f);
+ assert(!spatial.rx_phase_calibrated && !spatial.axis_orientation_verified);
  assert(begin_run()<0 && starts==1);
  assert(end_run()==0 && !link_session.paired);
  assert(begin_run()==-27 && starts==1);

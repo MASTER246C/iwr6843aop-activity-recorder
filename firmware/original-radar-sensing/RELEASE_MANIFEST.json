@@ -1,7 +1,7 @@
 {
-  "version": "0.3.0-rc1",
+  "version": "0.3.1-rc1",
   "protocol": "original-radar-v2",
-  "build_id": "e0ce9b95204dee4ecbf0b9e0",
+  "build_id": "abb27b48c1bdb956c0de704b",
   "hardware_acceptance": "pending",
   "public_scope": "install/source/tests/notices/aggregate validation only; debug artifacts and private captures excluded",
   "preserved_notice_config_files": 98,
@@ -9,7 +9,7 @@
     {
       "path": "BUILD_IDENTITY.json",
       "bytes": 3151,
-      "sha256": "8fed3263b25cf169f9df1c313f834d928fee0b4550091ce97935e25c138fc3a5"
+      "sha256": "ab7f296eb1a4eef978c41ed6f7d782fc7f74873b7b1c7663cef58d1714a34692"
     },
     {
       "path": "HISTORY/v0.2.0_PROVENANCE.md",
@@ -82,6 +82,36 @@
       "sha256": "034afa41fc0b7b82c78ad7d33247296a6857aa7ff603d50c9e18453fcc75aafd"
     },
     {
+      "path": "HISTORY/v0.3.0-rc1/PROTOCOL.md",
+      "bytes": 8340,
+      "sha256": "dc7112f6feb12aba8f67b80252a0a4f64ba22780e7f0050cfe2b2655cf2c73f3"
+    },
+    {
+      "path": "HISTORY/v0.3.0-rc1/PROVENANCE.md",
+      "bytes": 2163,
+      "sha256": "04b9d2ab7ceae6989d8b040ed7d9b4334821d14d163131bcbb2b81b103094dcc"
+    },
+    {
+      "path": "HISTORY/v0.3.0-rc1/README.md",
+      "bytes": 6555,
+      "sha256": "997e8c095a84f6690121c7d1a73c8d89cee7653735f087490308f6c84a007c50"
+    },
+    {
+      "path": "HISTORY/v0.3.0-rc1/VALIDATION.md",
+      "bytes": 4910,
+      "sha256": "950bfaafff34f154861449c06bdf35d449eb39eeb9e68786a1ed6cb3e8326d8a"
+    },
+    {
+      "path": "HISTORY/v0.3.0-rc1/verification/independent_binary_check.json",
+      "bytes": 1758,
+      "sha256": "ebf9af0bbb9951d44bdbffb031488c9b28ccae5b56432ef7380c5fc45cb3364e"
+    },
+    {
+      "path": "HISTORY/v0.3.0-rc1/verification/independent_dual_framing.json",
+      "bytes": 225,
+      "sha256": "942709519e47d89029ee942bb873aa0913db98388acf3ffa5d6f0b0346367c40"
+    },
+    {
       "path": "LICENSE",
       "bytes": 3323,
       "sha256": "ebae98f852385d5d25a61632bc6ec475d5972711cca9d5f510917a5f5d8e634c"
@@ -98,18 +128,18 @@
     },
     {
       "path": "PROTOCOL.md",
-      "bytes": 8340,
-      "sha256": "dc7112f6feb12aba8f67b80252a0a4f64ba22780e7f0050cfe2b2655cf2c73f3"
+      "bytes": 8961,
+      "sha256": "927c951c56edad26d0252cb07c0b56a1a546df16c28e02f28ef7916f88a91e5e"
     },
     {
       "path": "PROVENANCE.md",
-      "bytes": 2163,
-      "sha256": "04b9d2ab7ceae6989d8b040ed7d9b4334821d14d163131bcbb2b81b103094dcc"
+      "bytes": 2695,
+      "sha256": "8d110e1f7cb23bd2fc3fcf1df806d1872d57ffd394e4ad9000e4ffb72f510740"
     },
     {
       "path": "README.md",
-      "bytes": 6555,
-      "sha256": "997e8c095a84f6690121c7d1a73c8d89cee7653735f087490308f6c84a007c50"
+      "bytes": 8047,
+      "sha256": "a6f69536a09d55b204840b14ee1e25a234ef1f47173b3c6d3aa015aa75802f9c"
     },
     {
       "path": "THIRD_PARTY_NOTICES/ARMCodeGenerationTools_16.9.0.LTS_manifest.html",
@@ -578,8 +608,8 @@
     },
     {
       "path": "VALIDATION.md",
-      "bytes": 4910,
-      "sha256": "950bfaafff34f154861449c06bdf35d449eb39eeb9e68786a1ed6cb3e8326d8a"
+      "bytes": 6195,
+      "sha256": "53a5d24fb0baea27a656d3e47177a2c27e5d52b824cdd56cdee699894407e843"
     },
     {
       "path": "application.cmd",
@@ -588,8 +618,8 @@
     },
     {
       "path": "build/original_radar_sensing.bin",
-      "bytes": 344644,
-      "sha256": "e945b06a120f63dcb9c76625983940686f3cecc5c69781d9a24eb02228ff5deb"
+      "bytes": 344836,
+      "sha256": "668476d4130f659cef4c1fea3b8eb436d5025f20853dc30ca83380f9bd38a6bf"
     },
     {
       "path": "config/current_mount.cfg.template",
@@ -668,23 +698,23 @@
     },
     {
       "path": "spatial/original_spatial.c",
-      "bytes": 5787,
-      "sha256": "84c9ebfa6670eacf39818f043cc473ee0b185eb8c89ec96c483878826fe346c7"
+      "bytes": 6303,
+      "sha256": "2b54c71e0d9983f2494e988517542fe8ef60cc78ebbcdaa03d639fcbce4cb2bd"
     },
     {
       "path": "spatial/original_spatial.h",
-      "bytes": 1619,
-      "sha256": "c067921bfc98556f22c716170f718b7a445a32eefc484f9546247a89894b8562"
+      "bytes": 1762,
+      "sha256": "0e62581995f289c1010711124999ea721a2687268184655a873fd197c8d5b670"
     },
     {
       "path": "spatial/spatial_selftest.c",
-      "bytes": 3680,
-      "sha256": "bf70fadfab552d5447ac68ee398b103b211605058b4d319248bf01c483be82fe"
+      "bytes": 4481,
+      "sha256": "cbdcb1946f192253b3e502996825988baa0f148654f3b5b2d9db0b8c2df17b83"
     },
     {
       "path": "spatial/spatial_selftest.h",
       "bytes": 342,
-      "sha256": "26c60a35c0afdb79fefc9530c5f2ef6f4318bf3b4644fc97e807a78b25fb4704"
+      "sha256": "cb4b8cc5c5c55b6c1e05c8da45bec4d831571b52106c3139c63e299ae100720a"
     },
     {
       "path": "src/acquisition.c",
@@ -699,7 +729,7 @@
     {
       "path": "src/build_identity.h",
       "bytes": 122,
-      "sha256": "616c70db7e62b2cad4e6a045dacf243e60eb3fdb089c9e4ffd995f5801526f7d"
+      "sha256": "72cce45c63193945554bde66c7cfe41ed092d177c9a28711ba0f3b57ac0371c8"
     },
     {
       "path": "src/capture_model.c",
@@ -743,8 +773,8 @@
     },
     {
       "path": "src/main.c",
-      "bytes": 17794,
-      "sha256": "f9fda561b4eeeccc4288908788a21104f6d429531dd97210cb419c7cb5b809af"
+      "bytes": 17797,
+      "sha256": "a0246ad754958f1c0da9468994e61de409f170e6cdf6c5208497e32e9effa626"
     },
     {
       "path": "src/radio.c",
@@ -798,13 +828,18 @@
     },
     {
       "path": "tests/run_tests.sh",
-      "bytes": 1279,
-      "sha256": "060e82c0880f83f2f8f319880a7637a39cc3fb30d4a0e295038fe4fdead94a8e"
+      "bytes": 1451,
+      "sha256": "4b25f32b2fd2d3d31a57965283a62a9c32f1aec79cbae86d5699fa4a310143d7"
+    },
+    {
+      "path": "tests/test_aop_polarity_grid.c",
+      "bytes": 2287,
+      "sha256": "a061f1fd75921183872a25b4ddb8eb12278d53c652e07aa1b30d15b3e9536cc6"
     },
     {
       "path": "tests/test_boot_gate.py",
-      "bytes": 11504,
-      "sha256": "e9221ac446f03ad61d16d9500a4e5de539d8aacbeb4dbf2e1d03140fc40834eb"
+      "bytes": 11668,
+      "sha256": "57eba2df50ee575419e596f227e7f7282ac7aea523247d439e89076f07aa061d"
     },
     {
       "path": "tests/test_independent_dual_framing.py",
@@ -818,8 +853,8 @@
     },
     {
       "path": "tests/test_original_spatial.c",
-      "bytes": 2211,
-      "sha256": "d08b0a2f832330c08967073a2d8b2ad60b4893edf6590b5e2af3c881199f6061"
+      "bytes": 3616,
+      "sha256": "ba773a1d7fcdee65aef6d0354402b0be75655720eefec831148e5b80291ecce8"
     },
     {
       "path": "tests/test_record_transport.c",
@@ -848,13 +883,18 @@
     },
     {
       "path": "verification/independent_binary_check.json",
-      "bytes": 1758,
-      "sha256": "ebf9af0bbb9951d44bdbffb031488c9b28ccae5b56432ef7380c5fc45cb3364e"
+      "bytes": 2007,
+      "sha256": "6184bab1310866577a7e88c7fb3ad611c366d86f4f3a371938a5780a8609151e"
     },
     {
       "path": "verification/independent_dual_framing.json",
       "bytes": 225,
-      "sha256": "942709519e47d89029ee942bb873aa0913db98388acf3ffa5d6f0b0346367c40"
+      "sha256": "07a6536ace25c0744bcc8c18f1eacee4c0617a8919b10ec8575f39e3f02a6c55"
+    },
+    {
+      "path": "verification/polarity_diagnosis.json",
+      "bytes": 1528,
+      "sha256": "7e9d67e5cbbd0ce275560b7f1d51241da6f73537ea9c6abd7c7212076d2ec362"
     }
   ]
 }

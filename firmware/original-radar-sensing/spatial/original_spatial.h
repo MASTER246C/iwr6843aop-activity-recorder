@@ -35,6 +35,8 @@ typedef struct {
     uint32_t flags;
 } os_result;
 void os_default_config(os_config *cfg, float carrier_hz);
+/* Fixed AOP antenna polarity only; leaves phase/axis calibration flags false. */
+void os_iwr6843aop_config(os_config *cfg, float carrier_hz);
 /* RX order physical array offsets [(1,1),(1,0),(0,1),(0,0)].
  * Coordinates are exploratory unless phase and axis flags are both valid.
  * Returns 1 for finite in-FOV sensor estimate; world height may remain unknown.

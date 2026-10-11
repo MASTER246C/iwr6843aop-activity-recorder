@@ -57,6 +57,18 @@ uint32_t os_spatial_no_rf_selftest(void) {
     if(os_estimate(&cfg,in.rx,2.0f,&out.result) || out.result.flags!=0u) failed|=16u;
     in.rx[2].real=1.0f;in.rx[0].real=-1.0f;
     if(os_estimate(&cfg,in.rx,2.0f,&out.result) || out.result.flags!=0u) failed|=32u;
+    /* Documented fixed AOP feed polarity applied to an analytic +pi/4 wave.
+     * This tests production configuration as well as estimator arithmetic. */
+    os_iwr6843aop_config(&cfg,61.378e9f);
+    in.rx[0].real=0.0f; in.rx[0].imag=1.0f;
+    in.rx[1].real=-0.7071067811865475f; in.rx[1].imag=-0.7071067811865475f;
+    in.rx[2].real=0.7071067811865475f; in.rx[2].imag=0.7071067811865475f;
+    in.rx[3].real=-1.0f; in.rx[3].imag=0.0f;
+    if(!os_estimate(&cfg,in.rx,2.0f,&out.result) || out.result.flags!=3u ||
+       cfg.rx_phase_calibrated || cfg.axis_orientation_verified || cfg.antenna_offset_known ||
+       !isnan(out.result.z_world_m) ||
+       !close_float(out.result.horizontal_direction_cosine,expected) ||
+       !close_float(out.result.vertical_direction_cosine,expected)) failed|=256u;
     for(i=0;i<4;i++) {
         if(in.before[i]!=GUARD_A || in.after[i]!=GUARD_B || out.before[i]!=GUARD_A || out.after[i]!=GUARD_B) failed|=64u;
     }

@@ -1,20 +1,28 @@
-# 0.3.0-rc1 verification record
+# 0.3.1-rc1 verification record
 
-Status: offline-verified dual-UART acceptance candidate; physical acceptance pending.
+Status: offline-verified fixed-AOP-polarity candidate; physical acceptance pending.
 
 ## Artifacts
 
-- Version: `0.3.0-rc1`
-- Build ID: `e0ce9b95204dee4ecbf0b9e0`
-- BIN: 344,644 bytes
-- BIN SHA-256: `e945b06a120f63dcb9c76625983940686f3cecc5c69781d9a24eb02228ff5deb`
-- Appended CRC32: `0x4c12f1de`
-- Audit ELF SHA-256: `429cf27fe202df4237e63fd326495663b622aafa371ac23b1cb8493396b98e34` (debug artifact retained privately, not distributed)
+- Version: `0.3.1-rc1`
+- Build ID: `abb27b48c1bdb956c0de704b`
+- BIN: 344,836 bytes
+- BIN SHA-256: `668476d4130f659cef4c1fea3b8eb436d5025f20853dc30ca83380f9bd38a6bf`
+- Appended CRC32: `0x3ab0f587`
+- Audit ELF SHA-256: `9a0ee0978ebac27b07918628f81952eb670c652cd7a0f6feda46d3793eced7ca` (debug artifact retained privately, not distributed)
+
+## Corrected omission
+
+The prior production config used unit corrections on every physical RX. Official TI AOP hardware documentation requires alternating receiver-feed polarity compensation. The new AOP-specific initializer applies (+1,−1,+1,−1) and is called by the production spatial setup; the generic estimator function and rejection thresholds are unchanged. This known wiring convention is not measured phase calibration. No phase/axis/world-height calibration flags are asserted.
+
+Selftest_version2 adds synthetic inverted known-angle input, checked against the same production initializer, with failure bit256. Existing failure bits and Start gating remain.
+
+Additional validation: an independent synthetic grid covers3,228 angle/carrier/common-phase cases, unequal amplitudes, common-sign invariance, preserved FOV/disk/NaN rejection and unknown world coordinates. Private input-derived regression (kept outside the package) checks3 supplied phasor sets: the prior host and actual TI estimator reject all3, while the corrected host and final TI estimator/config accept all3 with numeric/in-FOV flags only. No private phasors or captures are distributed, and these results do not establish physical coordinate accuracy.
 
 ## Checks completed
 
 - Official TI compiler/SDK serial compile and link, warnings treated as errors; official image conversion and independent appended CRC check.
-- 937 spatial direction cases, 706 DSP checks in ordinary and sanitized builds, bounded config/ownership/JSON checks and 11 historical collector regression tests. The legacy collector is not the new v2 controller.
+- 1,874 spatial direction cases (937 generic and 937 AOP-inverted synthetic waves), 706 DSP checks in ordinary and sanitized builds, bounded config/ownership/JSON checks and 11 historical collector regression tests. The legacy collector is not the new v2 controller.
 - Host ASan/UBSan and strict compiler checks for the actual main source with mocked peripherals: all 32 individual boot-failure bits, pending self-test, application fault and both transport latches prevent Start hardware calls. No auto RF/config.
 - Actual-main pairing tests: no RF from pair/probe/confirm; malformed/wrong confirmation revokes; configuration/stop revoke; Start consumes permission before mocked RF, cannot be repeated; data transport timeout while running invokes watchdog stop; control status still works. Data-open failure creates only control command service and no RF/acquisition initialization.
 - Actual main adapter checks select separate SCI-A/SCI-B readiness registers. Independent pending-TD states, locks and UART handles model both lanes.

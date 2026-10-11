@@ -1,0 +1,45 @@
+{
+  "result": "PASS",
+  "source_manifest_matches": true,
+  "build_id": "e0ce9b95204dee4ecbf0b9e0",
+  "firmware_version": "0.3.0-rc1",
+  "bin_sha256": "e945b06a120f63dcb9c76625983940686f3cecc5c69781d9a24eb02228ff5deb",
+  "elf_sha256": "429cf27fe202df4237e63fd326495663b622aafa371ac23b1cb8493396b98e34",
+  "bin_size": 344644,
+  "crc32": "0x4c12f1de",
+  "mss_rprc_exact_in_bin": true,
+  "rprc_sections_match_elf": [
+    {
+      "address": "0x0",
+      "bytes": 60,
+      "elf_section": ".vecs",
+      "sha256": "983e16544726c38121d9eca312f7196fce1f4ac7d103e166cc818356ddc39f41"
+    },
+    {
+      "address": "0x100",
+      "bytes": 85636,
+      "elf_section": ".text",
+      "sha256": "09f112553eda5e8f887ce24a571abf49fc7ea35c64810d85d45b580a2c49acc2"
+    },
+    {
+      "address": "0x14f88",
+      "bytes": 10408,
+      "elf_section": ".const",
+      "sha256": "6652a1b192fde0fb8fe53bfe78f7b98154270ecbb719f56851bb32dcf9a6b0a5"
+    },
+    {
+      "address": "0x17830",
+      "bytes": 856,
+      "elf_section": ".cinit",
+      "sha256": "923bf694ceea6682ef9dc778d27420fa556c09fb667aeb8fc65302036f665da8"
+    }
+  ],
+  "disassembly_review": {
+    "transport_ready_register": "context0 SCI-A 0xFFF7E51C; context1 SCI-B 0xFFF7E71C; bit8 volatile loads",
+    "send_lane": "independent mutex/state selected; control fault401/data fault484 and pair revoke before mutex leave",
+    "record_transport": "pre/post wait and short-write checks; STRB latch; maximum6 polls, unsigned elapsed5 ticks",
+    "begin_run": "selftest, app fault and both transport latches; valid config and one-shot or_link_consume before radio_prepare",
+    "init_task": "UART0 at115200; UART1 at921600; AOP E2/PADAJ index9 function6; writeTimeout200 retained"
+  },
+  "hardware_verified": false
+}

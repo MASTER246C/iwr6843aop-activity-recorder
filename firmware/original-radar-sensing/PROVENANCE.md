@@ -1,4 +1,4 @@
-# 0.3.0-rc1 provenance
+# 0.3.1-rc1 provenance
 
 This release retains the project's independently authored radar acquisition, DSP, spatial estimator and no-RF boot self-test. The inherited `src/record_transport.c/.h` guard is now applied independently to both UARTs. New `src/link_session.c/.h` and the application adapter implement strict nonce correlation, generation/session binding and one-shot Start permission; no TI driver source was copied or modified. The adapter uses the pinned SDK's public register definitions and UART instance mapping. No TI demo processing/tracking/classifier was substituted.
 
@@ -9,3 +9,5 @@ Build versions: TI mmWave SDK 03.06.02.00-LTS, ARM CGT 16.9.6.LTS, SYS/BIOS 6.73
 The inherited spatial correction was previously checked by rebuilding the entire original v0.2.0 BIN byte-for-byte and executing TI-generated synthetic tests in ARM instruction emulation. The new transport guard is tested with an explicit pending-TD-overwrite model, including actual application adapters/status/ACK/pair commands and frame serializer, and the final compiled guard and link-session objects is also executed in ARM emulation. Neither simulated peripheral state nor instruction emulation proves physical UART behavior.
 
 This public distribution includes source, the new BIN, configs, tests, notices, relative-path manifests and sanitized aggregate validation. It excludes user capture data, ELF/map/link XML, raw logs, installed toolchains and private workspace identifiers. `BUILD_IDENTITY.json` identifies source/config plus pinned tool versions; `RELEASE_MANIFEST.json` identifies exact distributed bytes.
+
+The v0.3.1 candidate adds an independently authored AOP configuration initializer using only the documented physical receiver feed-polarity facts. TI SWRU546E Figure4-8 specifies alternating antenna groups180degrees apart; pinned SDK ti/demo/xwr64xx/mmw/profiles/profile_3d_aop.cfg line55 provides the equivalent(+1,−1,+1,−1) physical-RX convention. No TI demo processing code is imported. Private input-derived replay cases remain outside the source/public package; public regression cases are analytic synthetic plane waves.

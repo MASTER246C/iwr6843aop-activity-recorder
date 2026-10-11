@@ -1,6 +1,12 @@
-# Original Radar Sensing 0.3.0-rc1
+# Original Radar Sensing 0.3.1-rc1
 
 Temporary **dual-UART hardware-acceptance candidate**. The original sensing/DSP/spatial implementation remains independently authored. TI supplies the low-level device support, RF link and runtime, not the application processing or tracker. This is a three-peak exploratory radar stream, not a validated people/activity classifier or full-session recorder.
+
+## Fixed AOP receiver polarity
+
+This candidate corrects an omitted, documented AOP antenna-feed polarity pattern. The physical RX0..3 spatial configuration now uses (+1, −1, +1, −1), matching the official SDK AOP profile and the TI Rev G guide Figure 4-8. This is a fixed hardware convention, not fitted calibration or a TI processing algorithm. The generic estimator, coherence threshold, ±0.85 direction limit and physical direction-disk rejection are unchanged. Raw phasors remain raw; the compensation is applied only inside spatial estimation.
+
+Boot selftest_version is now 2, adding failure bit256 for an analytic wave with the AOP feed inversion. A passing test does not validate physical direction signs, per-unit phase calibration, mount geometry or people tracking. The phase/axis/world-height validity flags remain unasserted without their separate evidence. The earlier v0.3.0-rc1 omission made the supplied phase patterns fail the conservative vertical-direction check; the correction does not relax that check.
 
 ## Changes
 
@@ -51,3 +57,7 @@ The legacy `host/` collector and its tests are retained for historical v1 replay
 ## Licensing and history
 
 All vendor notices and licenses are retained. Read LICENSE, LICENSING.md and THIRD_PARTY_NOTICES/ before redistribution. Earlier source documentation is preserved in HISTORY; earlier released firmware has not been replaced.
+
+## Range represented by the locked profile
+
+At Fs=2.5 Msps, 64 samples and the quantized 29.981732 MHz/µs slope, range-bin spacing is about0.195296m. Default bins4–30 represent approximately0.781–5.859m. The implementation permits at most positive bin31 (about6.054m), below the positive-half-spectrum Nyquist interval of about6.249m. A20m display scale does not change this profile or establish20m human detection. Usable human range remains unmeasured.

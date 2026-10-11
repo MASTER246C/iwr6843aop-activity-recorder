@@ -1,5 +1,13 @@
 # Changelog
 
+## Original sensing 0.3.1-rc1 — 2026-10-11
+
+- Apply documented alternating AOP physical-RX feed polarity (+1,−1,+1,−1) in spatial configuration; keep raw phasors, generic estimator thresholds, profile and acceptance gates unchanged.
+- Add self-test version 2 with analytic AOP-inversion coverage and exact build identity abb27b48c1bdb956c0de704b. This corrects a fixed hardware convention, not calibration or validated tracking accuracy.
+- Publish audited source/BIN/tests/notices and sanitized aggregate evidence. Private recordings and phasors remain excluded; all 98 prior notice/config files preserved.
+- Physical validation remains pending. Matching viewer v0.8.0-preview.2 forthcoming; prior releases stay unchanged.
+
+
 ## Original sensing 0.3.0-rc1 — 2026-10-11
 
 - Added strict original-radar-v2 dual-UART separation: Enhanced control 115200, Standard data 921600; repaired JSON LF framing and bounded per-lane write guards.

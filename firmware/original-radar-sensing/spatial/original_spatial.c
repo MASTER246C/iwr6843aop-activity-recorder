@@ -34,6 +34,17 @@ void os_default_config(os_config *cfg, float carrier_hz) {
     cfg->minimum_pair_coherence=0.8f;
     for (i=0;i<4;i++) cfg->rx_correction[i].real=1.0f;
 }
+/* Fixed antenna-feed polarity, not measured per-unit phase calibration.
+ * TI SWRU546E Rev G guide Figure 4-8 documents alternating RX groups 180 deg
+ * apart. SDK 03.06.02.00-LTS AOP profile uses +1,-1,+1,-1 in physical RX order.
+ * Inverting the complementary group differs only by a common phase factor.
+ */
+void os_iwr6843aop_config(os_config *cfg, float carrier_hz) {
+    os_default_config(cfg,carrier_hz);
+    if(cfg==NULL)return;
+    cfg->rx_correction[1].real=-1.0f;
+    cfg->rx_correction[3].real=-1.0f;
+}
 int os_estimate(const os_config *cfg, const os_complex rx[4], float range_m,
                 os_result *out) {
     os_complex r[4], a,b,x,z;
