@@ -1,5 +1,13 @@
 # Changelog
 
+## Host training tools v0.1.0-preview.1 — 2026-10-11
+
+- Add isolated original_training/ Python standard-library tools for original-radar dataset v1 validation, quality-gated features, deterministic baseline training and independent evaluation.
+- Require human-reviewed labels and disjoint session/participant splits. Retain explicit rejects, unknowns and source-integrity limitations; no trained weights or accuracy claim.
+- Include 28 synthetic tests, JavaScript-export integration contract, camera-sync groundwork, unchanged license and bounded resource guidance.
+- Host software only: no firmware changes, no private recordings, no camera selection or contribution-upload activation. Existing TI modules and release assets are unchanged.
+
+
 ## Original sensing 0.3.1-rc1 — 2026-10-11
 
 - Apply documented alternating AOP physical-RX feed polarity (+1,−1,+1,−1) in spatial configuration; keep raw phasors, generic estimator thresholds, profile and acceptance gates unchanged.

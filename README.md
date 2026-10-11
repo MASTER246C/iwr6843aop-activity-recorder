@@ -51,6 +51,14 @@ The BIN includes original application code plus identified TI/runtime support. P
 - [IWR6843AOP Activity Recorder: reusable collection component](https://github.com/MASTER246C/iwr6843aop-activity-recorder)
 - [IWR6843AOP Activity Dataset: collection/review plans and future data](https://github.com/MASTER246C/iwr6843aop-activity-dataset)
 
+## Original-protocol host training tools
+
+[Original radar host training tools v0.1.0-preview.1](original_training/README.md) provide a separate Python 3.10+ standard-library workflow for original-radar dataset export v1: validate, prepare, train and evaluate. Download the [host-tools prerelease ZIP](https://github.com/MASTER246C/iwr6843aop-activity-recorder/releases/tag/original-training-v0.1.0-preview.1), or inspect the source in `original_training/`.
+
+**These are host analysis tools, not firmware to flash.** Python is not a prerequisite for the browser viewer. No recordings, trained weights, cloud inference, uploads or camera hardware are included. Training requires suitable human-reviewed exports with explicit session and participant-group splits; synthetic tests do not establish recognition accuracy. Labels cannot repair rejected sensor data. The tool independently hashes input bytes and frozen canonical inputs but does not authenticate the producer's embedded hash or an absent original capture. Read its admission, split and resource limits before use.
+
+Existing TI offline tools and shared-module pins are unchanged. The firmware pin, no-RF pairing and manual 1–5 second sensing gates remain separate and unchanged. Camera work is limited to documented synchronization groundwork; no chosen camera, automated video capture or validated alignment is supplied. Software licensing and separate capture-consent requirements still apply.
+
 ## Use and reproduce checks
 
 See [RECORDER_API.md](RECORDER_API.md) for browser/CommonJS APIs and
