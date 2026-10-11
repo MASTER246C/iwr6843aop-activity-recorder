@@ -1,69 +1,53 @@
-# Original Radar Sensing 0.2.1-rc1
+# Original Radar Sensing 0.3.0-rc1
 
-**Release candidate for supervised hardware acceptance. Not yet board-tested.**
+Temporary **dual-UART hardware-acceptance candidate**. The original sensing/DSP/spatial implementation remains independently authored. TI supplies the low-level device support, RF link and runtime, not the application processing or tracker. This is a three-peak exploratory radar stream, not a validated people/activity classifier or full-session recorder.
 
-This release corrects a reproducible malformed target instruction sequence in the spatial estimator and adds a deterministic no-RF boot acceptance gate. It is not a calibrated spatial measurement system or an activity classifier. No automatic RF start or configuration was added.
+## Changes
 
-## What changed
+- Control/status/ACK: MSS SCI-A, Enhanced COM, 115200 baud, 8N1.
+- Frames and explicit no-RF pairing probes: MSS SCI-B TX-only, Standard COM, 921600 baud, 8N1.
+- Protocol `original-radar-v2`; each record is one strict LF-terminated JSON object. The two lanes must never be merged or decoded as TI TLV.
+- Each UART retains the bounded TX-ready guard before and after writes, with an independent mutex and failure latch. Data transport failure blocks new starts and stops an active run through the watchdog while the control channel remains available where possible.
+- A fresh host-generated 128-bit nonce, config generation and session number bind both ports before each run. A data-only probe must be observed before control `pairConfirm`; this is correlation, not authentication.
+- Firmware now rejects durations outside **1–5 seconds**, with a 5-second staged default. Historical 60-second configs are deliberately rejected. This tighter limit is specific to this acceptance RC.
+- The reviewed scalar spatial correction and boot no-RF synthetic self-test remain unchanged. Failure prevents RF/acquisition initialization and Start.
 
-- Explicit scalar component stores replace the normalization loop's complex aggregate-return assignment.
-- Boot runs a synthetic estimator self-test after UART setup, before acquisition/radio initialization.
-- Failure leaves UART status/stop service available, reports fault 482, and blocks all acquisition/radio initialization and start paths.
-- Identity/version is `0.2.1-rc1`. Identity and status include a generated `build_id`. Status adds `firmware_version`, `selftest_version`, `selftest_ok` and `selftest_mask`.
-- Build identity is generated from application source/config and pinned tool versions; the release BIN SHA-256 is the authoritative artifact checksum.
+## First hardware acceptance
 
-## First hardware acceptance, before any sensing
+1. Use only the matching accepted BIN/build identity and matching dual-UART viewer. Actual flashing and board operation are user actions; cloud tests do not establish board acceptance.
+2. After reset, open Enhanced control at 115200 and Standard data at 921600. COM numbers depend on the user's computer. Do not send commands on data.
+3. Query control `status` repeatedly, one request at a time. Every status and ACK must be individually LF-framed, channel=control, exact version/build/protocol, selftest_ok=true, selftest_mask=0, idle and fault-free. Malformed or merged JSON is failure, never a repaired receipt.
+4. Configure measured geometry explicitly using `config/dual_uart_acceptance.cfg.template`, choosing 1–5 seconds. It is intentionally invalid until the tilt placeholder is replaced. Config/commit do not start RF.
+5. The viewer generates a fresh nonce, sends `pair <nonce>` on control, observes the matching data_probe exclusively on data, sends `pairConfirm <nonce>` on control, and queries fresh control status. Exact build/protocol/nonce/config/session must all match and paired must be true.
+6. Stop here for the initial **no-RF dual-port acceptance capture**. Only after those receipts are reviewed should a separately authorized bounded sensing test be considered. No automatic configuration, pairing-driven RF, or automatic Start.
+7. During a later explicit run, a data disconnect, stale stream, malformed record or correlation mismatch must make the viewer stop via control. Firmware's TX-only UART cannot prove the USB receiver is still reading. The finite RF frame count and watchdog remain fallback limits.
 
-Flashing and physical-board actions require the user's separate authorization and supported device procedure. This repository does not flash automatically.
+`stop` and `status` remain control commands. Every configuration change, successful commit, stop/end, failed pair, or transport fault revokes pairing; every Start consumes its one-shot permission before RF preparation. A new run requires a fresh pairing sequence. Reset clears configuration and pairing.
 
-1. Verify the release BIN's SHA-256 against `RELEASE_MANIFEST.json` before using it. Flash only the intended IWR6843AOP image through an approved workflow.
-2. Boot normally and open the correct UART at **115200 baud**. Do not send `start`, load a start-containing configuration, or use an auto-start viewer.
-3. Send only `status` followed by a newline. Require the current response to report:
-   - `firmware_version`: `0.2.1-rc1`
-   - `build_id`: exactly the value in `BUILD_IDENTITY.json` / release manifest
-   - `selftest_version`: `1`
-   - `selftest_ok`: `true`
-   - `selftest_mask`: `0`
-   - `state`: `idle`, all fault fields zero, `configured`: `false` after a fresh boot
-4. Save the identity, status and corresponding status ACK. If the board is silent, reboots, reports a nonzero mask/fault, lacks fields or has the wrong version/build, **stop there**. Do not start RF to troubleshoot it.
-5. A passing code self-test permits planning the next separately approved bounded RF test. It does not prove antenna calibration, axis signs, position accuracy, stack high-water under acquisition, or physical RF behavior.
-6. Because configuration is volatile, a power cycle/unplug requires fresh configuration later. Do not infer configuration from a previous session. The existing published preview with RF Start disabled remains the safe interface until its separately reviewed acceptance gate is available.
+## Transport and runtime limits
 
-The status query reports this boot's cached self-test result. It does not rerun the test. Every boot reruns the test before acquisition/radio initialization. Discard status receipts on disconnect, reboot/new identity, transport error or reconnect. The line protocol has no request nonce; status/ACK correlation is best-effort freshness, not cryptographic attestation.
+Readiness waits use wrap-safe elapsed ticks, reject elapsed >5 configured 1 ms ticks, and perform at most 6 polls. A late scheduler wake fails closed even if TX is now ready. The existing driver write timeout remains 200 ticks. A short/failed write or readiness timeout latches that lane until reset; it never blindly retries a possibly partial line. Fault 401 means control transport; 483 means data setup; 484 means data transport; 485 means config generation exhausted. A failed control lane may be unable to report its own fault. These callback bounds assume the RTOS and callbacks return; no test proves a hard wall-clock bound under a frozen scheduler.
 
-## Self-test coverage
-
-CPU-only synthetic estimator inputs test boresight, known +pi/4 phase differences on both axes, per-RX correction rotations with unequal amplitudes, zero-input rejection, NaN rejection, incoherent-pair rejection, and caller guard words. No private capture is embedded. The normal firmware does not include diagnostic internal-scratch instrumentation; that variant was independently tested offline.
-
-Failure mask bits: 1 boresight; 2 phase plane; 4 correction/amplitudes; 8 zero rejection; 16 NaN rejection; 32 coherence rejection; 64 caller guard. Diagnostic-only builds additionally use bit 128 for internal scratch guards.
-
-SoC/clock/MPU/UART startup occurs before the synthetic test. This integrated image is **not** a hardware-free standalone diagnostic firmware: it is a sensing-capable image whose RF prepare/start path still requires an explicit `start` after configuration and a passed boot gate.
-
-## Public package scope
-
-This public package includes the unchanged RC BIN, source, configs, tests, vendor notices, relative-path manifests and build instructions. Optional debug artifacts (ELF, map, link XML) and raw build/test logs are retained separately for private audit and are not included here. `VALIDATION.md` summarizes the completed checks without build-machine paths.
-
-## Offline verification completed
-
-- Unchanged v0.2.0 rebuilt and repackaged with exact official TI tools: entire public BIN SHA-256 reproduced.
-- TI O2 baseline emitted the defective double increment; scalar candidate emits one correct 8-byte progression with paired stores.
-- Source-listing and ordinary-build estimator instruction sections match exactly.
-- TI-generated code in QEMU Cortex-R5F instruction emulation: baseline O2 fails positive tests (mask 7), baseline O0 and scalar/guarded candidates O0/O2 pass. Final RC estimator + self-test objects also pass.
-- Host suite: 937 spatial plane-wave cases, 706 DSP checks, ASan/UBSan, 11 collector tests; generated main.c peripheral-mock harness checks pending/failing boot gate and no auto-start.
-- BIN CRC32 and ELF memory/dependency structural checks pass.
-
-Emulation is not IWR6843/Cortex-R4F hardware validation. Physical boot/UART/RF/acquisition and calibration remain pending.
+SOC/clock/MPU/UART startup occurs before the synthetic self-test. The integrated image is not hardware-free. A passing CPU test establishes neither calibration nor physical UART/RF behavior.
 
 ## Current mounting guidance
 
 The current user-reported mount reference is **4 feet (1.2192 m) from floor to the flat TOP of the bracket, excluding screws**. The chip-center offset is only an estimate, **+0.003175 to +0.00635 m**, giving an estimated antenna height interval **1.222375–1.22555 m** (midpoint about **1.224 m**, not a calibrated measurement). Actual downward tilt is unconfirmed. The earlier 2 m / 15-degree geometry is a historical example, not the current setup or a universal requirement. `config/room64_v1.cfg` retains that historical reference; do not use it unchanged for the current mount. See `config/current_mount.cfg.template` and `config/current_mount_metadata.json`; measure tilt before completing the template. RX phase and world-axis orientation are also unverified. Thus world coordinates and posture stay unknown, even if a numeric offset is later provided without the other calibration.
 
-## Rebuild
+## Build and verification
 
-Use the Makefile with SDK 03.06.02.00-LTS, TI ARM CGT 16.9.6.LTS, SYS/BIOS 6.73.01.01 and XDC 3.50.08.24. Override tool roots as documented in the Makefile. `make all` generates the source/config build identity and ELF/map; `make test` runs host checks. `tools/package_firmware.sh` produces a BIN using official TI image tools and refuses to overwrite existing outputs. It never flashes hardware.
+See PROTOCOL.md for the exact contract, VALIDATION.md for evidence and limits, and BUILD_IDENTITY.json for source/toolchain identity. Run `bash tests/run_tests.sh` for host checks. Rebuild with the official SDK 03.06.02.00-LTS, TI ARM compiler 16.9.6.LTS, SYS/BIOS 6.73.01.01 and XDCtools 3.50.08.24:
 
-Keep the ELF, map, link XML, compiler logs, source hashes and BIN checksum together. Changes require a new build identity and renewed review/testing.
+```
+make TI_ROOT=/opt/ti CGT_ROOT=/opt/ti/ti-cgt-arm_16.9.6.LTS all
+SDK_ROOT=/opt/ti/mmwave_sdk_03_06_02_00-LTS bash tools/package_firmware.sh
+python3 tools/verify_sensing.py
+```
+
+The package script documents Mono and optional official compatibility-tool variables. Never flash emulator-only test ELFs. The public install/source package omits private debug ELF/map/link XML and raw build logs; those are retained separately for audit. No private board capture is included.
+
+The legacy `host/` collector and its tests are retained for historical v1 replay; they are not a dual-port v2 controller. Use the specifically accepted v2 viewer for this candidate.
 
 ## Licensing and history
 
-`LICENSE`, `LICENSING.md` and `THIRD_PARTY_NOTICES/` are preserved. No TI demo algorithm or proprietary toolchain is bundled. Historical v0.2.0 documentation/manifest are retained under `HISTORY/` and do not describe this candidate's changed BIN.
+All vendor notices and licenses are retained. Read LICENSE, LICENSING.md and THIRD_PARTY_NOTICES/ before redistribution. Earlier source documentation is preserved in HISTORY; earlier released firmware has not been replaced.

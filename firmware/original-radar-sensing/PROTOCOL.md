@@ -1,40 +1,51 @@
-# Original Radar v1 serial protocol
+# Original Radar v2 dual-UART contract
 
-This original sensing firmware speaks **JSON Lines over MSS UARTA at115200 baud,8N1**. It is not the TI-TLV protocol. Each JSON object has `protocol:"original-radar-v1"`, one LF-terminated line. JSON never contains NaN/Infinity; unknown quantities are `null`. Do not send this configuration to a TI demo or decode this output as TI TLV.
+Version 0.3.0-rc1. Every record is one LF-terminated JSON object, with protocol `original-radar-v2`. Unknown numeric quantities are null, never NaN/Infinity. Strict framing is required; concatenated JSON is an error, not a successful receipt.
 
-## Configuration and RF commands
+## Physical channels
 
-Send `config/room64_v1.cfg` line by line, waiting for an ack after each non-comment/non-empty line. Lines are at most191 bytes including any CR, excluding LF. Unknown words, malformed/overflowed numbers, excess tokens and overlong lines are rejected without partially changing configuration.
+- Control: UART_open(0), MSS SCI-A, SDK N5/N4 PADBE/PADBD aliases corresponding to AOP U16/V16; Enhanced COM; 115200 baud, 8N1.
+- Data: UART_open(1), MSS SCI-B TX-only, SDK F14/PADAJ alias corresponding to AOP E2, UARTB_TX function 6; Standard COM; 921600 baud, 8N1. No DSS startup is needed.
+- The official [TI Rev G EVM guide section 4.10.1](https://www.ti.com/lit/ug/swru546e/swru546e.pdf#page=59) identifies Enhanced=user/application and Standard=data. COM numbers are not fixed identities.
 
-```
-orConfig 1
-profile room64_v1
-mount 2000 15000 unknown
-detect 4 30 64 8
-session 60
-commit
-```
+Control carries only identity/status/ACK. Data carries only data_probe/frame. All control records include channel="control", dual_uart=true, control_baud=115200 and data_baud=921600. All data records include channel="data". Data records never count as control acceptance receipts.
 
-- `orConfig 1`: reset staged configuration, with unknown offset.
-- `profile room64_v1`: the only supported RF profile. Arbitrary chirp/radio settings are not accepted.
-- `mount`: floor-to-bracket-flat-top millimeters, downward tilt millidegrees, signed world-vertical antenna-center offset AFTER tilt in millimeters or `unknown`. A known offset must produce positive antenna height. Default bracket measurement is2m, tilt15degrees, offset unknown.
-- `detect`: inclusive first/last positive range bin, absolute normalized-power floor, median-background multiplier. These are exploratory thresholds, not a calibrated CFAR false-alarm claim.
-- `session`: finite run duration1..600seconds. RF also has a configured finite frame count.
-- `commit`: validate all required configuration. Does not open, calibrate or start RF.
-- `start`: separately and explicitly request radio calibration plus RF frames.
-- `stop`: stop the current RF run.
-- `status`: query status without changing configuration.
+## Configuration
 
-Boot and configuration loading do not issue RF configuration/calibration/start commands. RadioSS low-level APLL clock startup occurs at boot. The image has not been hardware-validated. During a run, configuration changes and another start are rejected; stop/status remain accepted.
+Commands are ASCII lines, at most 191 bytes before LF. Wait for the matching control ACK after each nonempty/noncomment line. `orConfig 1`, `profile room64_v1`, `mount <bracket_mm> <down_tilt_mdeg> <signed_offset_mm|unknown>`, `detect <first_bin> <last_bin> <minimum_power> <noise_multiplier>`, `session <seconds>`, `commit` retain their v1 meanings, except seconds must now be an integer 1–5. Historical 60-second configs are rejected. Reset/default duration is 5 seconds, but all required fields must still be explicitly supplied before commit. Use the new acceptance template with measured tilt.
 
-## Identity and replies
+No config or pairing command starts RF. Explicit `start` performs calibration and finite acquisition only after all gates pass. `stop` and `status` remain available on control. Configuration is rejected while non-idle.
+
+## Cross-port proof and one-shot Start
+
+1. After a fault-free boot self-test and successful config commit, the host generates a fresh 32-character lowercase hexadecimal nonce (128 random bits) for this attempt.
+2. Control command: `pair <nonce>`. Allowed only idle, not processing, valid committed config, passing boot self-test, neither transport latch failed, no app fault. It revokes prior permission and reserves a new session_id. A successful full data transmission emits:
 
 ```
-{"type":"identity","protocol":"original-radar-v1","app":"original-radar-sensing","version":"0.2.0","baud":115200,"sensing":true,"classifier":false}
-{"type":"ack","protocol":"original-radar-v1","command":"commit","code":0,"state":"idle","configured":true}
+{"type":"data_probe","channel":"data","protocol":"original-radar-v2","firmware_version":"0.3.0-rc1","build_id":"<24 hex>","pair_nonce":"<32 lowercase hex>","config_generation":1,"session_id":1}
 ```
 
-Ack `command` echoes the canonical recognized first token, or `invalid` for unknown input. Match this field to reject stale/unrelated replies. Ack code0 means successful handling. Negative values indicate rejection/failure. A comment or empty line gets no ack. Status contains `type:"status"`, `state`, `configured`, `fault`, `frames`, and additional diagnostics. States: `idle`, `starting`, `running`, `stopping`, `fault`. The firmware never labels a frame sitting/standing/walking without a validated classifier; `classifier:false` remains explicit.
+3. The control ACK for pair has code 0 only after successful data transmission. It does not prove the host received the probe. The host must separately observe the exact probe on its chosen data connection, matching the accepted build/protocol/nonce and generation/session.
+4. Only then send control `pairConfirm <same nonce>`. It must match the current successfully sent probe exactly. This enables one Start permission. Query fresh control `status`, verify the complete status and matching ACK, and require paired=true plus the same nonce/generation/session. A control status alone cannot replace data proof.
+5. Start consumes the internal permission before touching RF. paired stays true during the active session for correlation. Stop/end revokes it. A second Start requires a new pair/probe/confirm sequence.
+
+Successful commit increments config_generation; every probe increments session_id. Both are unsigned 32-bit integers and refuse overflow instead of wrapping. Reset clears them and the nonce, so the host must use a fresh random nonce on every connection/attempt. Configuration edits, commit, stop/end, failed pairing and transport faults revoke permission. A failed or mismatched pairConfirm also revokes it. Invalidated status may retain the old tuple for diagnostics, but paired=false is never authorization.
+
+The host must invalidate proof on either disconnect/reconnect/reset, config changes, faults, read errors, malformed data or stale data. Every frame must match the active tuple. This binds current streams by a host challenge; it is not authentication or a stable hardware device ID. TX-only SCI-B cannot detect whether USB/host software is consuming bytes, so host-side stop-on-loss is essential.
+
+## Control schema
+
+Identity includes type=identity, app=original-radar-sensing, version, build_id, baud=115200, sensing=true, classifier=false and the common control fields.
+
+ACK includes type=ack, command (canonical recognized token or invalid), integer code, state and configured, plus common control fields. Code 0 is successful handling; negative is rejection/failure. Comments/empty lines get no ACK. ACKs have no request ID; hosts must serialize requests and check fresh corresponding records.
+
+Status includes type=status, state (idle/starting/running/stopping/fault), configured:boolean, fault/capture_fault/rf_fault:uint32, rf_error:int32, frames/deadline_misses:uint32, firmware_version:string, build_id:24-hex string, selftest_version:1, selftest_ok:boolean, selftest_mask:uint32, paired:boolean, pair_nonce:string (empty before first probe), config_generation/session_id:uint32, control_tx_fault/data_tx_fault:boolean, and common control fields.
+
+Start error -25: no passing boot self-test; -26: application/transport fault; -20: invalid state/config; -27: no unconsumed paired permission. Pair errors -29: state/gate failure, -30: malformed nonce, -31: missing/mismatched probe confirmation, -32: exhausted session counter, -33: failed probe transmission. Faults 401/483/484/485 mean control transport/data setup/data transport/config-counter exhaustion. Boot self-test failure is fault 482.
+
+## Data frames
+
+The original frame payload is retained, with protocol v2 and mandatory channel="data", pair_nonce, config_generation and session_id. No frame serves as identity/self-test/ACK proof. Existing payload fields include sequence, timestamp_us, complete, missed_frames, capture_fault, quality, frame_events, processing_us, previous_tx_us, deadline_misses, mount, range_bin_m, velocity_bin_mps, profile_energy, detected_count, count, truncated and detections. Up to three detections are serialized; each has range_m, velocity_mps, power, four complex phasors, sensor_xyz_m, world_xyz_m, spatial_flags and activity=null. Axis/phase calibration remain unverified, so world height is not claimed. Record cap 1800 bytes; overflow/invalid values suppress the whole record and fault the run.
 
 ## RF/acquisition layout
 
@@ -45,50 +56,8 @@ Ack `command` echoes the canonical recognized first token, or `invalid` for unkn
 - Actual quantized slope/start frequency, not rounded nominal values, feed DSP/spatial calculations. No VCO forcing, beamforming phase steering, continuous-wave mode, or custom calibration bypass.
 - About0.195m range-bin spacing and evaluated bins4..30, roughly0.78–5.85m. Analog HPF175/350kHz attenuates close returns;350kHz corresponds to about1.75m at30MHz/us. These are design numbers, not verified detection range or accuracy.
 
-## Frame schema
+## Failure and no-RF acceptance
 
-```
-{
- "type":"frame","protocol":"original-radar-v1",
- "sequence":0,"timestamp_us":1234000,"complete":true,
- "missed_frames":0,"capture_fault":0,"quality":44,
- "frame_events":1,"processing_us":14000,"previous_tx_us":85000,"deadline_misses":0,
- "mount":{"bracket_top_m":2,"down_tilt_deg":15,"antenna_offset_m":null,
-          "antenna_height_m":null,"world_height_valid":false},
- "range_bin_m":0.195,"velocity_bin_mps":0.305,
- "profile_energy":[150,120,30],
- "detected_count":1,"count":1,"truncated":false,
- "detections":[{"range_m":2.34,"velocity_mps":0,"power":100,
-     "phasors":[[10,0],[10,0],[10,0],[10,0]],
-     "sensor_xyz_m":[0,2.34,0],"world_xyz_m":null,
-     "spatial_flags":3,"activity":null}]
-}
-```
+Each lane has an independent mutex, SDK SCI register readiness check and latched failure. Readiness uses at most six polls and five elapsed 1-ms ticks, with wrap-safe subtraction. Existing writeTimeout is 200 ticks. Failure releases the lock and blocks subsequent writes on that lane until reset. Data failure sets app fault and the command watchdog stops the run while control remains usable if healthy. Control failure can prevent any fault receipt. UART completion does not prove USB receipt.
 
-The example is illustrative, not a captured board result. On wire the object is one line. `timestamp_us` is derived from the1ms BIOS tick at EDMA frame completion. Counters and sequence reset per session; a new start should begin a new host recording epoch. Capture completeness, generation and ownership are checked before and after DSP; incomplete/overwritten/stale frames are not emitted as valid frames.
-
-`detected_count` is the DSP count (up to8). `count` is emitted detections (at most3), capped for115200-baud budget; `truncated` tells whether results were omitted. Per-RX phasors preserve physical orderRX0..3 and each pair is `[real,imag]`. Signed velocity follows mathematical IQ convention and is unverified on hardware. Sensor coordinates are exploratory unless phase and axis calibration flags are valid. World coordinates remain null until antenna offset, RX phase calibration and axis orientation are all known. A supplied antenna offset alone does not enable world-height/posture claims.
-
-`profile_energy` is `[total, static, variance]`, summed over all configured range bins, independent of the top-three peak limit. Total is range-Hann weighted, RX-mean and slow-time-mean ADC-count-squared power. Static is the squared coherent slow-time mean. Variance sums `max(total[bin]-static[bin],0)`; no slow-time Hann is applied to these three profiles. Neighboring-bin leakage is included. These are exploratory stationary/varying measurements, not calibrated physical target energies, person probabilities, or sitting/standing/walking labels.
-
-Quality bits are defined in `dsp/radar_dsp.h`; spatial bits in `spatial/original_spatial.h`. Host code should retain flags, nulls, counts, timestamps and unknown calibration rather than infer validity. The outgoing frame cap is1800bytes including newline, below the2304bytes/frame theoretical5Hz limit. `processing_us` measures DSP work before spatial serialization; the complete DSP+serialization+transmission path is also deadline-checked. The board measures DSP/previous-transmission duration and stops on capture/deadline faults rather than silently lowering acquisition rate. No raw ADC cube is streamed at115200.
-
-## Hardware validation boundary
-
-`complete:true` means the original software's event-count, frame-boundary and buffer-generation checks passed. It is not certification of ADCBUF bank mapping, IQ order, actual RF data, or target truth. Those require a physical known-reflector/acquisition test. Quality value44 marks uncalibrated phase/power and unverified velocity sign only. Fixed-window bank exposure and the positive-half FFT convention remain explicit hardware-validation gates; synthetic test tones cannot establish them.
-
-## 0.2.1-rc1 boot self-test gate (additive)
-
-No new command is introduced. Identity `version` is `0.2.1-rc1`; identity/status include `build_id` (24 lowercase hexadecimal characters). The ID identifies canonical source/config plus pinned tool versions, not the complete BIN bytes.
-
-A `status` response additionally carries:
-- `firmware_version`: string, `0.2.1-rc1`
-- `selftest_version`: integer, `1`
-- `selftest_ok`: JSON boolean, true only after completed boot self-test returns zero
-- `selftest_mask`: unsigned 32-bit integer, zero for pass; `4294967295` indicates not completed
-
-Synthetic test runs once per boot, after UART opens and before acquisition/radio initialization. Failure sets `state:"fault"`, `fault:482`; only command/status service starts. Status and stop remain usable without invoking radio/acquisition calls. Start cannot proceed. A fresh successful boot reports `configured:false`; users must query current status before proposing any separately approved sensing test.
-
-Failure bits: 1 boresight; 2 known phase plane; 4 nontrivial corrections/unequal amplitudes; 8 zero-input rejection; 16 NaN rejection; 32 low-coherence rejection; 64 caller guards. Bit 128 is reserved for the separately compiled internal-scratch diagnostic variant and is not produced by the normal RC self-test.
-
-Status responses use the existing trailing `ack` for `command:"status"`. There is no nonce; clear buffered/stale receipts after disconnect, reboot/identity, transport error or reconnection. A passed cached receipt concerns only the current boot and does not establish physical calibration or RF safety. Fault-free idle state and matching version/build are also required before later configuration/start consideration.
+First board acceptance is status/ACK framing plus no-RF cross-port probes only. Require exact accepted build and passing boot self-test before configuration, then matching data probe and fresh paired control status before considering a separately authorized 1–5 second run. Never synthesize success from malformed or missing records.

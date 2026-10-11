@@ -1,5 +1,14 @@
 # Changelog
 
+## Original sensing 0.3.0-rc1 — 2026-10-11
+
+- Added strict original-radar-v2 dual-UART separation: Enhanced control 115200, Standard data 921600; repaired JSON LF framing and bounded per-lane write guards.
+- Added fresh no-RF nonce/probe pairing and one-shot run permission; configuration changes, stops and faults revoke pairing. Firmware duration is limited to 1–5 seconds.
+- Preserved the scalar spatial repair, boot self-test, current mounting guide and all 98 prior license/notice/config files; added an intentionally incomplete measured-geometry acceptance template.
+- Published audited source/BIN, tests and sanitized aggregate validation. Initial physical no-RF dual-port acceptance remains pending; matching viewer forthcoming. Three exploratory peaks are not validated people tracking.
+- Existing releases, hosted links and private-data boundaries remain unchanged. No contribution-upload backend or finalized data terms are provided by this release.
+
+
 ## 2026-10-11 — Hosted Radar Studio launch
 
 - Linked the public hosted viewer for desktop/ChromeOS Chrome with Web Serial; local versioned downloads remain available.

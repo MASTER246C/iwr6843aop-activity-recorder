@@ -10,7 +10,7 @@ Use only the viewer workflow matching the firmware already on your IWR6843AOP bo
 
 Recordings are handled in your browser and saved through explicit local downloads; opening the site does not submit recordings to GitHub or the dataset. Review consent and privacy before sharing any export. The software remains **source-available under its existing no-resale license**; required notices and separate third-party terms still apply.
 
-For original firmware, first query status only. The reviewed preview gate remains pinned to **0.2.1-rc1 / build 846a3ae3184aa5d26e5d0ea3**, successful boot self-test and fault-free idle, then current-connection configuration and a separate manual **1–5 second** Start. Legacy firmware and longer runs remain blocked. Physical hardware/RF acceptance and measurement accuracy are not established by hosting.
+The hosted viewer must match the installed firmware and its exact reviewed build. The new **0.3.0-rc1 dual-UART candidate requires a matching v2 viewer, forthcoming**; do not use the older single-port viewer or its 0.2.1-rc1 gate for this image. Initial physical acceptance is a no-RF control/data pairing capture, followed by review before any separately authorized 1–5 second sensing test. Hosting does not establish hardware acceptance or measurement accuracy.
 
 
 **Mount height is configurable. Current user-reported reference: 4 feet (1.2192 m) from floor to the flat TOP of the bracket, excluding screws.**
@@ -31,13 +31,17 @@ or a pretrained activity model. Use Radar Studio for the integrated application.
 Real-browser rendering, hardware throughput and real-world classification
 accuracy remain unverified. No participant captures are included.
 
-## Original sensing firmware 0.2.1-rc1
+## Original sensing firmware 0.3.0-rc1
 
-[Corrected candidate BIN, configuration, original source and dedicated collector](firmware/original-radar-sensing/README.md) are included. Version 0.2.1-rc1 repairs the reproduced spatial-estimator defect and adds a no-RF boot self-test gate. It is offline-verified, with physical board acceptance pending. Download the complete Original Radar Sensing release ZIP with its required notices. This is a separate JSON protocol, not the TI demo CLI/TLV path used by v0.5/v0.6.
+[Dual-UART acceptance candidate, source, configuration and notices](firmware/original-radar-sensing/README.md) are included. Download the complete [sensing-v0.3.0-rc1 prerelease](https://github.com/MASTER246C/iwr6843aop-activity-recorder/releases/tag/sensing-v0.3.0-rc1) and verify its checksum. The matching dual-port viewer is forthcoming; the existing single-port viewer and legacy collector are not compatible controllers for this image.
 
-**Never flashed, booted or hardware-validated.** Movement/position measurements retain stationary returns; no heart/breath estimates, completed people-ID tracker, activity classifier or demonstrated tracking accuracy. The current-mount configuration template requires a measured tilt before use; its offset remains unknown. After any separately authorized flash, the first acceptance step is status-only: require the exact version/build identity, successful boot self-test, idle state and zero faults. Do not start RF to troubleshoot a failed or missing result. Read the firmware guide and validation gates before any physical use.
+This candidate uses **original-radar-v2**, with Enhanced control at **115200 baud** and Standard data at **921600 baud**. Strict newline framing, lane separation and a fresh per-run nonce bind control receipts to a data-only probe. Pairing never starts RF. Firmware and viewer acceptance are restricted to separately initiated **1–5 second** tests; longer sessions are rejected.
 
-The BIN includes original application code plus identified TI/runtime support. Project no-resale terms cover original portions only; third-party components retain their own licenses and TI-device restrictions. Full notices accompany the package.
+**Physical no-RF dual-port acceptance is pending.** After a separately authorized flash, first verify fresh control status, exact build identity, passing boot self-test, idle state and zero faults. Use the measured-geometry acceptance template and matching viewer for the no-RF pairing sequence, then stop for receipt review before considering a later RF test. Never use RF start to troubleshoot malformed framing or failed pairing.
+
+The stream contains at most three exploratory peaks per frame. Peaks and any host-side candidate IDs are not validated people counts, human identities, calibrated positions or activity classifications. Current mounting tilt and calibration remain unverified.
+
+The BIN includes original application code plus identified TI/runtime support. Project no-resale terms cover original portions only; third-party components retain their own licenses and TI-device restrictions. Full notices accompany the package. Earlier tags and release downloads are unchanged.
 
 ## Three related projects
 

@@ -26,7 +26,7 @@ size_t or_frame_json(char *out,size_t capacity,const OrConfig *cfg,const os_conf
                      const RadarDspResult *result,const OrTiming *timing)
 {
     Writer w;unsigned count,i,rx;os_complex phasors[4];os_result point;int valid;
-    if(out==NULL || capacity==0U || cfg==NULL || spatial==NULL || result==NULL || timing==NULL)return 0U;
+    if(out==NULL || capacity==0U || cfg==NULL || spatial==NULL || result==NULL || timing==NULL || timing->link==NULL || !or_link_nonce_valid(timing->link->nonce))return 0U;
     if(result->detection_count>RADAR_DSP_MAX_DETECTIONS ||
        !finite_value(result->range_bin_m)||result->range_bin_m<=0.0f ||
        !finite_value(result->velocity_bin_mps)||result->velocity_bin_mps<=0.0f)return 0U;
@@ -39,13 +39,15 @@ size_t or_frame_json(char *out,size_t capacity,const OrConfig *cfg,const os_conf
     }
     w.data=out;w.capacity=capacity;w.used=0U;w.failed=0;
     count=result->detection_count;if(count>OR_JSON_MAX_DETECTIONS)count=OR_JSON_MAX_DETECTIONS;
-    add(&w,"{\"type\":\"frame\",\"protocol\":\"original-radar-v1\",\"sequence\":%lu,\"timestamp_us\":%llu,"
+    add(&w,"{\"type\":\"frame\",\"protocol\":\"original-radar-v2\",\"sequence\":%lu,\"timestamp_us\":%llu,"
         "\"complete\":true,\"missed_frames\":%lu,\"capture_fault\":%lu,\"quality\":%lu,"
         "\"frame_events\":%lu,\"processing_us\":%lu,\"previous_tx_us\":%lu,\"deadline_misses\":%lu,",
         (unsigned long)result->sequence,(unsigned long long)result->timestamp_us,
         (unsigned long)result->missed_frames,(unsigned long)timing->capture_fault,
         (unsigned long)result->quality_flags,(unsigned long)timing->frame_events,(unsigned long)timing->processing_us,
         (unsigned long)timing->previous_tx_us,(unsigned long)timing->deadline_misses);
+    add(&w,"\"channel\":\"data\",\"pair_nonce\":\"%s\",\"config_generation\":%lu,\"session_id\":%lu,",
+        timing->link->nonce,(unsigned long)timing->link->config_generation,(unsigned long)timing->link->session_id);
     add(&w,"\"mount\":{\"bracket_top_m\":");number(&w,cfg->bracket_top_mm/1000.0f);
     add(&w,",\"down_tilt_deg\":");number(&w,cfg->down_tilt_mdeg/1000.0f);
     add(&w,",\"antenna_offset_m\":");if(cfg->antenna_offset_known)number(&w,cfg->antenna_vertical_offset_mm/1000.0f);else add(&w,"null");

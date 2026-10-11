@@ -10,7 +10,7 @@ void or_config_reset(OrConfig *cfg)
 {
     memset(cfg, 0, sizeof(*cfg));
     cfg->bracket_top_mm=2000; cfg->down_tilt_mdeg=15000;
-    cfg->session_seconds=60; cfg->first_range_bin=4; cfg->last_range_bin=30;
+    cfg->session_seconds=5; cfg->first_range_bin=4; cfg->last_range_bin=30;
     cfg->minimum_power=64; cfg->noise_multiplier=8;
 }
 static int integer(const char *s, long low, long high, long *out)
@@ -31,7 +31,7 @@ int or_config_valid(const OrConfig *cfg)
         cfg->first_range_bin>=1U && cfg->first_range_bin<cfg->last_range_bin &&
         cfg->last_range_bin<OR_ADC_SAMPLES/2U && cfg->minimum_power>=1U &&
         cfg->minimum_power<=1000000000U && cfg->noise_multiplier>=1U &&
-        cfg->noise_multiplier<=1000U && cfg->session_seconds>=1U && cfg->session_seconds<=600U;
+        cfg->noise_multiplier<=1000U && cfg->session_seconds>=1U && cfg->session_seconds<=5U;
 }
 OrCommand or_config_line(OrConfig *cfg, const char *line, int running)
 {
@@ -77,7 +77,7 @@ OrCommand or_config_line(OrConfig *cfg, const char *line, int running)
         next.first_range_bin=(uint16_t)a; next.last_range_bin=(uint16_t)c;
         next.minimum_power=(uint32_t)d; next.noise_multiplier=(uint32_t)e;
         next.fields_seen|=4U; j=1U;
-    } else if(n==2U && strcmp(v[0],"session")==0 && integer(v[1],1,600,&a)) {
+    } else if(n==2U && strcmp(v[0],"session")==0 && integer(v[1],1,5,&a)) {
         next.session_seconds=(uint16_t)a; next.fields_seen|=8U; j=1U;
     } else if(n==1U && strcmp(v[0],"commit")==0) {
         if(!or_config_valid(&next)) return OR_CMD_INCOMPLETE;

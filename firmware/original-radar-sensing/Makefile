@@ -21,7 +21,7 @@ LIBS := $(foreach driver,$(DRIVERS),-i$(SDK)/ti/drivers/$(driver)/lib -llib$(dri
  -i$(SDK)/ti/control/mmwavelink/lib -llibmmwavelink_xwr68xx.aer4f
 HEADERS := $(wildcard src/*.h dsp/*.h spatial/*.h) src/build_identity.h
 IDENTITY_INPUTS := $(filter-out src/build_identity.h,$(wildcard src/*.c src/*.h dsp/*.c dsp/*.h spatial/*.c spatial/*.h)) Makefile sensing.cfg application.cmd tools/update_build_identity.py
-OBJECTS := $(addprefix $(BUILD)/,main.oer4f serial_line.oer4f sensing_config.oer4f capture_model.oer4f acquisition.oer4f radio.oer4f rf_profile.oer4f energy_summary.oer4f json_output.oer4f radar_dsp.oer4f original_spatial.oer4f spatial_selftest.oer4f)
+OBJECTS := $(addprefix $(BUILD)/,main.oer4f serial_line.oer4f sensing_config.oer4f capture_model.oer4f acquisition.oer4f radio.oer4f rf_profile.oer4f energy_summary.oer4f json_output.oer4f radar_dsp.oer4f original_spatial.oer4f spatial_selftest.oer4f record_transport.oer4f link_session.oer4f)
 .PHONY: all configure test verify clean
 all: $(OUT)
 configure: $(CFG)/.configured

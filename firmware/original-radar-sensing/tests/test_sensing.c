@@ -24,11 +24,13 @@ static void configuration(void)
     assert(or_config_line(&cfg,"mount 2000 15000 unknown",0)==OR_CMD_CHANGED);
     assert(!cfg.antenna_offset_known);
     assert(or_config_line(&cfg,"detect 4 30 64 8",0)==OR_CMD_CHANGED);
-    assert(or_config_line(&cfg,"session 60",0)==OR_CMD_CHANGED);
+    assert(or_config_line(&cfg,"session 5",0)==OR_CMD_CHANGED);
     assert(or_config_line(&cfg,"commit",0)==OR_CMD_COMMIT);
     assert(cfg.committed&&or_config_valid(&cfg));saved=cfg;
     assert(or_config_line(&cfg,"start",0)==OR_CMD_START);
     assert(or_config_line(&cfg,"session 0",0)==OR_CMD_INVALID);
+    assert(or_config_line(&cfg,"session 6",0)==OR_CMD_INVALID);
+    assert(or_config_line(&cfg,"session 60",0)==OR_CMD_INVALID);
     assert(or_config_line(&cfg,"session 9999999999999999999999999999999999",0)==OR_CMD_INVALID);
     assert(or_config_line(&cfg,"profile room64_v1 extra",0)==OR_CMD_INVALID);
     assert(or_config_line(&cfg,"start garbage",0)==OR_CMD_INVALID);
@@ -123,7 +125,8 @@ static void energy(void)
 }
 static void json(void)
 {
-    os_config spatial;OrTiming timing={UINT32_MAX,UINT32_MAX,UINT32_MAX,UINT32_MAX,UINT32_MAX,{FLT_MAX,FLT_MAX,FLT_MAX}};
+    OrLinkSession link={"0123456789abcdef0123456789abcdef",UINT32_MAX,UINT32_MAX,0,1,0};
+    os_config spatial;OrTiming timing={UINT32_MAX,UINT32_MAX,UINT32_MAX,UINT32_MAX,UINT32_MAX,{FLT_MAX,FLT_MAX,FLT_MAX},&link};
     char out[OR_JSON_MAX+1U];char guard[4]={'A','B','C','D'};size_t n;unsigned i,rx;
     os_default_config(&spatial,60.8e9f);memset(&result,0,sizeof(result));
     result.sequence=UINT32_MAX;result.timestamp_us=UINT64_MAX;result.missed_frames=UINT32_MAX;
@@ -145,7 +148,7 @@ static void json(void)
     memset(&result,0,sizeof(result));result.range_bin_m=0.1953125f;result.velocity_bin_mps=0.306f;
     result.detection_count=1;result.detections[0].range_m=2.34375f;result.detections[0].power=100.0f;
     for(rx=0;rx<4;++rx)result.detections[0].rx_phasor[rx].real=10.0f;
-    memset(&timing,0,sizeof(timing));
+    memset(&timing,0,sizeof(timing));timing.link=&link;
     n=or_frame_json(out,sizeof(out),&cfg,&spatial,&result,&timing);assert(n>0);fputs(out,stdout);
     result.range_bin_m=NAN;result.detections[0].power=INFINITY;
     n=or_frame_json(out,sizeof(out),&cfg,&spatial,&result,&timing);assert(n==0);
