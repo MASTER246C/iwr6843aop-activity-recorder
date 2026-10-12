@@ -1,3 +1,7 @@
+> **First combined physical run, 2026-10-12:** [results and remaining checks](https://github.com/MASTER246C/iwr6843aop-activity-recorder/blob/main/docs/FIRST_COMBINED_RUN_2026-10-12.md). Firmware 0.3.2-rc1 with Radar Studio v0.9.0-preview.5 recorded 283 consecutive radar frames over 56.4 seconds, acknowledged manual Stop and returned to fault-free idle. The C920e recording passed file-integrity and video-decoding checks. The tested camera-label segment stayed unknown; timing alignment and radar training eligibility remain unresolved. No recordings or dataset samples were published.
+
+> **Current release path:** [sensing-v0.3.2-rc1](https://github.com/MASTER246C/iwr6843aop-activity-recorder/releases/tag/sensing-v0.3.2-rc1), [viewer v0.9.0-preview.5](https://github.com/MASTER246C/radar-studio-chromebook/releases/tag/v0.9.0-preview.5), and [current camera/training workflow](original_training/README.md). Version-specific 0.3.1 / preview.3 sections below describe the retained earlier timed-test release; they do not supersede the current continuous-run report.
+
 # IWR6843AOP Activity Recorder
 
 ## Hosted viewer
@@ -31,7 +35,7 @@ or a pretrained activity model. Use Radar Studio for the integrated application.
 Real-browser rendering, hardware throughput and real-world classification
 accuracy remain unverified. No participant captures are included.
 
-## Original sensing firmware 0.3.1-rc1
+## Historical sensing firmware 0.3.1-rc1
 
 [Dual-UART acceptance candidate, source, configuration and notices](firmware/original-radar-sensing/README.md) are included. Download the complete [sensing-v0.3.1-rc1 prerelease](https://github.com/MASTER246C/iwr6843aop-activity-recorder/releases/tag/sensing-v0.3.1-rc1) and verify its checksum. The matching dual-port viewer is [Radar Studio v0.9.0-preview.3 source](https://github.com/MASTER246C/radar-studio-chromebook) or the [hosted viewer](https://radar-studio.master246c.chatgpt.site); the existing single-port viewer and legacy collector are not compatible controllers for this image.
 
@@ -57,7 +61,7 @@ The BIN includes original application code plus identified TI/runtime support. P
 
 **These are host analysis tools, not firmware to flash.** Python is not a prerequisite for the browser viewer. No recordings, trained weights, cloud inference, uploads or camera hardware are included. Training requires suitable human-reviewed exports with explicit session and participant-group splits; synthetic tests do not establish recognition accuracy. Labels cannot repair rejected sensor data. The tool independently hashes input bytes and frozen canonical inputs but does not authenticate the producer's embedded hash or an absent original capture. Read its admission, split and resource limits before use.
 
-The shared TI offline feature extractor now excludes windows overlapped by unfinished or incomplete human events. Both repositories use the same v0.6-bundle2 exact pins. The firmware pin, no-RF pairing and manual 1–5 second sensing gates remain separate and unchanged. Camera work is limited to documented synchronization groundwork; no chosen camera, automated video capture or validated alignment is supplied. Software licensing and separate capture-consent requirements still apply.
+The shared TI offline feature extractor now excludes windows overlapped by unfinished or incomplete human events. Both repositories use the same v0.6-bundle2 exact pins. The firmware pin, no-RF pairing and manual 1–5 second sensing gates remain separate and unchanged. The current viewer supplies explicit local camera recording and MediaPipe-assisted review; the C920e was physically tested in the linked first-run report. Alignment and activity accuracy remain unvalidated. Software licensing and separate capture-consent requirements still apply.
 
 ## Use and reproduce checks
 
@@ -83,8 +87,7 @@ AI proposals must remain distinguishable from final human-reviewed annotations.
 
 Collection/export should be explicitly initiated and local. Publishing recordings
 is a separate consent, privacy, quality and authorization decision. Do not upload
-captures or participant details in issues. Future camera/AI review and raw-ADC
-capture require their own validated workflows and metadata; none is supplied now.
+captures or participant details in issues. Camera-assisted review requires measured timing and human decisions before training admission. Raw-ADC capture is not supplied by this workflow.
 
 ## Software license
 
