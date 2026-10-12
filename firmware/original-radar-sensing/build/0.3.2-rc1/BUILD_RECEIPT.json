@@ -1,0 +1,87 @@
+{
+  "firmware_version": "0.3.2-rc1",
+  "protocol": "original-radar-v2",
+  "build_id": "87589b2c32638ae119334c72",
+  "source_base_commit": "fbec6dfd3583cacd2e5bf8b655966efd396b6e44",
+  "source_changes": "local uncommitted candidate",
+  "status": "BUILT_OFFLINE_TESTED_NOT_FLASHED_NOT_PUBLISHED",
+  "hardware_accessed": false,
+  "physical_acceptance": "PENDING",
+  "tool_versions": "SDK 03.06.02.00-LTS; ARM CGT 16.9.6.LTS; BIOS 6.73.01.01; XDC 3.50.08.24",
+  "build_directory": "build/0.3.2-rc1",
+  "compiler_exit": 0,
+  "compiler_warnings_as_errors": true,
+  "artifacts": {
+    "original_radar_sensing.bin": {
+      "bytes": 346436,
+      "sha256": "162db11aa7472d939b1039557bcad95253752c6562261d5ed851d6216c574fb9"
+    },
+    "original_radar_sensing.rprc": {
+      "bytes": 98832,
+      "sha256": "f34d65c624997fe17cad29c51dea1d80798f788c1d1318efbd6d432bc180b72c"
+    },
+    "original_radar_sensing.xer4f": {
+      "bytes": 2808208,
+      "sha256": "2b08810c8f9b9c31d9f81039c334d269cc468f63d63894641fc295d622647ff6"
+    },
+    "original_radar_sensing.map": {
+      "bytes": 275692,
+      "sha256": "c3bc05f933247f0744459caa038867c6c0c13e712aa89e21f2b31985bd6ae4a8"
+    },
+    "elf-verification.json": {
+      "bytes": 2052,
+      "sha256": "a429e8d8e230beb6cb2faaac0dccc8e593538a995fb5ac5a55ac86b0830b64ca"
+    },
+    "host-tests-ubsan.log": {
+      "bytes": 4457,
+      "sha256": "13e5cf0a34e383347c187567435d23b509765358c8dc6236cd3bc91257d9e461"
+    }
+  },
+  "appended_crc32": "0xd2704b46",
+  "independent_crc_match": true,
+  "mss_rprc_exact_in_bin": true,
+  "repeat_official_packaging_byte_equal": true,
+  "source_identity_matches": true,
+  "behavior_tests": {
+    "result": "PASS",
+    "host_compiler": "Zig 0.15.2 cc on Windows",
+    "sanitizer": "undefined",
+    "ubsan_deliberate_signed_overflow_probe": "trapped with exit3",
+    "asan": "UNAVAILABLE: address-only probe failed to link __asan_* runtime; combined flag acceptance is not ASan evidence",
+    "portable_c_programs": [
+      "sensing/config/capture/JSON",
+      "DSP706checks",
+      "spatial1874cases",
+      "no-RF boot selftest",
+      "record_transport",
+      "link_session lease/correlation/rollover",
+      "AOP3228cases"
+    ],
+    "legacy_collector_tests": 13,
+    "actual_main_mock": "PASS: 72-minute synthetic continuous run, lease expiry, wrong tuple, manual Stop, active pairing revocation and inherited gates; additional bounded five-second watchdog threshold at6000/6001ms passed",
+    "dual_framing_model": {
+      "sessions": 1000,
+      "control_records": 5000,
+      "data_records": 2000,
+      "result": "PASS"
+    },
+    "worst_case_frame_bytes": 1625,
+    "record_cap_bytes": 1800
+  },
+  "official_packaging_warning": "SDK crc_multicore_image reports Failed to remove CRC temp file; twice reproduced, exit0, independent CRC and exact RPRC-in-BIN checks passed; tools now execute in disposable temp cwd and leave no crcFile in source",
+  "prior_0_3_1_bin": {
+    "path": "build/original_radar_sensing.bin",
+    "sha256": "668476d4130f659cef4c1fea3b8eb436d5025f20853dc30ca83380f9bd38a6bf",
+    "preserved": true
+  },
+  "prior_release_manifest_preserved": true,
+  "limitations": [
+    "No physical boot/UART/RF/EDMA tests",
+    "No target instruction emulation for this new build",
+    "No measured target deadlines/stack/thermal endurance",
+    "RTOS/callback stalls prevent hard wall-clock Stop guarantee",
+    "No calibration or ML acceptance"
+  ],
+  "line_ending_note": "Source identity and candidate manifest bind current actual filesystem bytes. Git core.autocrlf emits conversion warnings; preserve exact package bytes or reconcile canonical Git blobs before publishing."
+}
+
