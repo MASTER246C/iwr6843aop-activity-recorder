@@ -1,4 +1,4 @@
-# Original radar local training scaffold (v0.1.0-preview.2)
+# Original radar local training scaffold (v0.1.0-preview.3)
 
 Modified/new project component, 2026-10-11. Private local analysis only. This is
 **software scaffolding tested with explicitly synthetic fixtures**, not a useful
@@ -15,7 +15,7 @@ rename original firmware detections as TI tracks or reuse its TI extractor.
 It accepts only the new original-radar dataset export v1 from the candidate
 `original_sessions.js` session/replay/review module. Existing recorder and dataset
 planning material was inspected; this is the concrete original-protocol bridge.
-The current host-tool patch repairs continuity checks. The matching viewer update is maintained separately in Radar Studio.
+The current host-tool patch adds a verified local camera/radar bundle importer while retaining continuity checks. The matching viewer update is maintained separately in Radar Studio.
 
 ## Run locally
 
@@ -150,3 +150,7 @@ Python code/docs here are original project material under LICENSE. No TI firmwar
 SDK binaries, proprietary algorithms, model weights or private inputs are bundled.
 TI and other third-party materials retain their own notices and rights. Source
 licensing does not grant permission to publish participant datasets.
+
+## Optional reviewed camera labels
+
+`camera_import.py --bundle "recording-folder" --review "video.review.json" --output "new-dataset.json"` verifies exact video/raw file receipts, accepted radar identity, data-port pairing proof and human-matched clock anchors. Start local recording before configuring and pairing radar. Camera proposals stay unreviewed until explicitly reviewed; unknown or ambiguous activity remains excluded. The output is dataset v1 and uses the same quality, participant split and held-out evaluation gates above. This does not train a model automatically. See the viewer CAMERA_WORKFLOW.md.

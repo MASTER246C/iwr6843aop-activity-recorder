@@ -13,7 +13,7 @@ int or_link_nonce_valid(const char *nonce)
 }
 void or_link_revoke(OrLinkSession *link)
 {
-    link->probe_sent=0U;link->paired=0U;link->start_permit=0U;
+    link->probe_sent=0U;link->paired=0U;link->start_permit=0U;link->lease_active=0U;
 }
 int or_link_commit(OrLinkSession *link)
 {
@@ -39,4 +39,48 @@ int or_link_consume(OrLinkSession *link)
 {
     if(!link->paired||!link->start_permit)return -1;
     link->start_permit=0U;return 0;
+}
+int or_link_lease_begin(OrLinkSession *link,uint32_t now_ms)
+{
+    if(!link->paired || link->start_permit)return -1;
+    link->last_keepalive_ms=now_ms;link->lease_active=1U;return 0;
+}
+int or_link_lease_expired(const OrLinkSession *link,uint32_t now_ms)
+{
+    return link->lease_active &&
+        (uint32_t)(now_ms-link->last_keepalive_ms)>=OR_KEEPALIVE_LEASE_MS;
+}
+static int whitespace(char c){return c==' ' || c=='\t' || c=='\r';}
+static int decimal_u32(const char **cursor,uint32_t *out)
+{
+    const char *p=*cursor;uint32_t value=0U;
+    while(whitespace(*p))++p;
+    if(*p<'0' || *p>'9')return 0;
+    do {
+        uint32_t digit=(uint32_t)(*p-'0');
+        if(value>(UINT32_MAX-digit)/10U)return 0;
+        value=value*10U+digit;++p;
+    }while(*p>='0' && *p<='9');
+    if(*p!='\0' && !whitespace(*p))return 0;
+    *cursor=p;*out=value;return 1;
+}
+int or_link_keepalive(OrLinkSession *link,const char *arguments,uint32_t now_ms)
+{
+    char nonce[OR_PAIR_NONCE_LENGTH+1U];const char *p=arguments;
+    uint32_t generation,session;unsigned i;
+    if(p==NULL || !link->paired || !link->lease_active ||
+       or_link_lease_expired(link,now_ms))return -1;
+    while(whitespace(*p))++p;
+    for(i=0U;i<OR_PAIR_NONCE_LENGTH;++i) {
+        if(*p=='\0' || whitespace(*p))return -1;
+        nonce[i]=*p++;
+    }
+    nonce[OR_PAIR_NONCE_LENGTH]='\0';
+    if(!whitespace(*p) || !or_link_nonce_valid(nonce) ||
+       !decimal_u32(&p,&generation) || !whitespace(*p) ||
+       !decimal_u32(&p,&session))return -1;
+    while(whitespace(*p))++p;
+    if(*p!='\0' || strcmp(nonce,link->nonce)!=0 ||
+       generation!=link->config_generation || session!=link->session_id)return -1;
+    link->last_keepalive_ms=now_ms;return 0;
 }

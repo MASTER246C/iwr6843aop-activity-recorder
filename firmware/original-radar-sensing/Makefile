@@ -6,7 +6,8 @@ XDC_ROOT ?= $(TI_ROOT)/xdctools_3_50_08_24_core
 CGT_ROOT ?= /opt/ti/ti-cgt-arm_16.9.6.LTS
 CC := $(CGT_ROOT)/bin/armcl
 HOST_CC ?= cc
-BUILD := build
+PYTHON ?= python3
+BUILD ?= build
 CFG := $(BUILD)/configPkg
 OUT := $(BUILD)/original_radar_sensing.xer4f
 ARCH := -mv7R4 --code_state=16 --float_support=VFPv3D16 --abi=eabi -me --enum_type=int
@@ -32,7 +33,7 @@ $(CFG)/.configured: sensing.cfg
 	 -r release -c $(CGT_ROOT) --compileOptions "--enum_type=int" -o $(CFG) sensing.cfg
 	touch $(CFG)/.configured
 src/build_identity.h: $(IDENTITY_INPUTS)
-	python3 tools/update_build_identity.py
+	$(PYTHON) tools/update_build_identity.py
 vpath %.c src dsp spatial
 $(BUILD)/%.oer4f: %.c $(HEADERS) $(CFG)/.configured Makefile
 	$(CC) $(CFLAGS) --cmd_file=$(CFG)/compiler.opt -c $< --output_file=$@
@@ -45,6 +46,6 @@ $(OUT): $(OBJECTS) application.cmd $(CFG)/.configured
 test:
 	bash tests/run_tests.sh
 verify: all test
-	python3 tools/verify_sensing.py
+	$(PYTHON) tools/verify_sensing.py
 clean:
 	rm -rf $(BUILD) src/sysbios src/makefile.libs src/.exclude

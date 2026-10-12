@@ -48,13 +48,14 @@ typedef struct { int clockCfg,mpuCfg,dssCfg;} SOC_Cfg;
 #define SOC_DSSCfg_HALT 0
 static unsigned hardware_calls,starts,task_creates,chosen_mask,fail_data_open;
 static unsigned control_writes,data_writes;
+static uint32_t mock_now;
 static char last_message[1024];
 static int Pinmux_Set_OverrideCtrl(int a,int b,int c){(void)a;(void)b;(void)c;return 0;}
 static int Pinmux_Set_FuncSel(int a,int b){(void)a;(void)b;return 0;}
 static GateMutex_Handle GateMutex_create(void*a,void*b){(void)a;(void)b;return (void*)1;}
 static IArg GateMutex_enter(GateMutex_Handle a){(void)a;return 0;}
 static void GateMutex_leave(GateMutex_Handle a,IArg b){(void)a;(void)b;}
-static uint32_t Clock_getTicks(void){return 0;}
+static uint32_t Clock_getTicks(void){return mock_now;}
 static void UART_init(void){}
 static void UART_Params_init(UART_Params*p){memset(p,0,sizeof(*p));}
 static UART_Handle UART_open(unsigned a,UART_Params*b){assert(b->baudRate==(a?921600U:115200U));if(a && fail_data_open)return NULL;return a?(void*)2:(void*)1;}
@@ -73,7 +74,7 @@ uint32_t os_spatial_no_rf_selftest(void){return chosen_mask;}
 static uint32_t or_acquisition_fault(void){hardware_calls++;return 0;}
 static uint32_t or_acquisition_completed(void){hardware_calls++;return 0;}
 static uint32_t or_acquisition_frame_events(void){hardware_calls++;return 0;}
-static uint32_t or_acquisition_last_ms(void){hardware_calls++;return 0;}
+static uint32_t or_acquisition_last_ms(void){hardware_calls++;return mock_now;}
 static int or_acquisition_init(SOC_Handle a,Semaphore_Handle b){(void)a;(void)b;hardware_calls++;return 0;}
 static void or_acquisition_stop(void){hardware_calls++;}
 static int or_acquisition_arm(void){hardware_calls++;return 0;}
@@ -98,7 +99,7 @@ int main(void){
   init_task(0,0);
   assert(!selftest_passed());assert(app_state==APP_FAULT);assert(app_fault==482);
   assert(hardware_calls==0);assert(starts==0);assert(task_creates==1);
-  assert(strstr(last_message,"\"selftest_ok\":false"));assert(strstr(last_message,"\"firmware_version\":\"0.3.1-rc1\""));
+  assert(strstr(last_message,"\"selftest_ok\":false"));assert(strstr(last_message,"\"firmware_version\":\"0.3.2-rc1\""));
   {char status[]="status";char stop[]="stop";char start[]="start";handle_line(status);handle_line(stop);handle_line(start);}
   assert(hardware_calls==0);assert(starts==0);assert(app_state==APP_FAULT);
  }
@@ -159,15 +160,61 @@ int main(void){
  mock_sci.SCIFLR=256U;mock_sci_b.SCIFLR=0;
  assert(transport_ready(NULL) && !transport_ready((void*)1));
  mock_sci_b.SCIFLR=256U;
+ /* Continuous mode survives a long healthy run and stops on lease loss. */
+ app_fault=0;app_state=APP_IDLE;data_record_tx.failed=0;config.session_seconds=0U;
  assert(pairing_command("pair","pair 0123456789abcdef0123456789abcdef")==0);
  assert(pairing_command("pairConfirm","pairConfirm 0123456789abcdef0123456789abcdef")==0);
- assert(begin_run()==0 && starts==2);
+ assert(begin_run()==0 && link_session.lease_active);
+ {
+  char alive[128];unsigned second;
+  snprintf(alive,sizeof(alive),"keepalive %s %lu %lu",link_session.nonce,
+      (unsigned long)link_session.config_generation,(unsigned long)link_session.session_id);
+  for(second=1U;second<=4320U;++second) {
+   mock_now=second*1000U;handle_line(alive);watchdog();
+   assert(app_state==APP_RUNNING && app_fault==0U);
+   assert(strstr(last_message,"\"command\":\"keepalive\"") && strstr(last_message,"\"code\":0"));
+   assert(strstr(last_message,link_session.nonce));
+  }
+  {char wrong[]="keepalive 0123456789abcdef0123456789abcdef 0 0";
+   handle_line(wrong);assert(strstr(last_message,"\"code\":-34"));}
+  assert(link_session.last_keepalive_ms==4320000U);
+  mock_now+=4999U;watchdog();assert(app_state==APP_RUNNING);
+  mock_now+=1U;watchdog();assert(app_state==APP_FAULT && app_fault==463U && !link_session.paired);
+  handle_line(alive);assert(strstr(last_message,"\"code\":-34"));
+ }
+ /* Manual Stop revokes the continuous lease without imposing a duration. */
+ app_fault=0;app_state=APP_IDLE;
+ assert(pairing_command("pair","pair 0123456789abcdef0123456789abcdef")==0);
+ assert(pairing_command("pairConfirm","pairConfirm 0123456789abcdef0123456789abcdef")==0);
+ assert(begin_run()==0 && link_session.lease_active);
+ {char stop[]="stop";handle_line(stop);}
+ assert(app_state==APP_IDLE && !link_session.lease_active && !link_session.paired);
+ /* Revoking pairing during a continuous run must not disable supervision. */
+ assert(pairing_command("pair","pair 0123456789abcdef0123456789abcdef")==0);
+ assert(pairing_command("pairConfirm","pairConfirm 0123456789abcdef0123456789abcdef")==0);
+ assert(begin_run()==0 && link_session.lease_active);
+ assert(pairing_command("pair","pair 0123456789abcdef0123456789abcdef")<0);
+ assert(!link_session.lease_active);watchdog();
+ assert(app_state==APP_FAULT && app_fault==463U);
+ app_fault=0;app_state=APP_IDLE;
+ mock_now=0U;config.session_seconds=5U;
+ assert(pairing_command("pair","pair 0123456789abcdef0123456789abcdef")==0);
+ assert(pairing_command("pairConfirm","pairConfirm 0123456789abcdef0123456789abcdef")==0);
+ assert(begin_run()==0 && starts==5);
  mock_sci_b.SCIFLR=0;assert(send_data("{}\n",3)<0);
  assert(app_fault==484U && !link_session.paired && app_state==APP_RUNNING);
  hardware_calls=0;watchdog();
  assert(app_state==APP_FAULT && hardware_calls>0 && !link_session.start_permit);
  assert(!record_tx.failed);status_message();assert(strstr(last_message,"\"data_tx_fault\":true"));
  mock_sci_b.SCIFLR=256U;
+ /* The legacy bounded five-second session still has its duration watchdog. */
+ app_fault=0;app_state=APP_IDLE;data_record_tx.failed=0U;mock_now=0U;
+ assert(pairing_command("pair","pair 0123456789abcdef0123456789abcdef")==0);
+ assert(pairing_command("pairConfirm","pairConfirm 0123456789abcdef0123456789abcdef")==0);
+ assert(begin_run()==0 && !link_session.lease_active);
+ mock_now=6000U;watchdog();assert(app_state==APP_RUNNING);
+ mock_now=6001U;watchdog();assert(app_state==APP_IDLE && !link_session.paired);
+ mock_now=0U;
  /* Data open failure must preserve control/status and create no RF resources. */
  fail_data_open=1;data_uart=NULL;data_record_tx.failed=0;app_fault=0;app_state=APP_IDLE;
  hardware_initialized=0;hardware_calls=0;starts=0;task_creates=0;
@@ -183,5 +230,10 @@ int main(void){
 }
 '''
 p=dest/'boot_gate_harness.c';p.write_text(stubs+'\n'+'\n'.join(lines)+'\n'+test)
-cmd=['cc','-std=c99','-O2','-Wall','-Wextra','-Werror','-pedantic','-fsanitize=address,undefined','-I'+str(rc/'src'),'-I'+str(rc/'dsp'),'-I'+str(rc/'spatial'),str(p)]+[str(rc/s) for s in ['src/record_transport.c','src/link_session.c','src/sensing_config.c','src/rf_profile.c','src/serial_line.c','src/json_output.c','src/energy_summary.c','dsp/radar_dsp.c','spatial/original_spatial.c']]+['-lm','-o',str(dest/'boot_gate_harness')]
-subprocess.run(cmd,check=True);subprocess.run([str(dest/'boot_gate_harness')],check=True,env={**os.environ,'ASAN_OPTIONS':'detect_leaks=0'})
+compiler=[os.environ.get('HOST_CC','cc')]
+if os.environ.get('HOST_CC_SUBCOMMAND'):compiler.append(os.environ['HOST_CC_SUBCOMMAND'])
+sanitizers=os.environ.get('HOST_SANITIZERS','address,undefined')
+flags=['-fsanitize='+sanitizers] if sanitizers else []
+executable=dest/('boot_gate_harness.exe' if os.name=='nt' else 'boot_gate_harness')
+cmd=compiler+['-std=c99','-O2','-Wall','-Wextra','-Werror','-pedantic']+flags+['-I'+str(rc/'src'),'-I'+str(rc/'dsp'),'-I'+str(rc/'spatial'),str(p)]+[str(rc/s) for s in ['src/record_transport.c','src/link_session.c','src/sensing_config.c','src/rf_profile.c','src/serial_line.c','src/json_output.c','src/energy_summary.c','dsp/radar_dsp.c','spatial/original_spatial.c']]+['-lm','-o',str(executable)]
+subprocess.run(cmd,check=True);subprocess.run([str(executable)],check=True,env={**os.environ,'ASAN_OPTIONS':'detect_leaks=0'})

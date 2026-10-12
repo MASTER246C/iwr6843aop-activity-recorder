@@ -8,7 +8,7 @@ import math
 from pathlib import Path
 import statistics
 
-TOOL_VERSION = '0.1.0-preview.2'
+TOOL_VERSION = '0.1.0-preview.3'
 VERSION = 1
 WINDOW_US = 3_000_000
 LABELS = {'activity': ['sitting', 'standing', 'walking'],

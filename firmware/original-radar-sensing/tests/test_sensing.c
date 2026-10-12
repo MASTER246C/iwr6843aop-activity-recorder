@@ -40,6 +40,14 @@ static void configuration(void)
     memset(nonterminated,'x',sizeof(nonterminated));
     assert(or_config_line(&cfg,nonterminated,0)==OR_CMD_INVALID);
     assert(memcmp(&cfg,&saved,sizeof(cfg))==0);
+    assert(or_config_line(&cfg,"session continuous",1)==OR_CMD_BUSY);
+    assert(or_config_line(&cfg,"session continuous",0)==OR_CMD_CHANGED);
+    assert(cfg.session_seconds==0U && !cfg.committed && or_config_valid(&cfg));
+    assert(or_config_line(&cfg,"commit",0)==OR_CMD_COMMIT);
+    assert(or_config_line(&cfg,"start",0)==OR_CMD_START);
+    assert(or_config_line(&cfg,"session Continuous",0)==OR_CMD_INVALID);
+    assert(or_config_line(&cfg,"session continuous extra",0)==OR_CMD_INVALID);
+    cfg=saved;
     assert(or_config_line(&cfg,"orConfig 1",1)==OR_CMD_BUSY);
     assert(or_config_line(&cfg,"start",1)==OR_CMD_BUSY);
     assert(or_config_line(&cfg,"stop",1)==OR_CMD_STOP);
@@ -83,7 +91,7 @@ static void profile_units(void)
 static void ownership(void)
 {
     OrCaptureModel m={0};unsigned slot;uint32_t gen,old;
-    or_capture_model_arm(&m);
+    or_capture_model_arm(&m,0U);
     assert(or_capture_model_frame_start(&m)==0);
     assert(or_capture_model_complete(&m,0,8)==0);
     assert(or_capture_model_take(&m,&slot,&gen)&&slot==0);
@@ -93,7 +101,7 @@ static void ownership(void)
     assert(or_capture_model_take(&m,&slot,&gen)&&slot==1);old=gen;
     or_capture_model_stop(&m);
     assert(or_capture_model_release(&m,slot,gen)<0);
-    or_capture_model_arm(&m);
+    or_capture_model_arm(&m,0U);
     assert(or_capture_model_frame_start(&m)==0);
     assert(or_capture_model_complete(&m,0,408)==0);
     assert(or_capture_model_take(&m,&slot,&gen));
@@ -102,13 +110,28 @@ static void ownership(void)
     assert(or_capture_model_complete(&m,1,608)<0&&m.overruns==1);
     assert(or_capture_model_release(&m,slot,gen)<0);
     assert(!or_capture_model_take(&m,&slot,&gen));
-    or_capture_model_stop(&m);or_capture_model_arm(&m);
+    or_capture_model_stop(&m);or_capture_model_arm(&m,0U);
     assert(or_capture_model_release(&m,1,old)<0);
     assert(or_capture_model_frame_start(&m)==0);
     /* Missing chirp means no complete frame before next frame start: reject mixing. */
     assert(or_capture_model_frame_start(&m)<0&&m.fault==3);
-    or_capture_model_stop(&m);or_capture_model_arm(&m);
+    or_capture_model_stop(&m);or_capture_model_arm(&m,0U);
     assert(or_capture_model_complete(&m,0,0)<0); /* No RF frame start. */
+    /* Session elapsed timestamps exceed 71 minutes and cross the 49.7-day tick
+     * rollover while keeping the microsecond conversion in 64-bit arithmetic. */
+    or_capture_model_stop(&m);or_capture_model_arm(&m,UINT32_MAX-100U);
+    assert(or_capture_model_frame_start(&m)==0);
+    assert(or_capture_model_complete(&m,0,50U)==0);
+    assert(m.timestamp_ms[0]==151U);
+    assert(or_capture_model_take(&m,&slot,&gen) && or_capture_model_release(&m,slot,gen)==0);
+    assert(or_capture_model_frame_start(&m)==0);
+    m.elapsed_ms=UINT32_MAX;m.last_tick_ms=50U;
+    assert(or_capture_model_complete(&m,1,250U)==0);
+    assert(m.timestamp_ms[1]==(uint64_t)UINT32_MAX+200U);
+    assert(m.timestamp_ms[1]*1000U>UINT32_MAX);
+    assert(or_capture_model_take(&m,&slot,&gen) && or_capture_model_release(&m,slot,gen)==0);
+    or_capture_model_stop(&m);or_capture_model_arm(&m,123U);
+    assert(m.elapsed_ms==0U && m.last_tick_ms==123U);
 }
 static void energy(void)
 {
@@ -125,7 +148,7 @@ static void energy(void)
 }
 static void json(void)
 {
-    OrLinkSession link={"0123456789abcdef0123456789abcdef",UINT32_MAX,UINT32_MAX,0,1,0};
+    OrLinkSession link={"0123456789abcdef0123456789abcdef",UINT32_MAX,UINT32_MAX,0,1,0,0,0};
     os_config spatial;OrTiming timing={UINT32_MAX,UINT32_MAX,UINT32_MAX,UINT32_MAX,UINT32_MAX,{FLT_MAX,FLT_MAX,FLT_MAX},&link};
     char out[OR_JSON_MAX+1U];char guard[4]={'A','B','C','D'};size_t n;unsigned i,rx;
     os_default_config(&spatial,60.8e9f);memset(&result,0,sizeof(result));
@@ -141,6 +164,11 @@ static void json(void)
     assert(n>0&&n<=OR_JSON_MAX&&n==strlen(out)&&out[n-1]=='\n');
     assert(strstr(out,"\"world_xyz_m\":null")&&strstr(out,"\"activity\":null")&&strstr(out,"\"count\":3"));
     assert(strstr(out,"\"profile_energy\":["));
+    assert(strstr(out,"\"session_mode\":\"bounded\"") && strstr(out,"\"timestamp_basis\":\"session_elapsed\""));
+    cfg.session_seconds=0U;
+    n=or_frame_json(out,sizeof(out),&cfg,&spatial,&result,&timing);
+    assert(n>0U && strstr(out,"\"session_mode\":\"continuous\"") && strstr(out,"\"keepalive_lease_ms\":5000"));
+    cfg.session_seconds=5U;
     assert(strstr(out,"\"antenna_offset_m\":null")&&strstr(out,"\"truncated\":true"));
     assert(or_frame_json(guard,1,&cfg,&spatial,&result,&timing)==0);
     assert(guard[1]=='B'&&guard[2]=='C'&&guard[3]=='D');

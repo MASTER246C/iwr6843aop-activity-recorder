@@ -131,8 +131,8 @@ int or_acquisition_arm(void)
     if(EDMA_linkParamSets(dma,OR_EDMA_CHANNEL,OR_SHADOW1)!=EDMA_NO_ERROR ||
        EDMA_linkParamSets(dma,OR_SHADOW1,OR_SHADOW0)!=EDMA_NO_ERROR ||
        EDMA_linkParamSets(dma,OR_SHADOW0,OR_SHADOW1)!=EDMA_NO_ERROR)return -9;
-    key=HwiP_disable();or_capture_model_arm(&model);hardware_fault=0U;
-    last_completion_ms=Clock_getTicks();HwiP_restore(key);
+    key=HwiP_disable();last_completion_ms=Clock_getTicks();
+    or_capture_model_arm(&model,last_completion_ms);hardware_fault=0U;HwiP_restore(key);
     if(EDMA_enableChannel(dma,OR_EDMA_CHANNEL,EDMA3_CHANNEL_TYPE_DMA)!=EDMA_NO_ERROR)return -10;
     return 0;
 }
@@ -149,7 +149,7 @@ int or_acquisition_take(const RadarComplex16 **samples,RadarFrameInfo *frame,
     uintptr_t key=HwiP_disable();int found=or_capture_model_take(&model,slot,generation);
     if(found) {
         memset(frame,0,sizeof(*frame));frame->sequence=model.sequence[*slot];
-        frame->timestamp_us=(uint64_t)model.timestamp_ms[*slot]*1000U;
+        frame->timestamp_us=model.timestamp_ms[*slot]*1000U;
         frame->valid_chirps=OR_CHIRPS;frame->capture_complete=1U;
         *samples=capture_data[*slot];
     }

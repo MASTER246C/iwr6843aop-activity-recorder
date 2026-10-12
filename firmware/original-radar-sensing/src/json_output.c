@@ -48,6 +48,10 @@ size_t or_frame_json(char *out,size_t capacity,const OrConfig *cfg,const os_conf
         (unsigned long)timing->previous_tx_us,(unsigned long)timing->deadline_misses);
     add(&w,"\"channel\":\"data\",\"pair_nonce\":\"%s\",\"config_generation\":%lu,\"session_id\":%lu,",
         timing->link->nonce,(unsigned long)timing->link->config_generation,(unsigned long)timing->link->session_id);
+    add(&w,"\"session_mode\":\"%s\",\"session_seconds\":%u,\"keepalive_lease_ms\":%u,"
+        "\"timestamp_basis\":\"session_elapsed\",",
+        cfg->session_seconds==0U?"continuous":"bounded",(unsigned)cfg->session_seconds,
+        cfg->session_seconds==0U?OR_KEEPALIVE_LEASE_MS:0U);
     add(&w,"\"mount\":{\"bracket_top_m\":");number(&w,cfg->bracket_top_mm/1000.0f);
     add(&w,",\"down_tilt_deg\":");number(&w,cfg->down_tilt_mdeg/1000.0f);
     add(&w,",\"antenna_offset_m\":");if(cfg->antenna_offset_known)number(&w,cfg->antenna_vertical_offset_mm/1000.0f);else add(&w,"null");

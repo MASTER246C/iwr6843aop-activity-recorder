@@ -63,7 +63,7 @@ int main(int argc,char**argv){
   snprintf(nonce,sizeof(nonce),"%032x",i+1U);snprintf(command,sizeof(command),"pair %s",nonce);
   assert(pairing_command("pair",command)==0);ack("pair",0);
   snprintf(command,sizeof(command),"pairConfirm %s",nonce);assert(pairing_command("pairConfirm",command)==0);ack("pairConfirm",0);
-  status_message();ack("status",0);
+  status_message();ack("status",0);keepalive_ack(-34);
   result.sequence=i;result.range_bin_m=0.2f;result.velocity_bin_mps=0.3f;timing.link=&link_session;
   size_t size=or_frame_json(frame,sizeof(frame),&config,&spatial,&result,&timing);assert(size>0);
   assert(send_data(frame,size)==0);assert(link_session.session_id==i+1U);
@@ -73,13 +73,19 @@ int main(int argc,char**argv){
 '''
 with tempfile.TemporaryDirectory() as tmp:
  d=Path(tmp);c=d/'harness.c';c.write_text(preamble+adapters+pairing+post)
- cmd=[os.environ.get('HOST_CC','cc'),'-std=c99','-O2','-g','-Wall','-Wextra','-Werror','-pedantic','-fsanitize=address,undefined']+['-I'+str(root/n) for n in ['src','spatial','dsp']]+[str(c)]+[str(root/n) for n in ['src/record_transport.c','src/link_session.c','src/sensing_config.c','src/json_output.c','spatial/original_spatial.c']]+['-lm','-o',str(d/'test')]
- subprocess.run(cmd,check=True);subprocess.run([str(d/'test'),str(d/'control.jsonl'),str(d/'data.jsonl')],check=True,env={**os.environ,'ASAN_OPTIONS':'detect_leaks=0'})
+ compiler=[os.environ.get('HOST_CC','cc')]
+ if os.environ.get('HOST_CC_SUBCOMMAND'):compiler.append(os.environ['HOST_CC_SUBCOMMAND'])
+ sanitizers=os.environ.get('HOST_SANITIZERS','address,undefined')
+ flags=['-fsanitize='+sanitizers] if sanitizers else []
+ executable=d/('test.exe' if os.name=='nt' else 'test')
+ cmd=compiler+['-std=c99','-O2','-g','-Wall','-Wextra','-Werror','-pedantic']+flags+['-I'+str(root/n) for n in ['src','spatial','dsp']]+[str(c)]+[str(root/n) for n in ['src/record_transport.c','src/link_session.c','src/sensing_config.c','src/json_output.c','spatial/original_spatial.c']]+['-lm','-o',str(executable)]
+ subprocess.run(cmd,check=True);subprocess.run([str(executable),str(d/'control.jsonl'),str(d/'data.jsonl')],check=True,env={**os.environ,'ASAN_OPTIONS':'detect_leaks=0'})
  control=[json.loads(r) for r in (d/'control.jsonl').read_bytes().splitlines()];data=[json.loads(r) for r in (d/'data.jsonl').read_bytes().splitlines()]
- assert len(control)==4000 and len(data)==2000
+ assert len(control)==5000 and len(data)==2000
  for i in range(1000):
-  cs=control[i*4:(i+1)*4];ds=data[i*2:(i+1)*2]
-  assert [r['type'] for r in cs]==['ack','ack','status','ack'];assert [r['command'] for r in [cs[0],cs[1],cs[3]]]==['pair','pairConfirm','status']
+  cs=control[i*5:(i+1)*5];ds=data[i*2:(i+1)*2]
+  assert [r['type'] for r in cs]==['ack','ack','status','ack','ack'];assert [r['command'] for r in [cs[0],cs[1],cs[3],cs[4]]]==['pair','pairConfirm','status','keepalive']
+  assert cs[4]['code']==-34 and cs[4]['pair_nonce']==f'{i+1:032x}' and cs[4]['session_id']==i+1 and cs[4]['config_generation']==1
   assert [r['type'] for r in ds]==['data_probe','frame']
   assert all(r['channel']=='control' and r['protocol']=='original-radar-v2' for r in cs)
   assert all(r['channel']=='data' and r['protocol']=='original-radar-v2' for r in ds)
@@ -87,4 +93,4 @@ with tempfile.TemporaryDirectory() as tmp:
   for r in [cs[2]]+ds:
    assert r['pair_nonce']==f'{i+1:032x}' and r['session_id']==i+1 and r['config_generation']==1
   assert ds[1]['sequence']==i
- print(json.dumps({'result':'PASS','model':'two independent pending TD slots','sessions':1000,'control_records':4000,'data_records':2000,'version':control[2]['firmware_version'],'build_id':control[2]['build_id'],'physical_or_rf_tested':False},sort_keys=True))
+ print(json.dumps({'result':'PASS','model':'two independent pending TD slots','sessions':1000,'control_records':5000,'data_records':2000,'version':control[2]['firmware_version'],'build_id':control[2]['build_id'],'physical_or_rf_tested':False},sort_keys=True))

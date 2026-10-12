@@ -1,0 +1,86 @@
+{
+  "status": "offline_checks_passed",
+  "hardware_tested": false,
+  "elf": "original_radar_sensing.xer4f",
+  "elf_sha256": "2b08810c8f9b9c31d9f81039c334d269cc468f63d63894641fc295d622647ff6",
+  "size_bytes": 2808208,
+  "architecture": "ARM ELF32 little-endian",
+  "entry_point": "0x10d28",
+  "allocated_sections": [
+    {
+      "name": ".vecs",
+      "address": "0x0",
+      "size": 60,
+      "load_bytes": 60
+    },
+    {
+      "name": ".fiq_stack",
+      "address": "0x801a1b8",
+      "size": 1024,
+      "load_bytes": 0
+    },
+    {
+      "name": ".text",
+      "address": "0x100",
+      "size": 87362,
+      "load_bytes": 87362
+    },
+    {
+      "name": ".const",
+      "address": "0x15648",
+      "size": 10416,
+      "load_bytes": 10416
+    },
+    {
+      "name": ".cinit",
+      "address": "0x17ef8",
+      "size": 864,
+      "load_bytes": 864
+    },
+    {
+      "name": ".bss",
+      "address": "0x8000000",
+      "size": 52574,
+      "load_bytes": 0
+    },
+    {
+      "name": ".data",
+      "address": "0x8018d60",
+      "size": 3160,
+      "load_bytes": 0
+    },
+    {
+      "name": ".stack",
+      "address": "0x80199b8",
+      "size": 2048,
+      "load_bytes": 0
+    },
+    {
+      "name": "sensing_heap",
+      "address": "0x800cd60",
+      "size": 49152,
+      "load_bytes": 0
+    },
+    {
+      "name": ".capture_frames",
+      "address": "0x51000000",
+      "size": 65536,
+      "load_bytes": 0
+    }
+  ],
+  "checks": [
+    "ARM executable format",
+    "reset vector at zero",
+    "MSS TCMA/TCMB and L3 bounds",
+    "two 32KiB capture frames",
+    "expected original sensing and low-level driver symbols",
+    "no listed TI demo, DPU/DPC, tracker or signal-processing libraries"
+  ],
+  "limitations": [
+    "No physical boot/UART/RF/acquisition validation",
+    "No RF emissions measurement",
+    "No measured processing timing or stack high-water",
+    "No activity classifier",
+    "Structural checks cannot establish hardware correctness"
+  ]
+}

@@ -99,7 +99,7 @@ static int send_text(const char *text,size_t length){return send_lane(text,lengt
 static int send_data(const char *text,size_t length){return send_lane(text,length,1);}
 static void status_message(void)
 {
-    char text[768];int n=snprintf(text,sizeof(text),
+    char text[1024];int n=snprintf(text,sizeof(text),
         "{\"type\":\"status\",\"protocol\":\"%s\",\"state\":\"%s\",\"configured\":%s,"
         "\"fault\":%lu,\"capture_fault\":%lu,\"rf_fault\":%lu,\"rf_error\":%ld,"
         "\"frames\":%lu,\"deadline_misses\":%lu,"
@@ -107,14 +107,17 @@ static void status_message(void)
         "\"selftest_ok\":%s,\"selftest_mask\":%lu,"
         "\"channel\":\"control\",\"dual_uart\":true,\"control_baud\":115200,\"data_baud\":921600,"
         "\"paired\":%s,\"pair_nonce\":\"%s\",\"config_generation\":%lu,\"session_id\":%lu,"
-        "\"control_tx_fault\":%s,\"data_tx_fault\":%s}\n",PROTOCOL,state_name(),config.committed?"true":"false",
+        "\"control_tx_fault\":%s,\"data_tx_fault\":%s,"
+        "\"session_mode\":\"%s\",\"session_seconds\":%u,\"keepalive_lease_ms\":%u}\n",PROTOCOL,state_name(),config.committed?"true":"false",
         (unsigned long)app_fault,(unsigned long)(hardware_initialized?or_acquisition_fault():0U),
         (unsigned long)(hardware_initialized?or_radio_fault():0U),
         (long)(hardware_initialized?or_radio_error():0),
         (unsigned long)(hardware_initialized?or_acquisition_completed():0U),(unsigned long)deadline_misses,
         OR_SPATIAL_SELFTEST_VERSION,selftest_passed()?"true":"false",(unsigned long)boot_selftest_mask,
         link_session.paired?"true":"false",link_session.nonce,(unsigned long)link_session.config_generation,
-        (unsigned long)link_session.session_id,record_tx.failed?"true":"false",data_record_tx.failed?"true":"false");
+        (unsigned long)link_session.session_id,record_tx.failed?"true":"false",data_record_tx.failed?"true":"false",
+        config.session_seconds==0U?"continuous":"bounded",(unsigned)config.session_seconds,
+        config.session_seconds==0U?OR_KEEPALIVE_LEASE_MS:0U);
     if(n>0&&(size_t)n<sizeof(text))(void)send_text(text,(size_t)n);
 }
 static void ack(const char *command,int code)
@@ -124,9 +127,21 @@ static void ack(const char *command,int code)
         PROTOCOL,command,code,state_name(),config.committed?"true":"false");
     if(n>0&&(size_t)n<sizeof(text))(void)send_text(text,(size_t)n);
 }
+static void keepalive_ack(int code)
+{
+    char text[512];int n=snprintf(text,sizeof(text),
+        "{\"type\":\"ack\",\"protocol\":\"%s\",\"command\":\"keepalive\",\"code\":%d,"
+        "\"state\":\"%s\",\"configured\":%s,\"channel\":\"control\",\"dual_uart\":true,"
+        "\"control_baud\":115200,\"data_baud\":921600,\"pair_nonce\":\"%s\","
+        "\"config_generation\":%lu,\"session_id\":%lu,\"keepalive_tick_ms\":%lu}\n",
+        PROTOCOL,code,state_name(),config.committed?"true":"false",link_session.nonce,
+        (unsigned long)link_session.config_generation,(unsigned long)link_session.session_id,
+        (unsigned long)link_session.last_keepalive_ms);
+    if(n>0 && (size_t)n<sizeof(text))(void)send_text(text,(size_t)n);
+}
 static const char *command_name(const char *line)
 {
-    static const char *names[]={"orConfig","profile","mount","detect","session","commit","start","stop","status","pair","pairConfirm"};
+    static const char *names[]={"orConfig","profile","mount","detect","session","commit","start","stop","status","pair","pairConfirm","keepalive"};
     unsigned i;size_t n;
     while(*line==' '||*line=='\t')++line;
     for(i=0U;i<sizeof(names)/sizeof(names[0]);++i) {
@@ -177,6 +192,9 @@ static int begin_run(void)
     if(or_acquisition_arm()<0){app_fault=441U;(void)end_run();return -23;}
     deadline_misses=0U;previous_tx_us=0U;start_ms=Clock_getTicks();
     app_state=APP_RUNNING;
+    if(config.session_seconds==0U && or_link_lease_begin(&link_session,start_ms)<0) {
+        app_fault=443U;(void)end_run();return -35;
+    }
     if(or_radio_start()<0){app_fault=442U;(void)end_run();return -24;}
     return 0;
 }
@@ -220,14 +238,17 @@ static void watchdog(void)
     if(or_radio_fault())app_fault=460U;
     if(or_acquisition_fault())app_fault=461U;
     if((uint32_t)(Clock_getTicks()-or_acquisition_last_ms())>1000U)app_fault=462U;
+    if(config.session_seconds==0U && (!link_session.paired || !link_session.lease_active ||
+       or_link_lease_expired(&link_session,Clock_getTicks())))app_fault=463U;
     if(app_fault || or_radio_frame_end() ||
-       (uint32_t)(Clock_getTicks()-start_ms)>(uint32_t)config.session_seconds*1000U+1000U) {
+       (config.session_seconds!=0U &&
+        (uint32_t)(Clock_getTicks()-start_ms)>(uint32_t)config.session_seconds*1000U+1000U)) {
         (void)end_run();status_message();
     }
 }
 static int pairing_command(const char *name,const char *line)
 {
-    char nonce[OR_PAIR_NONCE_LENGTH+1U],text[384];size_t i,n;const char *arg;int count;
+    char nonce[OR_PAIR_NONCE_LENGTH+1U],text[512];size_t i,n;const char *arg;int count;
     int confirm=strcmp(name,"pairConfirm")==0;
     if(!confirm)or_link_revoke(&link_session);
     if(app_state!=APP_IDLE || dsp_busy || !selftest_passed() || app_fault ||
@@ -247,8 +268,11 @@ static int pairing_command(const char *name,const char *line)
     count=snprintf(text,sizeof(text),
         "{\"type\":\"data_probe\",\"channel\":\"data\",\"protocol\":\"" OR_PROTOCOL "\","
         "\"firmware_version\":\"" OR_FIRMWARE_VERSION "\",\"build_id\":\"" OR_BUILD_ID "\","
-        "\"pair_nonce\":\"%s\",\"config_generation\":%lu,\"session_id\":%lu}\n",
-        link_session.nonce,(unsigned long)link_session.config_generation,(unsigned long)link_session.session_id);
+        "\"pair_nonce\":\"%s\",\"config_generation\":%lu,\"session_id\":%lu,"
+        "\"session_mode\":\"%s\",\"session_seconds\":%u,\"keepalive_lease_ms\":%u}\n",
+        link_session.nonce,(unsigned long)link_session.config_generation,(unsigned long)link_session.session_id,
+        config.session_seconds==0U?"continuous":"bounded",(unsigned)config.session_seconds,
+        config.session_seconds==0U?OR_KEEPALIVE_LEASE_MS:0U);
     if(count<=0 || (size_t)count>=sizeof(text) || send_data(text,(size_t)count)<0) {
         or_link_revoke(&link_session);return -33;
     }
@@ -259,6 +283,14 @@ static void handle_line(char *line)
     OrCommand cmd;int code=0;const char *name=command_name(line);
     if(strcmp(name,"pair")==0 || strcmp(name,"pairConfirm")==0) {
         code=pairing_command(name,line);ack(name,code);return;
+    }
+    if(strcmp(name,"keepalive")==0) {
+        const char *arguments=line;
+        while(*arguments==' ' || *arguments=='\t')++arguments;
+        arguments+=strlen(name);
+        code=app_state==APP_RUNNING && config.session_seconds==0U && !app_fault &&
+             or_link_keepalive(&link_session,arguments,Clock_getTicks())==0?0:-34;
+        keepalive_ack(code);return;
     }
     cmd=or_config_line(&config,line,app_state!=APP_IDLE);
     if(cmd==OR_CMD_NONE)return;

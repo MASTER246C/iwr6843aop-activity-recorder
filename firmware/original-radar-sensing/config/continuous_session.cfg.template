@@ -1,0 +1,9 @@
+# Original Radar0.3.2-rc1 supervised continuous session.
+# Replace tilt with a measured integer millidegree value before commit.
+# This template intentionally cannot commit unchanged; config/pair do not start RF.
+orConfig 1
+profile room64_v1
+mount 1219 REPLACE_WITH_MEASURED_DOWN_TILT_MDEG unknown
+detect 4 30 64 8
+session continuous
+commit

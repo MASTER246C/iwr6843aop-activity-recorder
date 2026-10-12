@@ -1,0 +1,4 @@
+# Firmware build identities and release manifests bind exact source bytes.
+# Preserve those bytes in Git and on every checkout, including Windows.
+firmware/original-radar-sensing/** -text
+original_training/** -text

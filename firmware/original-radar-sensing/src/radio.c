@@ -82,6 +82,7 @@ int or_radio_prepare(const OrConfig *cfg,OrRfPhysical *physical)
     control.u.frameCfg.profileHandle[0]=p;
     control.u.frameCfg.frameCfg.chirpStartIdx=0U;control.u.frameCfg.frameCfg.chirpEndIdx=0U;
     control.u.frameCfg.frameCfg.numLoops=OR_CHIRPS;
+    /* TI rlFrameCfg_t defines numFrames=0 as recurring frames until Stop. */
     control.u.frameCfg.frameCfg.numFrames=(uint16_t)(cfg->session_seconds*5U);
     control.u.frameCfg.frameCfg.numAdcSamples=OR_ADC_SAMPLES;
     control.u.frameCfg.frameCfg.framePeriodicity=40000000U; /*200ms /5ns.*/

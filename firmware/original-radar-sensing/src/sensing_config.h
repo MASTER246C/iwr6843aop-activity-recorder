@@ -20,7 +20,7 @@ typedef struct {
     uint32_t noise_multiplier;
     uint16_t first_range_bin;
     uint16_t last_range_bin;
-    uint16_t session_seconds;
+    uint16_t session_seconds; /* 0 only for explicitly configured session continuous. */
     uint8_t antenna_offset_known;
     uint8_t committed;
     uint8_t fields_seen;

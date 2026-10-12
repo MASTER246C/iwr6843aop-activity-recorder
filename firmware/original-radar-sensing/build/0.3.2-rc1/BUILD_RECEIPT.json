@@ -84,4 +84,3 @@
   ],
   "line_ending_note": "Source identity and candidate manifest bind current actual filesystem bytes. Git core.autocrlf emits conversion warnings; preserve exact package bytes or reconcile canonical Git blobs before publishing."
 }
-

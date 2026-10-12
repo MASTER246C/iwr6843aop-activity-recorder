@@ -1,0 +1,906 @@
+{
+  "version": "0.3.1-rc1",
+  "protocol": "original-radar-v2",
+  "build_id": "abb27b48c1bdb956c0de704b",
+  "hardware_acceptance": "pending",
+  "public_scope": "install/source/tests/notices/aggregate validation only; debug artifacts and private captures excluded",
+  "preserved_notice_config_files": 98,
+  "files": [
+    {
+      "path": "BUILD_IDENTITY.json",
+      "bytes": 3151,
+      "sha256": "ab7f296eb1a4eef978c41ed6f7d782fc7f74873b7b1c7663cef58d1714a34692"
+    },
+    {
+      "path": "HISTORY/v0.2.0_PROVENANCE.md",
+      "bytes": 7356,
+      "sha256": "89fade69db000600f831935c43cd6006f7c17e22f6852c72b3d4a3f917ac24d0"
+    },
+    {
+      "path": "HISTORY/v0.2.0_PUBLIC_MANIFEST.json",
+      "bytes": 26175,
+      "sha256": "f17be36f2852e4b20211b363781e6450481aef16c6ec78dd58f311b4b50feb9f"
+    },
+    {
+      "path": "HISTORY/v0.2.0_README.md",
+      "bytes": 7744,
+      "sha256": "4d65f946a98fc807bc148819bf93ae82da235e9070069de1a14a089c304c7354"
+    },
+    {
+      "path": "HISTORY/v0.2.0_VALIDATION.md",
+      "bytes": 6791,
+      "sha256": "7e210759bca99230239b8914e657084ac4fbf943d311962d1a3b8242ec00ca8c"
+    },
+    {
+      "path": "HISTORY/v0.2.1-rc1_PROTOCOL.md",
+      "bytes": 9017,
+      "sha256": "c3b8b98053b6bea1734e5cb3f117528321b9cdcd1618207b248cce583ae3cf4d"
+    },
+    {
+      "path": "HISTORY/v0.2.1-rc1_PROVENANCE.md",
+      "bytes": 2114,
+      "sha256": "213b64cab2d596a40b20c024f4efb167ba8e4b0bf671e3bfccad837af00596fe"
+    },
+    {
+      "path": "HISTORY/v0.2.1-rc1_README.md",
+      "bytes": 7074,
+      "sha256": "5194e75cca2632d5afe45a570b2ec4721f83eb32b1a1c2b013d92bd1127f9cd2"
+    },
+    {
+      "path": "HISTORY/v0.2.1-rc1_VALIDATION.md",
+      "bytes": 3378,
+      "sha256": "06f017e7e5d8b125f09b3afc8e246a978002c93624c27d99e2302dd685ff8ae9"
+    },
+    {
+      "path": "HISTORY/v0.2.2-rc1/BUILD_IDENTITY.json",
+      "bytes": 2963,
+      "sha256": "8c429eb98c56137ba5799b8a8acd96292775c8208884308578bb75afb85f0eb2"
+    },
+    {
+      "path": "HISTORY/v0.2.2-rc1/PROTOCOL.md",
+      "bytes": 10205,
+      "sha256": "67fe560e9a30698801dec740261e0a44da6c5c31bb4a156585611e17f4a5e038"
+    },
+    {
+      "path": "HISTORY/v0.2.2-rc1/PROVENANCE.md",
+      "bytes": 1988,
+      "sha256": "73289e000cf526263b704a80295869e91912dfc9cc0c61765e87b006265d2b16"
+    },
+    {
+      "path": "HISTORY/v0.2.2-rc1/README.md",
+      "bytes": 9712,
+      "sha256": "14a165133ca1d815b9ff0b9e8c9002159a0a422878c3f14c8d9164f27c3f73ae"
+    },
+    {
+      "path": "HISTORY/v0.2.2-rc1/VALIDATION.md",
+      "bytes": 3631,
+      "sha256": "98374c73c054bcde99823cbd274fab0c5ad0ce6b498cbf71221835699261bd0b"
+    },
+    {
+      "path": "HISTORY/v0.2.2-rc1/test_exact_record_framing.py",
+      "bytes": 3476,
+      "sha256": "034afa41fc0b7b82c78ad7d33247296a6857aa7ff603d50c9e18453fcc75aafd"
+    },
+    {
+      "path": "HISTORY/v0.3.0-rc1/PROTOCOL.md",
+      "bytes": 8340,
+      "sha256": "dc7112f6feb12aba8f67b80252a0a4f64ba22780e7f0050cfe2b2655cf2c73f3"
+    },
+    {
+      "path": "HISTORY/v0.3.0-rc1/PROVENANCE.md",
+      "bytes": 2163,
+      "sha256": "04b9d2ab7ceae6989d8b040ed7d9b4334821d14d163131bcbb2b81b103094dcc"
+    },
+    {
+      "path": "HISTORY/v0.3.0-rc1/README.md",
+      "bytes": 6555,
+      "sha256": "997e8c095a84f6690121c7d1a73c8d89cee7653735f087490308f6c84a007c50"
+    },
+    {
+      "path": "HISTORY/v0.3.0-rc1/VALIDATION.md",
+      "bytes": 4910,
+      "sha256": "950bfaafff34f154861449c06bdf35d449eb39eeb9e68786a1ed6cb3e8326d8a"
+    },
+    {
+      "path": "HISTORY/v0.3.0-rc1/verification/independent_binary_check.json",
+      "bytes": 1758,
+      "sha256": "ebf9af0bbb9951d44bdbffb031488c9b28ccae5b56432ef7380c5fc45cb3364e"
+    },
+    {
+      "path": "HISTORY/v0.3.0-rc1/verification/independent_dual_framing.json",
+      "bytes": 225,
+      "sha256": "942709519e47d89029ee942bb873aa0913db98388acf3ffa5d6f0b0346367c40"
+    },
+    {
+      "path": "LICENSE",
+      "bytes": 3323,
+      "sha256": "ebae98f852385d5d25a61632bc6ec475d5972711cca9d5f510917a5f5d8e634c"
+    },
+    {
+      "path": "LICENSING.md",
+      "bytes": 1289,
+      "sha256": "ee83f8b30b2634ac3e9069af3736f64a354ae559f289e3a564406d6c05c48631"
+    },
+    {
+      "path": "Makefile",
+      "bytes": 3044,
+      "sha256": "e26406ecc5fb15c3629d9712851a8ff23bfd0fff562a823f2fbbf31499925359"
+    },
+    {
+      "path": "PROTOCOL.md",
+      "bytes": 8961,
+      "sha256": "927c951c56edad26d0252cb07c0b56a1a546df16c28e02f28ef7916f88a91e5e"
+    },
+    {
+      "path": "PROVENANCE.md",
+      "bytes": 2695,
+      "sha256": "8d110e1f7cb23bd2fc3fcf1df806d1872d57ffd394e4ad9000e4ffb72f510740"
+    },
+    {
+      "path": "README.md",
+      "bytes": 8047,
+      "sha256": "a6f69536a09d55b204840b14ee1e25a234ef1f47173b3c6d3aa015aa75802f9c"
+    },
+    {
+      "path": "THIRD_PARTY_NOTICES/ARMCodeGenerationTools_16.9.0.LTS_manifest.html",
+      "bytes": 22121,
+      "sha256": "2715cc660895967ebe4dd5d8cbc959863c2058ff7ba9afa5b5edfba75178d290"
+    },
+    {
+      "path": "THIRD_PARTY_NOTICES/REDISTRIBUTION_REVIEW.md",
+      "bytes": 4874,
+      "sha256": "c3329d2ddd0154bd758e9e5873d39aa378d4a1ac93d6ce166a86797e43f253b2"
+    },
+    {
+      "path": "THIRD_PARTY_NOTICES/TI_ARM_RTS_BSD.txt",
+      "bytes": 2914,
+      "sha256": "52653cb538737def1df1ac037ba52e9d8c5816e24fa414823602649a7d7bff4c"
+    },
+    {
+      "path": "THIRD_PARTY_NOTICES/TI_RadarSS_Text_License.txt",
+      "bytes": 3054,
+      "sha256": "28de0fb86797bd100b6608b4e2c73c68de16b84ab8ce15b52f6c3f0bd4a9b1bb"
+    },
+    {
+      "path": "THIRD_PARTY_NOTICES/TI_SDK_BIOS_XDC_SUPPLEMENTAL_NOTICES.txt",
+      "bytes": 125803,
+      "sha256": "159de0edc7fdca84ff56ffc766423c1ae0a6abda1646b0095c9a50d20d1e0d3e"
+    },
+    {
+      "path": "THIRD_PARTY_NOTICES/TI_SYSBIOS_BSD.txt",
+      "bytes": 1692,
+      "sha256": "b6f7d6a551e0e03ad91c176b129d514eaf2c4c319b5a3c0a6c62966681f665ba"
+    },
+    {
+      "path": "THIRD_PARTY_NOTICES/TI_XDC_Runtime_notice.txt",
+      "bytes": 629,
+      "sha256": "bb50a551a1e5e626f2355b98a42d71fecfeb8f3f1d0b2de4f4631bcefcf2996f"
+    },
+    {
+      "path": "THIRD_PARTY_NOTICES/TI_mmwave_driver_BSD.txt",
+      "bytes": 1922,
+      "sha256": "e97730b7e8e79605a35684268a1b129daf33b9a9a0a425cd28d1608369b812b9"
+    },
+    {
+      "path": "THIRD_PARTY_NOTICES/TI_sensing_control_driver_notices.txt",
+      "bytes": 19775,
+      "sha256": "e49c6f6541c429842e91b301f047077cd2673a1af45ef21f7623a6859fcee33d"
+    },
+    {
+      "path": "THIRD_PARTY_NOTICES/edl-v10.html",
+      "bytes": 2375,
+      "sha256": "1bdf81a778b2ead1235e4253d665b3734fa3a76be80239d3e7aef0ada135e9e9"
+    },
+    {
+      "path": "THIRD_PARTY_NOTICES/epl-v10.html",
+      "bytes": 12490,
+      "sha256": "b08856f8b20e34e90cab5c5a10b5f2ccb4646d44083e71b0391a37d5775f09b5"
+    },
+    {
+      "path": "THIRD_PARTY_NOTICES/manifest_bios_6_73_01_01.html",
+      "bytes": 128207,
+      "sha256": "0a8b7c24c6f9667ddb80e5a3660e14999d5ec64ff47aeeff1e9300f85123f5ae"
+    },
+    {
+      "path": "THIRD_PARTY_NOTICES/mmwave_sdk_software_manifest.html",
+      "bytes": 90088,
+      "sha256": "8c4e0b930ae2c6bbf31068d78e128563d3d80cd922333c793c1ed585204fb380"
+    },
+    {
+      "path": "THIRD_PARTY_NOTICES/mmwave_sdk_software_manifest.txt",
+      "bytes": 22394,
+      "sha256": "408408d3ae446943b3dfa204fcb5e8d80d008b91fcf6d7377daaaf2455b9820f"
+    },
+    {
+      "path": "THIRD_PARTY_NOTICES/runtime-notices/README.md",
+      "bytes": 5532,
+      "sha256": "4ca7743435cc58bc85683286170f54a7b486a24ba0196054860fe97bbbcf370e"
+    },
+    {
+      "path": "THIRD_PARTY_NOTICES/runtime-notices/arm_rts___data_synch.h.notice.txt",
+      "bytes": 2881,
+      "sha256": "920051f9a37d0a3b5c4ec6c3a87b7b251e8c071c2844ab0c45b16a0e05946cbc"
+    },
+    {
+      "path": "THIRD_PARTY_NOTICES/runtime-notices/arm_rts___defs.h.notice.txt",
+      "bytes": 2881,
+      "sha256": "c8fcb4637ac6e718119fe552c95030639b139b2df2021c26cfddfd6b95c1ade0"
+    },
+    {
+      "path": "THIRD_PARTY_NOTICES/runtime-notices/arm_rts___fmt_specifier.h.notice.txt",
+      "bytes": 2886,
+      "sha256": "c63774e53d42eabf72eb859b30b575c23561ff08fa06d8b0c8a8d50a02e48150"
+    },
+    {
+      "path": "THIRD_PARTY_NOTICES/runtime-notices/arm_rts___isfuncdcl.h.notice.txt",
+      "bytes": 2845,
+      "sha256": "c43815ecff4903da3e279c459c4de895f2ec4342d42690335e5c6a10cb8bde48"
+    },
+    {
+      "path": "THIRD_PARTY_NOTICES/runtime-notices/arm_rts___isfuncdef.h.notice.txt",
+      "bytes": 2845,
+      "sha256": "bd46c6816011101bc2a91f42c3d70086e034533cff69abd376418cc6534a2dd9"
+    },
+    {
+      "path": "THIRD_PARTY_NOTICES/runtime-notices/arm_rts___lock.c.notice.txt",
+      "bytes": 2864,
+      "sha256": "49b327245c28d073b57b1060f505d6b6f06c0df5ff5a008359b02103211c2b82"
+    },
+    {
+      "path": "THIRD_PARTY_NOTICES/runtime-notices/arm_rts___lock.h.notice.txt",
+      "bytes": 2881,
+      "sha256": "a241e4288cd600a1b45a03fd81fa6f598674c1ed5e5305159f07424e2dcad5a0"
+    },
+    {
+      "path": "THIRD_PARTY_NOTICES/runtime-notices/arm_rts___mutex.h.notice.txt",
+      "bytes": 2881,
+      "sha256": "3f2acb8eaaa0cc91793a19d7c89cdd9d85eb8ce8bf0cbc896d95d1f9acb73522"
+    },
+    {
+      "path": "THIRD_PARTY_NOTICES/runtime-notices/arm_rts___printfi.c.notice.txt",
+      "bytes": 2881,
+      "sha256": "65dd5ea3d32564af5f51fa420b6506c24eef26eaaa4ac6f975f6b6a1efcf0d29"
+    },
+    {
+      "path": "THIRD_PARTY_NOTICES/runtime-notices/arm_rts___tls.h.notice.txt",
+      "bytes": 2913,
+      "sha256": "da29b777b919ae1be15bc67af2cfdf22aa0ba577ed5c1864ebdd4edf037be0cf"
+    },
+    {
+      "path": "THIRD_PARTY_NOTICES/runtime-notices/arm_rts__args_main.c.notice.txt",
+      "bytes": 4537,
+      "sha256": "8f69733abb43262845dedb15b1ef9e8d73ac6bfe78d408da308957e52e8be618"
+    },
+    {
+      "path": "THIRD_PARTY_NOTICES/runtime-notices/arm_rts__atoi.c.notice.txt",
+      "bytes": 2884,
+      "sha256": "f58b6d2b708a7d7b7c251792ea5fae688cc5cf37c45d9074d76f5e9de6413946"
+    },
+    {
+      "path": "THIRD_PARTY_NOTICES/runtime-notices/arm_rts__autoinit.h.notice.txt",
+      "bytes": 2929,
+      "sha256": "9d3e213eedfdc772e26cbab0586c8b33ac95c821ebf46e3e6c8e3c912a0d9cef"
+    },
+    {
+      "path": "THIRD_PARTY_NOTICES/runtime-notices/arm_rts__cargs.h.notice.txt",
+      "bytes": 2881,
+      "sha256": "8ad64dc409a2039b03d0cf71f0a0b64655a247123c08296e3cdc1feb3c5fa21e"
+    },
+    {
+      "path": "THIRD_PARTY_NOTICES/runtime-notices/arm_rts__copy_decompress_lzss.c.notice.txt",
+      "bytes": 4041,
+      "sha256": "476f22ba535b0ca1c954762adb158b9817892254b2a8978b956c28db7b1259c4"
+    },
+    {
+      "path": "THIRD_PARTY_NOTICES/runtime-notices/arm_rts__copy_decompress_none.c.notice.txt",
+      "bytes": 4054,
+      "sha256": "5b91e1497d296b421d80d6325ba77ae6cd41b1b904b7b8f918425ad898078e19"
+    },
+    {
+      "path": "THIRD_PARTY_NOTICES/runtime-notices/arm_rts__copy_zero_init.c.notice.txt",
+      "bytes": 3961,
+      "sha256": "0629c70973f1e6ec672c23c36ea9802d792d9d0b7f50efc36ff1388a3d9ca091"
+    },
+    {
+      "path": "THIRD_PARTY_NOTICES/runtime-notices/arm_rts__cpy_tbl.c.notice.txt",
+      "bytes": 3344,
+      "sha256": "e7622e7dc32e8eef69c3238b70c75b98a3a184e4ecadbfc175a80001e62aca8a"
+    },
+    {
+      "path": "THIRD_PARTY_NOTICES/runtime-notices/arm_rts__cpy_tbl.h.notice.txt",
+      "bytes": 3121,
+      "sha256": "aa244e332d16a784ba120f332b807ba25020711ed9d16f410039ec968ae24f22"
+    },
+    {
+      "path": "THIRD_PARTY_NOTICES/runtime-notices/arm_rts__ctype.c.notice.txt",
+      "bytes": 2864,
+      "sha256": "dc61ac65569b6a2bdbf841502f0e0ade68412dc542d52ae1af949bf144c932cb"
+    },
+    {
+      "path": "THIRD_PARTY_NOTICES/runtime-notices/arm_rts__ctype.h.notice.txt",
+      "bytes": 2881,
+      "sha256": "7f9e0696515dd91df04ff886068f50f316ab16d5d42db0136d8e4638169350c8"
+    },
+    {
+      "path": "THIRD_PARTY_NOTICES/runtime-notices/arm_rts__e_atan2f.c.notice.txt",
+      "bytes": 570,
+      "sha256": "1e6afd9204526ceb05c84f4dfa51e25561bee37f0f3370e3a34692738d0c64ee"
+    },
+    {
+      "path": "THIRD_PARTY_NOTICES/runtime-notices/arm_rts__e_rem_pio2f.c.notice.txt",
+      "bytes": 624,
+      "sha256": "c37127db76d2d259e0bc5baf3bf19a0859561eebdea9cee6f2b5fced13fd9509"
+    },
+    {
+      "path": "THIRD_PARTY_NOTICES/runtime-notices/arm_rts__e_sqrtf.c.notice.txt",
+      "bytes": 568,
+      "sha256": "cd26a268ee3fef2eb9a421c21d0b032e6587a05bead89f6ab321545ba279a23e"
+    },
+    {
+      "path": "THIRD_PARTY_NOTICES/runtime-notices/arm_rts__errno.c.notice.txt",
+      "bytes": 2900,
+      "sha256": "e37283898d0a073f12eb7f3083598a1e62b448be2fd84068a6a1d98bdbedc662"
+    },
+    {
+      "path": "THIRD_PARTY_NOTICES/runtime-notices/arm_rts__errno.h.notice.txt",
+      "bytes": 2881,
+      "sha256": "f22ea0a6032428fd7dce10c9acf6d8eeafd972eb5b18c8a4881caa1e92ba9aac"
+    },
+    {
+      "path": "THIRD_PARTY_NOTICES/runtime-notices/arm_rts__exit.c.notice.txt",
+      "bytes": 2903,
+      "sha256": "7f23d7d62227b9c7c1cb97cb4ad3c66c9342dd390dd0cea900238b4511ede70f"
+    },
+    {
+      "path": "THIRD_PARTY_NOTICES/runtime-notices/arm_rts__fenv-softfloat.h.notice.txt",
+      "bytes": 1454,
+      "sha256": "15bdc0de672fe835e8735ccde3f89e09d21fe11e438f4d21021c65d76a7f70ce"
+    },
+    {
+      "path": "THIRD_PARTY_NOTICES/runtime-notices/arm_rts__fenv.h.notice.txt",
+      "bytes": 1454,
+      "sha256": "8a2775f2bfaab97068fc1d800b16764f7048c160d3c75ed0f9115693c42a5550"
+    },
+    {
+      "path": "THIRD_PARTY_NOTICES/runtime-notices/arm_rts__float.h.notice.txt",
+      "bytes": 2881,
+      "sha256": "8221002dcba251f709f2488de4ec5eb918daba4240fa38e9706ae3c1acc3fad7"
+    },
+    {
+      "path": "THIRD_PARTY_NOTICES/runtime-notices/arm_rts__format.h.notice.txt",
+      "bytes": 2881,
+      "sha256": "83989de4ea2058282d5b981958272c8342e4071c1f4a3c4e924054113a4c1aed"
+    },
+    {
+      "path": "THIRD_PARTY_NOTICES/runtime-notices/arm_rts__hostopen.c.notice.txt",
+      "bytes": 2881,
+      "sha256": "2b0fc54a5bf5a452bd738b5579af918bb3f3a42b0a5e50a02ae17cb77d0b9e31"
+    },
+    {
+      "path": "THIRD_PARTY_NOTICES/runtime-notices/arm_rts__hostwrite.c.notice.txt",
+      "bytes": 2881,
+      "sha256": "0b6e12f857d7972a34dffc4ebd989f407d4bd698998910dedc67984505423479"
+    },
+    {
+      "path": "THIRD_PARTY_NOTICES/runtime-notices/arm_rts__i_div0.c.notice.txt",
+      "bytes": 2881,
+      "sha256": "0665bf43afe2158b72f1af2460cd7eb2dba962a17862088b8312ca2d7190fa00"
+    },
+    {
+      "path": "THIRD_PARTY_NOTICES/runtime-notices/arm_rts__inttypes.h.notice.txt",
+      "bytes": 2923,
+      "sha256": "da7ff385da1aa02624b8a974fc3fdddede65374ccaf07a4b01785074b60dcb55"
+    },
+    {
+      "path": "THIRD_PARTY_NOTICES/runtime-notices/arm_rts__k_cosf.c.notice.txt",
+      "bytes": 610,
+      "sha256": "fa176e983e63556e6daa52f0f08da8decf781f8b002df91f1f1498e50a64d5a2"
+    },
+    {
+      "path": "THIRD_PARTY_NOTICES/runtime-notices/arm_rts__k_rem_pio2.c.notice.txt",
+      "bytes": 443,
+      "sha256": "772c639ebd798f80dbfc483c3cd12ac6b10d7cd7ee4c306dd7400a72bc045b43"
+    },
+    {
+      "path": "THIRD_PARTY_NOTICES/runtime-notices/arm_rts__k_sinf.c.notice.txt",
+      "bytes": 597,
+      "sha256": "5c4356f131aec461483e55ece03f5a1527c2498db77b5c114d364bd3891a73eb"
+    },
+    {
+      "path": "THIRD_PARTY_NOTICES/runtime-notices/arm_rts__limits.h.notice.txt",
+      "bytes": 2881,
+      "sha256": "7b1446dff7e17e2a38b84c4ca86a664cee8ab6c776f4d26ee862d061225a0440"
+    },
+    {
+      "path": "THIRD_PARTY_NOTICES/runtime-notices/arm_rts__linkage.h.notice.txt",
+      "bytes": 2881,
+      "sha256": "8bd7730cfc61db6b2fc56003303e5b2407b2361a727616b99e75bb933242f9eb"
+    },
+    {
+      "path": "THIRD_PARTY_NOTICES/runtime-notices/arm_rts__ltoa.c.notice.txt",
+      "bytes": 2834,
+      "sha256": "ef3b81470dc784a862c3901e03e654dc38506a2eff27014cf9ff6ea9a83f4049"
+    },
+    {
+      "path": "THIRD_PARTY_NOTICES/runtime-notices/arm_rts__math.h.notice.txt",
+      "bytes": 441,
+      "sha256": "539ee21a81819a3c435921c340aeb638a21584baa347656f26bf7030eb35896a"
+    },
+    {
+      "path": "THIRD_PARTY_NOTICES/runtime-notices/arm_rts__math_private.h.notice.txt",
+      "bytes": 441,
+      "sha256": "539ee21a81819a3c435921c340aeb638a21584baa347656f26bf7030eb35896a"
+    },
+    {
+      "path": "THIRD_PARTY_NOTICES/runtime-notices/arm_rts__memccpy.c.notice.txt",
+      "bytes": 2901,
+      "sha256": "4744dcd80024e229846561a1323f848a8213c8d72bb5140695ddcb2fa3b26751"
+    },
+    {
+      "path": "THIRD_PARTY_NOTICES/runtime-notices/arm_rts__memcpy_t2.asm.notice.txt",
+      "bytes": 2881,
+      "sha256": "e1ee24bae59f36ee253dea96b1532d241f93afd6ae574dffc5bae77b82171db4"
+    },
+    {
+      "path": "THIRD_PARTY_NOTICES/runtime-notices/arm_rts__memset_t2.asm.notice.txt",
+      "bytes": 2881,
+      "sha256": "112a7149c4c08e273c5533d539693b8053df3383abac632dde53d583401e572f"
+    },
+    {
+      "path": "THIRD_PARTY_NOTICES/runtime-notices/arm_rts__pprof.h.notice.txt",
+      "bytes": 2881,
+      "sha256": "9fbdeee0670ea75682a4add769d5af2a06af661b9f6187d23508074f8ad7cebd"
+    },
+    {
+      "path": "THIRD_PARTY_NOTICES/runtime-notices/arm_rts__s_atanf.c.notice.txt",
+      "bytes": 568,
+      "sha256": "0d89036d98b815b81065897a3e430e7d44c74b9128b824e4136d86db9855abc8"
+    },
+    {
+      "path": "THIRD_PARTY_NOTICES/runtime-notices/arm_rts__s_copysign.c.notice.txt",
+      "bytes": 441,
+      "sha256": "b73ddc4727e945e780219dfa3832b896cb78807b4fc6d2b91393dcecc89fc87e"
+    },
+    {
+      "path": "THIRD_PARTY_NOTICES/runtime-notices/arm_rts__s_cosf.c.notice.txt",
+      "bytes": 2275,
+      "sha256": "45212ce475db5c46ec5b8823edd1867c89e017b8ecda9243e49a3a3a23a1971b"
+    },
+    {
+      "path": "THIRD_PARTY_NOTICES/runtime-notices/arm_rts__s_floor.c.notice.txt",
+      "bytes": 441,
+      "sha256": "539ee21a81819a3c435921c340aeb638a21584baa347656f26bf7030eb35896a"
+    },
+    {
+      "path": "THIRD_PARTY_NOTICES/runtime-notices/arm_rts__s_frexp.c.notice.txt",
+      "bytes": 441,
+      "sha256": "539ee21a81819a3c435921c340aeb638a21584baa347656f26bf7030eb35896a"
+    },
+    {
+      "path": "THIRD_PARTY_NOTICES/runtime-notices/arm_rts__s_scalbn.c.notice.txt",
+      "bytes": 441,
+      "sha256": "539ee21a81819a3c435921c340aeb638a21584baa347656f26bf7030eb35896a"
+    },
+    {
+      "path": "THIRD_PARTY_NOTICES/runtime-notices/arm_rts__s_sinf.c.notice.txt",
+      "bytes": 2275,
+      "sha256": "9b9b50fdc63d1b0702525f31aa31bf86668f504ef80ff52d9bea4c12c6e493f0"
+    },
+    {
+      "path": "THIRD_PARTY_NOTICES/runtime-notices/arm_rts__snprintf.c.notice.txt",
+      "bytes": 2881,
+      "sha256": "b087a2fe542bb5b6ca11f3c25f6e43d12535b2a6ce19e65647dcc9e39bfc561d"
+    },
+    {
+      "path": "THIRD_PARTY_NOTICES/runtime-notices/arm_rts__stdarg.h.notice.txt",
+      "bytes": 2881,
+      "sha256": "2f230ae559e5713b0c31870850b602343d887fb2ee034aa18c8f571a07544fb3"
+    },
+    {
+      "path": "THIRD_PARTY_NOTICES/runtime-notices/arm_rts__stddef.h.notice.txt",
+      "bytes": 2881,
+      "sha256": "ac866ce23b03cacb9da851462e34b1f40700a1c2e000fa5a98ca352b4cab2325"
+    },
+    {
+      "path": "THIRD_PARTY_NOTICES/runtime-notices/arm_rts__stdint.h.notice.txt",
+      "bytes": 2919,
+      "sha256": "a47b4c48c8b081ddf2732451e3d4a7ed1a268200af35c7249dea0bbce81052f5"
+    },
+    {
+      "path": "THIRD_PARTY_NOTICES/runtime-notices/arm_rts__stdio.h.notice.txt",
+      "bytes": 2912,
+      "sha256": "1edf279504bbfe55d96727fcb7a772e19ac204f4d0edd7df16d498d282857f4e"
+    },
+    {
+      "path": "THIRD_PARTY_NOTICES/runtime-notices/arm_rts__stdlib.h.notice.txt",
+      "bytes": 2881,
+      "sha256": "acc93a2718e7059ffd1a9ad036c4afbaa1ec50cb06df637715f3b0d01135da2f"
+    },
+    {
+      "path": "THIRD_PARTY_NOTICES/runtime-notices/arm_rts__stkdepth_vars.c.notice.txt",
+      "bytes": 3384,
+      "sha256": "4c8036d6dc0ab0fa6ae9f1d8eb525a32dbaa647ab18af13af76528acb99eb68c"
+    },
+    {
+      "path": "THIRD_PARTY_NOTICES/runtime-notices/arm_rts__strchr.c.notice.txt",
+      "bytes": 2845,
+      "sha256": "12199711a210c2c72ee10028c5ca96af8b3f1d5ea7c287030255f1bfc3c94540"
+    },
+    {
+      "path": "THIRD_PARTY_NOTICES/runtime-notices/arm_rts__strcmp.c.notice.txt",
+      "bytes": 2845,
+      "sha256": "870a3212d4b4071d8561195d3141af9e2d2c27ee179c90945f82828357add2e1"
+    },
+    {
+      "path": "THIRD_PARTY_NOTICES/runtime-notices/arm_rts__string.h.notice.txt",
+      "bytes": 2881,
+      "sha256": "626578e69335cf1a111ba36cce73f93c8d3f72507ba0648f176075fb07c86a30"
+    },
+    {
+      "path": "THIRD_PARTY_NOTICES/runtime-notices/arm_rts__strlen.c.notice.txt",
+      "bytes": 2845,
+      "sha256": "fbd58cad623b957fa57934776326e52f34ab2a00688c243f5c9c076865574710"
+    },
+    {
+      "path": "THIRD_PARTY_NOTICES/runtime-notices/arm_rts__strncmp.c.notice.txt",
+      "bytes": 2845,
+      "sha256": "2a6c8e37091597fe81feb7766317a5f1e0219a360a22d07270986ac92b633328"
+    },
+    {
+      "path": "THIRD_PARTY_NOTICES/runtime-notices/arm_rts__strtol.c.notice.txt",
+      "bytes": 2944,
+      "sha256": "4c2ac268b5ca2708ce3ac9b5f4a87f0bb593f90cdfa583f2d1c8a9cea4ac9597"
+    },
+    {
+      "path": "THIRD_PARTY_NOTICES/runtime-notices/arm_rts__ti_fmax.c.notice.txt",
+      "bytes": 2881,
+      "sha256": "6098a5e2c6678155bc76100735e0ee5b463899a5da14676820f1ddfb0a296785"
+    },
+    {
+      "path": "THIRD_PARTY_NOTICES/runtime-notices/arm_rts__trgcio.h.notice.txt",
+      "bytes": 2917,
+      "sha256": "2b5dffe7fe7d9822e22d8cffe35092344714d5f51068787897e598b049e48062"
+    },
+    {
+      "path": "THIRD_PARTY_NOTICES/runtime-notices/arm_rts__trgdrv.h.notice.txt",
+      "bytes": 2881,
+      "sha256": "1896e0ac5d359c3efc1f49ede6022cbc7bdb7b82dba26d326a18ad8b27870f86"
+    },
+    {
+      "path": "THIRD_PARTY_NOTICES/runtime-notices/arm_rts__trgmsg.c.notice.txt",
+      "bytes": 2881,
+      "sha256": "78418d0b96be4b35821121fbecf817fd653ad064b2f028f4f623f721d3ac8e41"
+    },
+    {
+      "path": "THIRD_PARTY_NOTICES/runtime-notices/arm_rts__u_div32.asm.notice.txt",
+      "bytes": 2881,
+      "sha256": "99669234417d649b68b3caa2ef1c4f456736525f8325e7584d28601ed5f1a725"
+    },
+    {
+      "path": "THIRD_PARTY_NOTICES/runtime-notices/arm_rts__ull_div32.asm.notice.txt",
+      "bytes": 2881,
+      "sha256": "b6fa2f782025ba53803646a404380dc96047f04836af25085229ea4bca081d41"
+    },
+    {
+      "path": "THIRD_PARTY_NOTICES/runtime-notices/arm_rts__vsnprintf.c.notice.txt",
+      "bytes": 2881,
+      "sha256": "c932d2b14bef62d1ab5e7cf68f7af9cb9ddd5eb116a49d74c1d651d57c503479"
+    },
+    {
+      "path": "THIRD_PARTY_NOTICES/runtime-notices/runtime-notice-audit.json",
+      "bytes": 45967,
+      "sha256": "928f253895ca4c9b7393505d57af15b31d5357cb727145f84441108106868847"
+    },
+    {
+      "path": "THIRD_PARTY_NOTICES/runtime-notices/ti_target__auto_init.asm.notice.txt",
+      "bytes": 2881,
+      "sha256": "a3c6a8f0b303972cf8cd50d591e485d6b1c65da5edee337d045c351e649bf2bd"
+    },
+    {
+      "path": "THIRD_PARTY_NOTICES/runtime-notices/ti_target__boot.asm.notice.txt",
+      "bytes": 2881,
+      "sha256": "c6362342521353adb02411e856ae5f39af860b3b38efb6830fc49d280bec21b8"
+    },
+    {
+      "path": "THIRD_PARTY_NOTICES/xdctools_3_50_08_24_manifest.html",
+      "bytes": 4088,
+      "sha256": "8b3d018b357e9b9c84c1b1145a54d3450b29c1e495d63139109d7f40e03359e4"
+    },
+    {
+      "path": "VALIDATION.md",
+      "bytes": 6195,
+      "sha256": "53a5d24fb0baea27a656d3e47177a2c27e5d52b824cdd56cdee699894407e843"
+    },
+    {
+      "path": "application.cmd",
+      "bytes": 80,
+      "sha256": "a66379e045a133902177f766e5c5e3f7dc608d639a2dc59a89f8e52c1469836a"
+    },
+    {
+      "path": "build/original_radar_sensing.bin",
+      "bytes": 344836,
+      "sha256": "668476d4130f659cef4c1fea3b8eb436d5025f20853dc30ca83380f9bd38a6bf"
+    },
+    {
+      "path": "config/current_mount.cfg.template",
+      "bytes": 795,
+      "sha256": "48903459bc0a86504aeab90b3e78bed5096987f84422bafbe01efe524363e1a5"
+    },
+    {
+      "path": "config/current_mount_metadata.json",
+      "bytes": 663,
+      "sha256": "cb56ebc5f785f242d585e29e6033a1854aade66201e5351e1c0262278be9b882"
+    },
+    {
+      "path": "config/dual_uart_acceptance.cfg.template",
+      "bytes": 873,
+      "sha256": "1449a01d916a66d4f4fd5d30b601217050d052217701a31288d39109b4bef407"
+    },
+    {
+      "path": "config/room64_v1.cfg",
+      "bytes": 613,
+      "sha256": "df61e05febe3458e84ff3575c2ad8a2b5f8d68af0e1a14c99f20f56e6b6f9af8"
+    },
+    {
+      "path": "dsp/Makefile",
+      "bytes": 1065,
+      "sha256": "bd1cb22d839e929b2ccdaa7a3f0fd55c5c5371b626e14d615fd7d4ec17b8e8ef"
+    },
+    {
+      "path": "dsp/README.md",
+      "bytes": 10122,
+      "sha256": "33d3ffd87366a69b7e14f7bb7d0fd4019a76fdfa07fa804b848535f3895b021e"
+    },
+    {
+      "path": "dsp/radar_dsp.c",
+      "bytes": 12685,
+      "sha256": "a4a8d97f0d639aa054bb48ad6b31adb826610006a739a06187ba2a3234377b0f"
+    },
+    {
+      "path": "dsp/radar_dsp.h",
+      "bytes": 5288,
+      "sha256": "46c6faad5dda09a39c8ea41c06aba0b9d58f9d750026086ddc426c55719dfe25"
+    },
+    {
+      "path": "dsp/tests/test_radar_dsp.c",
+      "bytes": 14831,
+      "sha256": "7fb4d4259c87783a24afdeafa768d55c446c5ed639422fb66298b306065452c0"
+    },
+    {
+      "path": "host/README.md",
+      "bytes": 5710,
+      "sha256": "dc366347189b2d538757f2c5c3b991c26ed6e3eb79933d17b2b854aefba92b5e"
+    },
+    {
+      "path": "host/original_capture.py",
+      "bytes": 17789,
+      "sha256": "425513f7b015a05716209433a67f5e870039e1cfef834b07e8c5779d3022ce96"
+    },
+    {
+      "path": "host/requirements.txt",
+      "bytes": 14,
+      "sha256": "0b81718d1cbe8a7696e45a9388c9205272b5e345cd79d0cf1ccfb7a9fd1925e9"
+    },
+    {
+      "path": "host/test_original_capture.py",
+      "bytes": 11104,
+      "sha256": "d1a36446a6cc2e872e72856f6e7d827b799bfa15903f206bc7cc204e5ad5ad9f"
+    },
+    {
+      "path": "sensing.cfg",
+      "bytes": 1069,
+      "sha256": "2f1e2c0bdce4d1a9c62e0ecefbd0aa788b0f4432583b3897a401b3fe14fa95bb"
+    },
+    {
+      "path": "spatial/README.md",
+      "bytes": 2684,
+      "sha256": "a7d1d95c4c6fa004b21fdff5178c7fb9fd3c6d268684bddde7d423b75cab2b88"
+    },
+    {
+      "path": "spatial/original_spatial.c",
+      "bytes": 6303,
+      "sha256": "2b54c71e0d9983f2494e988517542fe8ef60cc78ebbcdaa03d639fcbce4cb2bd"
+    },
+    {
+      "path": "spatial/original_spatial.h",
+      "bytes": 1762,
+      "sha256": "0e62581995f289c1010711124999ea721a2687268184655a873fd197c8d5b670"
+    },
+    {
+      "path": "spatial/spatial_selftest.c",
+      "bytes": 4481,
+      "sha256": "cbdcb1946f192253b3e502996825988baa0f148654f3b5b2d9db0b8c2df17b83"
+    },
+    {
+      "path": "spatial/spatial_selftest.h",
+      "bytes": 342,
+      "sha256": "cb4b8cc5c5c55b6c1e05c8da45bec4d831571b52106c3139c63e299ae100720a"
+    },
+    {
+      "path": "src/acquisition.c",
+      "bytes": 8008,
+      "sha256": "d41c7ca87caccd2100c0d6a0a00123f2deb2c8fabdfc001318d7c6d24bc09ac0"
+    },
+    {
+      "path": "src/acquisition.h",
+      "bytes": 730,
+      "sha256": "9c61b8bf0868cbf17b808f3f6cb1e86d93dee69bf06a886c0950b803e31516ac"
+    },
+    {
+      "path": "src/build_identity.h",
+      "bytes": 122,
+      "sha256": "72cce45c63193945554bde66c7cfe41ed092d177c9a28711ba0f3b57ac0371c8"
+    },
+    {
+      "path": "src/capture_model.c",
+      "bytes": 1981,
+      "sha256": "a1e4142d1afc039bff57ae6558d70947409076471d88979926c2329b6cb958c4"
+    },
+    {
+      "path": "src/capture_model.h",
+      "bytes": 956,
+      "sha256": "0e655834a2bf44b896cbc0b82145492929c318f1fdea35da2fed3d6acb84b261"
+    },
+    {
+      "path": "src/energy_summary.c",
+      "bytes": 783,
+      "sha256": "d5902d2b6d9fef602ba4eb0e18957152d464b971587e34abf1940ed4faf3cdd4"
+    },
+    {
+      "path": "src/energy_summary.h",
+      "bytes": 330,
+      "sha256": "89425fd4ba56249de58716cce892ed56ed0dd0bf51cdd499117dfba489d5f0e3"
+    },
+    {
+      "path": "src/json_output.c",
+      "bytes": 5222,
+      "sha256": "2bd9dd3706fc6d01ebf5733f06e1d675f7f33608557392a5af5680fe6f378733"
+    },
+    {
+      "path": "src/json_output.h",
+      "bytes": 619,
+      "sha256": "5d06e043178cb3612c59a42a6ad5bf5817976707f4bab19985cdcaac8fbb980b"
+    },
+    {
+      "path": "src/link_session.c",
+      "bytes": 1329,
+      "sha256": "27a14d156a2f0602036b95717303833bd90c96ed62a5a325c6ebb832f51c2218"
+    },
+    {
+      "path": "src/link_session.h",
+      "bytes": 613,
+      "sha256": "40f82711859e3df5f4d6b8c2f07cac5c36d9b15f819aa9dff7e5e186bb801a7f"
+    },
+    {
+      "path": "src/main.c",
+      "bytes": 17797,
+      "sha256": "a0246ad754958f1c0da9468994e61de409f170e6cdf6c5208497e32e9effa626"
+    },
+    {
+      "path": "src/radio.c",
+      "bytes": 5804,
+      "sha256": "7eea3e799d7e70c55151ebcd4e675ea38199a3ec12ad71ce08eef6b2b9d0b5b3"
+    },
+    {
+      "path": "src/radio.h",
+      "bytes": 438,
+      "sha256": "aefcf436de0ed5f1e657e9f35de1a6cafbd4b23422c7a782ebc69d3bdb99d983"
+    },
+    {
+      "path": "src/record_transport.c",
+      "bytes": 1412,
+      "sha256": "3f92473961ce6db728f5a217027f56685b3383f59bedaa8c766c5817ae510536"
+    },
+    {
+      "path": "src/record_transport.h",
+      "bytes": 849,
+      "sha256": "5bc5f75ef4b2120e9f40e3832597249139ab84b1a09e328d7031c52048765e5b"
+    },
+    {
+      "path": "src/rf_profile.c",
+      "bytes": 804,
+      "sha256": "67f49a1a3b37ad4485a8e0cba7c4de9987a3170c1678c0c79e3fafe6d32cddb4"
+    },
+    {
+      "path": "src/rf_profile.h",
+      "bytes": 373,
+      "sha256": "3411d5b0b5a4694e899a835ed97cb940ec905404b8fada49c94538a9060933ff"
+    },
+    {
+      "path": "src/sensing_config.c",
+      "bytes": 4182,
+      "sha256": "4841d25ff666fe8fc1d97a9b0191172820e25a677bcc2d708b4a6dfc4c8310e2"
+    },
+    {
+      "path": "src/sensing_config.h",
+      "bytes": 1178,
+      "sha256": "70fad046a91f58736ab33d473d1b7f7d0645661f24eca1bf003604d6227399e5"
+    },
+    {
+      "path": "src/serial_line.c",
+      "bytes": 473,
+      "sha256": "41f6928ab63e20bb1dbfdab43049dc9f9ce637557ea1449a5566303f6bc6a7dd"
+    },
+    {
+      "path": "src/serial_line.h",
+      "bytes": 361,
+      "sha256": "a0fdb463ee3091f169afd6db703e918b6d8e2fd896970c00c56c86236af37001"
+    },
+    {
+      "path": "tests/run_tests.sh",
+      "bytes": 1451,
+      "sha256": "4b25f32b2fd2d3d31a57965283a62a9c32f1aec79cbae86d5699fa4a310143d7"
+    },
+    {
+      "path": "tests/test_aop_polarity_grid.c",
+      "bytes": 2287,
+      "sha256": "a061f1fd75921183872a25b4ddb8eb12278d53c652e07aa1b30d15b3e9536cc6"
+    },
+    {
+      "path": "tests/test_boot_gate.py",
+      "bytes": 11668,
+      "sha256": "57eba2df50ee575419e596f227e7f7282ac7aea523247d439e89076f07aa061d"
+    },
+    {
+      "path": "tests/test_independent_dual_framing.py",
+      "bytes": 5586,
+      "sha256": "93f6d7b483a31197f8a27366b035e7af04d21670704b5962b7c48db68deed02a"
+    },
+    {
+      "path": "tests/test_link_session.c",
+      "bytes": 1292,
+      "sha256": "2da5cdbca5b6ba437de11469821d73285985c60291db7992ac95ffcfdc76bc12"
+    },
+    {
+      "path": "tests/test_original_spatial.c",
+      "bytes": 3616,
+      "sha256": "ba773a1d7fcdee65aef6d0354402b0be75655720eefec831148e5b80291ecce8"
+    },
+    {
+      "path": "tests/test_record_transport.c",
+      "bytes": 4697,
+      "sha256": "2803edac3a6338f67fe4af94aa0b79b682b7755d5981fbabc5caaf4b44557858"
+    },
+    {
+      "path": "tests/test_sensing.c",
+      "bytes": 8478,
+      "sha256": "d8f7323e35774297eb93c4f19108c197ee43b38a1c15a81ffa0c692457a85e19"
+    },
+    {
+      "path": "tools/package_firmware.sh",
+      "bytes": 2215,
+      "sha256": "6241fb002c005b3e1c532eb2a33316a0f26398a8f819a1657118eccc23e1cf66"
+    },
+    {
+      "path": "tools/update_build_identity.py",
+      "bytes": 1175,
+      "sha256": "1ddff31ac10fa842df37e60d7bb49e309a6137032b635c503adfc44e567bacef"
+    },
+    {
+      "path": "tools/verify_sensing.py",
+      "bytes": 3592,
+      "sha256": "d40aa4f39b5fc89b3ed04210790b60269e0e80f4f80f052d2bcd46818648b507"
+    },
+    {
+      "path": "verification/independent_binary_check.json",
+      "bytes": 2007,
+      "sha256": "6184bab1310866577a7e88c7fb3ad611c366d86f4f3a371938a5780a8609151e"
+    },
+    {
+      "path": "verification/independent_dual_framing.json",
+      "bytes": 225,
+      "sha256": "07a6536ace25c0744bcc8c18f1eacee4c0617a8919b10ec8575f39e3f02a6c55"
+    },
+    {
+      "path": "verification/polarity_diagnosis.json",
+      "bytes": 1528,
+      "sha256": "7e9d67e5cbbd0ce275560b7f1d51241da6f73537ea9c6abd7c7212076d2ec362"
+    }
+  ],
+  "source_patch": {
+    "date_utc": "2026-10-11",
+    "scope": "Historical original-radar-v1 host collector Stop-confirmation correction only; firmware build and BIN unchanged",
+    "legacy_host_synthetic_tests": 13,
+    "historical_release_assets": "unchanged"
+  }
+}
