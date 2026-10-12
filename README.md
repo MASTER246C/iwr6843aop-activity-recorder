@@ -57,7 +57,7 @@ The BIN includes original application code plus identified TI/runtime support. P
 
 ## Original-protocol host training tools
 
-[Original radar host training tools v0.1.0-preview.2](original_training/README.md) provide a separate Python 3.10+ standard-library workflow for original-radar dataset export v1: validate, prepare, train and evaluate. Use the corrected source in `original_training/`. The [v0.1.0-preview.1 prerelease ZIP](https://github.com/MASTER246C/iwr6843aop-activity-recorder/releases/tag/original-training-v0.1.0-preview.1) remains a historical archive and does not contain the cross-window continuity fix.
+[Original radar host training tools v0.1.0-preview.3](original_training/README.md) provide a separate Python 3.10+ standard-library workflow for original-radar dataset export v1: validate, prepare, train and evaluate. Use the corrected source in `original_training/`. The [v0.1.0-preview.1 prerelease ZIP](https://github.com/MASTER246C/iwr6843aop-activity-recorder/releases/tag/original-training-v0.1.0-preview.1) remains a historical archive and does not contain the cross-window continuity fix.
 
 **These are host analysis tools, not firmware to flash.** Python is not a prerequisite for the browser viewer. No recordings, trained weights, cloud inference, uploads or camera hardware are included. Training requires suitable human-reviewed exports with explicit session and participant-group splits; synthetic tests do not establish recognition accuracy. Labels cannot repair rejected sensor data. The tool independently hashes input bytes and frozen canonical inputs but does not authenticate the producer's embedded hash or an absent original capture. Read its admission, split and resource limits before use.
 
