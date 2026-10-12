@@ -131,9 +131,12 @@ These per-dataset limits do not become batch-wide frame, segment, label or
 comparison limits. This is an in-memory bounded prototype. Private
 participant labels, mount information and optional camera marker metadata may
 remain in your local prepared exports. There is no public-export sanitization or
-publication authorization in this CLI. Do not upload these files. Camera choice
-is still open; optional sync metadata is preserved, never used as synchronized
-truth, and no camera/video processing is implemented.
+publication authorization in this CLI. Do not upload these files. Radar Studio
+allows browser-supported cameras; Logitech C920e is the project test device.
+Its browser uses Google pose landmarks and unvalidated activity rules to propose
+labels for human review. These Python tools verify completed recordings and
+reviewed, timing-aligned labels; they do not decode video or run pose inference.
+Optional sync metadata alone is never treated as synchronized truth.
 
 ## Tests and licensing
 

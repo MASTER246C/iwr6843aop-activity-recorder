@@ -2,7 +2,7 @@
   "version": "0.3.2-rc1",
   "protocol": "original-radar-v2",
   "build_id": "87589b2c32638ae119334c72",
-  "status": "BUILT_OFFLINE_TESTED_NOT_FLASHED_NOT_PUBLISHED",
+  "status": "BUILT_OFFLINE_TESTED_HARDWARE_ACCEPTANCE_PENDING",
   "hardware_acceptance": "pending",
   "candidate_bin": "build/0.3.2-rc1/original_radar_sensing.bin",
   "prior_bin": {

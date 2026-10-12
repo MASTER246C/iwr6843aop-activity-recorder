@@ -39,8 +39,8 @@
     },
     {
       "path": "README.md",
-      "bytes": 10821,
-      "sha256": "af52ef9d919872a156d306670da8e2e1542d437cc4a82b9de5e37a177a14a449"
+      "bytes": 11071,
+      "sha256": "c9b951d50dae09e35d95272381ecf9b01e3fac352fc8634b55a9c7f997a35e9a"
     },
     {
       "path": "test_camera_import.py",
@@ -62,5 +62,6 @@
       "bytes": 1211,
       "sha256": "5687a1c3626d62c9dfb2831e9ac109ef60283ccb9d5ac7dda2885cf6ee9eb897"
     }
-  ]
+  ],
+  "source_note": "Documentation clarified after the frozen original-training-v0.1.0-preview.3 release; that published ZIP is unchanged."
 }
