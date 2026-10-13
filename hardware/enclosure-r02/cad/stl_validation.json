@@ -1,0 +1,79 @@
+[
+  {
+    "part": "06_common_thumb_screw_D6_pitch2_L16",
+    "triangles": 7790,
+    "vertices": 3897,
+    "nonmanifold_edge_count": 0,
+    "closed_edge_manifold": true
+  },
+  {
+    "part": "03_front_service_wall_integral_0p30_window",
+    "triangles": 3036,
+    "vertices": 1512,
+    "nonmanifold_edge_count": 0,
+    "closed_edge_manifold": true
+  },
+  {
+    "part": "02_removable_rear_cover",
+    "triangles": 13404,
+    "vertices": 6692,
+    "nonmanifold_edge_count": 0,
+    "closed_edge_manifold": true
+  },
+  {
+    "part": "C03_thread_coupon_radial_0p35",
+    "triangles": 436,
+    "vertices": 218,
+    "nonmanifold_edge_count": 0,
+    "closed_edge_manifold": true
+  },
+  {
+    "part": "07_PCB_retaining_pin_D2p4_L8",
+    "triangles": 850,
+    "vertices": 427,
+    "nonmanifold_edge_count": 0,
+    "closed_edge_manifold": true
+  },
+  {
+    "part": "04_camera_keeper_bar",
+    "triangles": 876,
+    "vertices": 436,
+    "nonmanifold_edge_count": 0,
+    "closed_edge_manifold": true
+  },
+  {
+    "part": "05_split_cable_clamp_strip",
+    "triangles": 1308,
+    "vertices": 652,
+    "nonmanifold_edge_count": 0,
+    "closed_edge_manifold": true
+  },
+  {
+    "part": "C02_thread_coupon_radial_0p25",
+    "triangles": 436,
+    "vertices": 218,
+    "nonmanifold_edge_count": 0,
+    "closed_edge_manifold": true
+  },
+  {
+    "part": "C01_thread_coupon_radial_0p15",
+    "triangles": 436,
+    "vertices": 218,
+    "nonmanifold_edge_count": 0,
+    "closed_edge_manifold": true
+  },
+  {
+    "part": "C04_common_screw_fit_coupon",
+    "triangles": 4496,
+    "vertices": 2248,
+    "nonmanifold_edge_count": 0,
+    "closed_edge_manifold": true
+  },
+  {
+    "part": "01_integrated_main_shell",
+    "triangles": 84774,
+    "vertices": 42297,
+    "nonmanifold_edge_count": 0,
+    "closed_edge_manifold": true
+  }
+]

@@ -1,0 +1,123 @@
+[
+  {
+    "part": "01_integrated_main_shell",
+    "valid": true,
+    "solids": 1,
+    "volume_mm3": 552227.885,
+    "bbox_mm": [
+      170.0,
+      210.0,
+      128.0
+    ]
+  },
+  {
+    "part": "03_front_service_wall_integral_0p30_window",
+    "valid": true,
+    "solids": 1,
+    "volume_mm3": 51688.722,
+    "bbox_mm": [
+      162.0,
+      108.0,
+      8.1
+    ]
+  },
+  {
+    "part": "02_removable_rear_cover",
+    "valid": true,
+    "solids": 1,
+    "volume_mm3": 109206.415,
+    "bbox_mm": [
+      170.0,
+      210.0,
+      16.0
+    ]
+  },
+  {
+    "part": "05_split_cable_clamp_strip",
+    "valid": true,
+    "solids": 1,
+    "volume_mm3": 8799.638,
+    "bbox_mm": [
+      108.0,
+      24.0,
+      6.0
+    ]
+  },
+  {
+    "part": "04_camera_keeper_bar",
+    "valid": true,
+    "solids": 1,
+    "volume_mm3": 7847.435,
+    "bbox_mm": [
+      124.0,
+      14.0,
+      5.0
+    ]
+  },
+  {
+    "part": "06_common_thumb_screw_D6_pitch2_L16",
+    "valid": true,
+    "solids": 1,
+    "volume_mm3": 639.002,
+    "bbox_mm": [
+      11.93,
+      12.0,
+      19.0
+    ]
+  },
+  {
+    "part": "07_PCB_retaining_pin_D2p4_L8",
+    "valid": true,
+    "solids": 1,
+    "volume_mm3": 50.479,
+    "bbox_mm": [
+      3.84,
+      3.84,
+      10.0
+    ]
+  },
+  {
+    "part": "C01_thread_coupon_radial_0p15",
+    "valid": true,
+    "solids": 1,
+    "volume_mm3": 3692.16,
+    "bbox_mm": [
+      22.0,
+      22.0,
+      8.0
+    ]
+  },
+  {
+    "part": "C02_thread_coupon_radial_0p25",
+    "valid": true,
+    "solids": 1,
+    "volume_mm3": 3678.462,
+    "bbox_mm": [
+      22.0,
+      22.0,
+      8.0
+    ]
+  },
+  {
+    "part": "C03_thread_coupon_radial_0p35",
+    "valid": true,
+    "solids": 1,
+    "volume_mm3": 3664.262,
+    "bbox_mm": [
+      22.0,
+      22.0,
+      8.0
+    ]
+  },
+  {
+    "part": "C04_common_screw_fit_coupon",
+    "valid": true,
+    "solids": 1,
+    "volume_mm3": 6620.281,
+    "bbox_mm": [
+      24.0,
+      24.0,
+      12.0
+    ]
+  }
+]

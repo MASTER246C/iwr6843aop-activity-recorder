@@ -1,0 +1,7 @@
+{
+  "board_orientation": "official_STEP_Y180",
+  "mirror_radar": true,
+  "pcb_front_mm": 8.0,
+  "radar_membrane_inner_z_mm": 4.1,
+  "thread_radial_clearance_mm": 0.25
+}

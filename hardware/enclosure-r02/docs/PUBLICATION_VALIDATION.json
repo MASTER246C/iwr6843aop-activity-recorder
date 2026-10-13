@@ -1,0 +1,82 @@
+{
+  "date_utc": "2026-10-13",
+  "part_steps": [
+    {
+      "file": "cad/step/01_integrated_main_shell.step",
+      "valid": true,
+      "solid_count": 1,
+      "identical_to_R02_export": true
+    },
+    {
+      "file": "cad/step/02_removable_rear_cover.step",
+      "valid": true,
+      "solid_count": 1,
+      "identical_to_R02_export": true
+    },
+    {
+      "file": "cad/step/03_front_service_wall_integral_0p30_window.step",
+      "valid": true,
+      "solid_count": 1,
+      "identical_to_R02_export": true
+    },
+    {
+      "file": "cad/step/04_camera_keeper_bar.step",
+      "valid": true,
+      "solid_count": 1,
+      "identical_to_R02_export": true
+    },
+    {
+      "file": "cad/step/05_split_cable_clamp_strip.step",
+      "valid": true,
+      "solid_count": 1,
+      "identical_to_R02_export": true
+    },
+    {
+      "file": "cad/step/06_common_thumb_screw_D6_pitch2_L16.step",
+      "valid": true,
+      "solid_count": 1,
+      "identical_to_R02_export": true
+    },
+    {
+      "file": "cad/step/07_PCB_retaining_pin_D2p4_L8.step",
+      "valid": true,
+      "solid_count": 1,
+      "identical_to_R02_export": true
+    },
+    {
+      "file": "cad/step/C01_thread_coupon_radial_0p15.step",
+      "valid": true,
+      "solid_count": 1,
+      "identical_to_R02_export": true
+    },
+    {
+      "file": "cad/step/C02_thread_coupon_radial_0p25.step",
+      "valid": true,
+      "solid_count": 1,
+      "identical_to_R02_export": true
+    },
+    {
+      "file": "cad/step/C03_thread_coupon_radial_0p35.step",
+      "valid": true,
+      "solid_count": 1,
+      "identical_to_R02_export": true
+    },
+    {
+      "file": "cad/step/C04_common_screw_fit_coupon.step",
+      "valid": true,
+      "solid_count": 1,
+      "identical_to_R02_export": true
+    }
+  ],
+  "assembly": {
+    "solid_count": 17,
+    "valid": true,
+    "expected_count": 17,
+    "omits": "two PCB retaining pins",
+    "identical_to_R02_export": true
+  },
+  "stl_edge_check": "cad/check_stl.py passed for all 11 STL files; no nonmanifold edges under rounding to 5 decimal places",
+  "source_check": "Python syntax compilation passed; full parametric rebuild not rerun",
+  "physical_validation": false,
+  "third_party_geometry_included": false
+}

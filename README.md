@@ -4,6 +4,12 @@
 
 # IWR6843AOP Activity Recorder
 
+## Radar + camera enclosure CAD
+
+[Download and inspect the R02 enclosure prototype](hardware/enclosure-r02/) for the IWR6843AOPEVM and Logitech C920e: editable CadQuery source, STEP/STL exports, BOM, assembly notes, validation reports and SHA-256 checksums. Physical fit, retention, weather resistance, RF, thermal and load performance remain unvalidated; review the documented fit gaps before fabrication.
+
+The [enclosure-specific license](hardware/enclosure-r02/LICENSE) permits personal and internal company use/research and customer-directed paid fabrication. Independent retail/resale of the design or enclosure copies is restricted. Users retain their datasets, measurements, models and independent research outputs and may commercialize those outputs; using the enclosure grants Chris no rights to them.
+
 ## Hosted viewer
 
 **[Open Radar Studio](https://radar-studio.master246c.chatgpt.site)** · [Hosted help](https://radar-studio.master246c.chatgpt.site/help) · [Local offline ML](https://radar-studio.master246c.chatgpt.site/offline) · [Versioned viewer downloads](https://github.com/MASTER246C/radar-studio-chromebook/releases)

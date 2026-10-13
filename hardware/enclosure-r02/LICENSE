@@ -1,0 +1,97 @@
+Radar Camera Enclosure Source-Available No-Resale License
+Version 1.0 — Enclosure Edition, 2026-10-13
+
+1. Covered material
+
+This license applies only to original enclosure designs, CAD source, CAD exports, code, preview
+images and documentation in the Radar Camera Enclosure project that Chris Kalkowski (the "Licensor") has authority to license
+(the "Covered Material"). It grants rights only to the extent the Licensor holds
+those rights.
+
+Texas Instruments software, firmware, SDKs, documentation, and other third-party
+materials are excluded. Files or components with separate license notices remain
+subject to their own licenses. This license does not replace those licenses or
+grant rights in third-party materials.
+
+2. Permitted use and modification
+
+Subject to this license, you may use, copy, and modify the Covered Material for
+personal use, teaching, and internal business use. Teaching may be paid or unpaid.
+Individuals may use and modify the Covered Material for personal research.
+Companies may use and modify it for internal research and as an internal tool
+in their ordinary commercial activities. Earning income from activities in which the Covered
+Material is used as a tool does not, by itself, violate this license.
+
+3. Free redistribution
+
+You may distribute the Covered Material and modified versions without charge,
+provided that you retain this license and existing copyright and attribution
+notices. You must clearly identify modified versions as modified. The permissions
+and restrictions in this license continue to apply to the Covered Material in
+those versions. You may not remove these restrictions by applying another license
+to the Covered Material.
+
+4. No resale or paid access
+
+Without separate written permission from the applicable rights holder, you may
+not:
+
+(a) sell, rent, or commercially sublicense the Covered Material or modified
+    versions;
+(b) incorporate or distribute the Covered Material or modified versions as part
+    of a product or bundle offered for payment, including a paid software product
+    or a paid hardware-and-software bundle; or
+(c) charge for access to the Covered Material or modified versions, including
+    through a hosted service, subscription, premium version, or paid feature of
+    another product or service.
+
+The paid-teaching permission allows charging for instruction, including when
+free copies are provided to students under section 3. It does not allow selling
+the Covered Material, charging separately for copies or software access, or
+offering paid software access as a product under the label of teaching.
+
+These restrictions also apply to physical enclosures and components fabricated
+from the Covered Material, including modified physical derivatives. Without
+separate written permission, you may not independently manufacture them for
+stock or inventory for sale, list or offer them for resale on a website or
+elsewhere, or incorporate them into commercial products offered for sale.
+
+Customer-directed fabrication exception: You may fabricate copies for your
+own personal, teaching or internal business use as permitted by section 2.
+You may hire a print shop or other fabricator to make those copies for you.
+The fabricator may receive the necessary files and charge for that specific
+customer-directed fabrication service, including its materials and labor,
+and deliver the resulting copies to that customer. This exception applies
+equally to modified physical derivatives. It does not authorize independent
+stock manufacture, retail listings, resale or sale as commercial products,
+or selling or charging for access to the design files themselves.
+
+Independently created output merely produced using the Covered Material as a
+tool is otherwise outside these restrictions; physical reproductions of these
+enclosure designs are not such independent output.
+
+Outputs and research rights: The Licensor claims no ownership, license,
+revenue share or other rights in datasets, measurements, research findings,
+trained models or independently created software merely because they were
+produced while using this enclosure or radar. You may keep, use, share or sell
+such independent outputs, subject to any independently applicable third-party
+rights or laws. This does not permit sale of the enclosure CAD design, its
+modified versions or physical enclosure copies. Contributions of datasets or
+other outputs to the Licensor are entirely voluntary and separately opt-in.
+
+5. Other rights
+
+Uses outside the permissions above require separate permission from the
+applicable rights holder. This license does not restrict rights you have
+independently under applicable law. No trademark rights are granted.
+
+6. No warranty or liability
+
+To the extent permitted by applicable law, the Covered Material is supplied
+"as is," without any warranty, express or implied, including warranties of
+merchantability, fitness for a particular purpose, and noninfringement. To the
+extent permitted by applicable law, the Licensor is not liable for any claim,
+damage, or other liability arising from the Covered Material or its use.
+
+This is a source-available license with restrictions on resale and paid access.
+It is not an OSI-approved open-source license.
