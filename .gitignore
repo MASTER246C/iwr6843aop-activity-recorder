@@ -1,0 +1,16 @@
+# Local test and build outputs. Release artifacts under
+# firmware/original-radar-sensing/build/ (BIN, receipts) stay tracked.
+firmware/original-radar-sensing/build/host-tests/
+firmware/original-radar-sensing/dsp/build/
+firmware/original-radar-sensing/checks/
+firmware/original-radar-sensing/src/sysbios/
+firmware/original-radar-sensing/src/makefile.libs
+firmware/original-radar-sensing/src/.exclude
+configPkg/
+# Private debug outputs of a TI build (never published).
+*.oer4f
+*.xer4f
+*.map
+link.xml
+__pycache__/
+*.pyc
