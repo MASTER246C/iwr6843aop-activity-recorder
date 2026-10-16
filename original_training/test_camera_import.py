@@ -87,4 +87,17 @@ class CameraImportTest(unittest.TestCase):
         with self.assertRaisesRegex(ValueError,'gate'):self.convert()
 
 
+    def test_label_that_rounds_to_zero_length_is_skipped(self):
+        # 0.5 us to 1.6 us survives clipping but rounds to start_us == end_us == 1.
+        self.review['labels'].append({**self.review['labels'][0],'start_seconds':5e-7,'end_seconds':1.6e-6})
+        self.save()
+        self.assertEqual([r['start_us'] for r in self.convert()['labels']],[0])
+
+    def test_unreviewed_human_interval_keeps_human_source(self):
+        self.review['labels'][0].update(reviewed=False,review_status='unreviewed',source='human',reviewer=None,reviewed_at=None,proposal_index=None)
+        self.save()
+        data=self.convert()
+        self.assertEqual(data['labels'][0]['source'],'human')
+        self.assertTrue(all(r['label'] is None for r in ml.prepare(data)['records']))
+
 if __name__=='__main__':unittest.main()

@@ -149,14 +149,17 @@ def convert(folder, review_path):
         # Clip to actual matched observations. Nothing outside anchor coverage is mapped.
         left = max(origin, lower, offset+scale*a*1e6)
         right = min(frames[-1]['timestamp_us'], upper, offset+scale*b*1e6)
-        if right-left < 1:
-            continue
+        start_us, end_us = math.ceil(left-origin), math.floor(right-origin)
+        if end_us <= start_us:
+            continue  # nothing left after clipping and integer rounding
         reviewed = label.get('review_status') == 'reviewed'
         ml.require(not reviewed or (label.get('reviewed') is True and label.get('source') == 'human'), 'Reviewed flag/source mismatch')
+        # Keep the reviewer's declared origin: manual intervals are human even before review.
+        source = label.get('source') if label.get('source') in ('human','machine') else ('human' if reviewed else 'machine')
         labels.append({'id':'camera-'+str(i),'segment_id':segment_id,'task':'activity','label':label['label'],
-                       'start_us':math.ceil(left-origin),'end_us':math.floor(right-origin),
+                       'start_us':start_us,'end_us':end_us,
                        'timing_uncertainty_ms':(uncertainty+u*1000*abs(scale))/1000,
-                       'source':'human' if reviewed else 'machine','review_status':'reviewed' if reviewed else 'unreviewed',
+                       'source':source,'review_status':'reviewed' if reviewed else 'unreviewed',
                        'reviewer':label.get('reviewer'),'reviewed_at':label.get('reviewed_at'),
                        'camera_proposal_index':label.get('proposal_index')})
     source_hash = ml.digest({'session_start_sha256':file_hash(folder/'session-start.json'),'session_end_sha256':file_hash(folder/'session-end.json'),'files':receipts,'video':video_receipt})

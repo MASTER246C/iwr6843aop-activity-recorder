@@ -1,4 +1,4 @@
-# Original radar local training scaffold (v0.1.0-preview.3)
+# Original radar local training scaffold (v0.1.0-preview.4, unreleased source)
 
 Modified/new project component, 2026-10-11. Private local analysis only. This is
 **software scaffolding tested with explicitly synthetic fixtures**, not a useful

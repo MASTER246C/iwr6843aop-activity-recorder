@@ -1,6 +1,7 @@
 # Provenance and package boundary
 
-Tool: Original Radar Host Training Tools 0.1.0-preview.2.
+Tool: Original Radar Host Training Tools 0.1.0-preview.4 (unreleased source; the
+published 0.1.0-preview.3 ZIP is unchanged).
 Schema versions remain 1; source protocol is original-radar-v2.
 
 This is newly authored local Python standard-library code and documentation for

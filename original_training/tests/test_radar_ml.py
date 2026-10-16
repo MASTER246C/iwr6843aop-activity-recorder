@@ -208,4 +208,16 @@ class Tests(unittest.TestCase):
         self.assertIsNone(m.prepare(d)['records'][2]['label'])
 
 
+class AtomicWriteTest(unittest.TestCase):
+    def test_failed_serialization_leaves_no_file(self):
+        with tempfile.TemporaryDirectory() as d:
+            out=Path(d)/'out.json'
+            with self.assertRaises(ValueError):m.write(out,{'bad':float('nan')})
+            self.assertEqual(list(Path(d).iterdir()),[])
+            m.write(out,{'ok':1})
+            self.assertEqual(json.loads(out.read_text()),{'ok':1})
+            with self.assertRaises(FileExistsError):m.write(out,{'ok':2})
+            self.assertEqual(json.loads(out.read_text()),{'ok':1})
+            self.assertEqual(list(Path(d).iterdir()),[out])
+
 if __name__=='__main__':unittest.main()

@@ -1,26 +1,26 @@
 {
   "package": "original-radar-host-training-tools",
-  "version": "0.1.0-preview.3",
+  "version": "0.1.0-preview.4",
   "schema_version": 1,
   "host_tools_only": true,
   "flashable_firmware": false,
   "contains_private_data": false,
   "contains_trained_weights": false,
   "tests": {
-    "existing_training": 33,
-    "camera_import": 7,
+    "existing_training": 34,
+    "camera_import": 9,
     "scope": "synthetic software fixtures"
   },
   "files": [
     {
       "path": "camera_import.py",
-      "bytes": 13474,
-      "sha256": "1f5d5e9ac245f4adaec8b8de42ec8fcd9d4dab11465b0acda898ef5079a6ef5a"
+      "bytes": 13765,
+      "sha256": "289151e7ab382d6bba8255df8c50986616fa5dd131bf23614c59d7eaf40df52d"
     },
     {
       "path": "INTEGRATION_CONTRACT.md",
-      "bytes": 3825,
-      "sha256": "352bf93a5612c950692ec7ae22741b9a45b4af4f9b352c1319bd159028a8f3f0"
+      "bytes": 4217,
+      "sha256": "f383c0bf7922486caa2d66ebd4f880b6e86d08b260e15c79cdb475da9012e08a"
     },
     {
       "path": "LICENSE",
@@ -29,28 +29,28 @@
     },
     {
       "path": "PROVENANCE.md",
-      "bytes": 1314,
-      "sha256": "53bb7c96af87c04dfd886e11d5960650568db2b80c659f3d5a389d81a1dd5567"
+      "bytes": 1382,
+      "sha256": "986d3a72c737fc78d43439003ac07a822deb306b0cb1767e90ba5e3a40248ca0"
     },
     {
       "path": "radar_ml.py",
-      "bytes": 21322,
-      "sha256": "17e6583aee2ee12934d2f62844ce02a49ca9ac5c91dae025fb7382d9c13f979a"
+      "bytes": 21795,
+      "sha256": "c85f1fc7513bd3b8c4b99af2ec43e1027cd0dcc4b73ee9781ce23a72099d6b0a"
     },
     {
       "path": "README.md",
-      "bytes": 11071,
-      "sha256": "c9b951d50dae09e35d95272381ecf9b01e3fac352fc8634b55a9c7f997a35e9a"
+      "bytes": 11090,
+      "sha256": "6427b3278c2fb967b14b6d689fdb8cbe1d92fbc8b676f571d8924c62af3ff961"
     },
     {
       "path": "test_camera_import.py",
-      "bytes": 5925,
-      "sha256": "4478f7dc67da35ed24fa9dbdb50ec4a97d77614aeda7cfbb04a4db1635cbf30a"
+      "bytes": 6694,
+      "sha256": "84a33508373cd41045e799517d1708403032fef90325c2bdd0bf7d1bfb62f933"
     },
     {
       "path": "tests/test_radar_ml.py",
-      "bytes": 13044,
-      "sha256": "0528be854db93201f8d09cd2db88bc48fedbcef9523bb98c1e235c5395c4adf2"
+      "bytes": 13667,
+      "sha256": "e5f683776a929e2ace39469038155eeb2d22839c26ccb952463e61f3f2defa66"
     },
     {
       "path": "UPSTREAM_LICENSE_COVERAGE.md",
@@ -59,9 +59,9 @@
     },
     {
       "path": "VERIFICATION.md",
-      "bytes": 1211,
-      "sha256": "5687a1c3626d62c9dfb2831e9ac109ef60283ccb9d5ac7dda2885cf6ee9eb897"
+      "bytes": 1816,
+      "sha256": "2922f6fa5ad67dcb93a3bcf21c6cc386ed0350b3957e9163c784848e54abbfe2"
     }
   ],
-  "source_note": "Documentation clarified after the frozen original-training-v0.1.0-preview.3 release; that published ZIP is unchanged."
+  "source_note": "Unreleased source after the frozen original-training-v0.1.0-preview.3 release; that published ZIP is unchanged."
 }

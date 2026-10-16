@@ -5,10 +5,11 @@ from datetime import datetime
 import hashlib
 import json
 import math
+import os
 from pathlib import Path
 import statistics
 
-TOOL_VERSION = '0.1.0-preview.3'
+TOOL_VERSION = '0.1.0-preview.4'
 VERSION = 1
 WINDOW_US = 3_000_000
 LABELS = {'activity': ['sitting', 'standing', 'walking'],
@@ -46,8 +47,20 @@ def read(path):
 
 
 def write(path, value):
-    with open(path, 'x', encoding='utf-8') as out:
-        out.write(json.dumps(value, indent=2, sort_keys=True, allow_nan=False) + '\n')
+    """Create path without overwriting and without ever leaving a partial file."""
+    data = (json.dumps(value, indent=2, sort_keys=True, allow_nan=False) + '\n').encode('utf-8')
+    path = Path(path)
+    if path.exists():
+        raise FileExistsError(f'{path} already exists')
+    temp = path.with_name(f'.{path.name}.{os.getpid()}.partial')
+    try:
+        with open(temp, 'xb') as out:
+            out.write(data)
+            out.flush()
+            os.fsync(out.fileno())
+        os.link(temp, path)  # atomic; fails if path appeared meanwhile
+    finally:
+        temp.unlink(missing_ok=True)
 
 
 def text(x):

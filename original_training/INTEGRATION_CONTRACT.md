@@ -35,6 +35,11 @@ Label: unique id, existing segment_id, integer start_us < end_us within observed
 segment, task activity or transition, permitted label, review_status
 unreviewed/reviewed/excluded, source human/machine. Reviewed status requires human
 source, reviewer and reviewed_at. Provenance is asserted, not authenticated.
+camera_import.py keeps the review file's declared source, so a manually added
+interval stays human even while unreviewed; model proposals stay machine until
+reviewed. The viewer only produces human labels, and its Resume accepts only
+viewer exports; camera-import datasets are for this consumer. The structural
+schema for both producers is `../schemas/original-radar-dataset.v1.schema.json`.
 Activity labels: sitting, standing, walking. Transition labels: stand_up, sit_down,
 motion_onset, none. Unknown/null never supplies training truth. A reviewed positive event interval including its timing buffer must be fully
 contained in the window; activity and event none must cover the window after
