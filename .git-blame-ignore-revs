@@ -1,0 +1,3 @@
+# Formatting-only commits; git blame --ignore-revs-file .git-blame-ignore-revs (GitHub uses this file automatically)
+# Prettier pass
+ff29fa7dd6c412037f15ced4592772eb377f26ef
