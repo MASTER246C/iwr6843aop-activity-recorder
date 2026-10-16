@@ -1,0 +1,58 @@
+name: CI
+# Host-side software checks only. No TI toolchain, board, RF, camera or credentials are used.
+on:
+  push:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  firmware-host-tests:
+    runs-on: ubuntu-24.04
+    defaults:
+      run:
+        working-directory: firmware/original-radar-sensing
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Host tests (gcc with AddressSanitizer and UBSan)
+        run: bash tests/run_tests.sh
+      - name: BUILD_IDENTITY.json and build_identity.h match the sources
+        run: |
+          python3 -B tools/update_build_identity.py
+          git diff --exit-code -- BUILD_IDENTITY.json src/build_identity.h
+      - name: Release artifacts stay untouched by the tests
+        run: git diff --exit-code -- build/ RELEASE_MANIFEST.json RELEASE_MANIFEST_0.3.2-rc1.json HISTORY/
+  software:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Shared JavaScript module tests
+        run: node tests/run-all.js
+      - name: Training and camera-import tests
+        working-directory: original_training
+        run: |
+          python3 -B -m unittest discover -s tests -v
+          python3 -B -m unittest test_camera_import -v
+      - name: Shared files match SHARED_MODULES.json
+        run: node tools/check-shared-modules.js
+      - name: original_training/RELEASE_MANIFEST.json matches tracked files
+        run: python3 -B tools/release_manifest.py original_training/RELEASE_MANIFEST.json
+      - name: Enclosure files match SHA256SUMS.txt
+        working-directory: hardware/enclosure-r02
+        run: sha256sum --check --strict SHA256SUMS.txt
+      - name: Markdown links
+        run: python3 -B tools/check_links.py
+      - name: camera_import datasets match the JSON Schema
+        run: |
+          python3 -m pip install --quiet 'jsonschema>=4.18,<5'
+          out="$RUNNER_TEMP/dataset-samples"
+          python3 -B schemas/make_samples.py "$out"
+          python3 -B schemas/check_schema.py schemas/original-radar-dataset.v1.schema.json "$out"/*.json
