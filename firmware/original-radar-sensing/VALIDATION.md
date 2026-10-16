@@ -2,7 +2,7 @@
 
 ## 0.3.3-dev source (unreleased)
 
-Status: host-tested only. This source has **not** been built with the TI toolchain, **not** flashed and **not** physically tested. No 0.3.3-dev BIN, ELF or receipt exists. The 0.3.2-rc1 candidate below remains the binary the matching viewer accepts, and the rollback chain is unchanged. The new build ID `cfb33b51d6b855e7b93b52dc` in `BUILD_IDENTITY.json` identifies source/config only.
+Status: host-tested only. This source has **not** been built with the TI toolchain, **not** flashed and **not** physically tested. No 0.3.3-dev BIN, ELF or receipt exists. The 0.3.2-rc1 candidate below remains the binary the matching viewer accepts, and the rollback chain is unchanged. The new build ID `30528454ec253ca4d5710162` in `BUILD_IDENTITY.json` identifies source/config only.
 
 `bash tests/run_tests.sh` passed on a Linux x86-64 host with gcc 13.3.0 (`-Werror`, AddressSanitizer and UBSan) and Python 3.13. It writes only to `build/host-tests/`. Each new or changed check failed against the unmodified 0.3.2-rc1 source or tool before its fix:
 

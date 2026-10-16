@@ -1,12 +1,12 @@
 {
-  "build_id": "cfb33b51d6b855e7b93b52dc",
+  "build_id": "30528454ec253ca4d5710162",
   "meaning": "source/config plus pinned tool versions, not BIN checksum",
   "tool_versions": "SDK 03.06.02.00-LTS; ARM CGT 16.9.6.LTS; BIOS 6.73.01.01; XDC 3.50.08.24",
   "sources": {
-    "Makefile": "8f8608b7c4fbffd99853329feb49a294296219d8cd388a86b0d595cacf80f28f",
     "application.cmd": "a66379e045a133902177f766e5c5e3f7dc608d639a2dc59a89f8e52c1469836a",
     "dsp/radar_dsp.c": "a4a8d97f0d639aa054bb48ad6b31adb826610006a739a06187ba2a3234377b0f",
     "dsp/radar_dsp.h": "46c6faad5dda09a39c8ea41c06aba0b9d58f9d750026086ddc426c55719dfe25",
+    "Makefile": "8f8608b7c4fbffd99853329feb49a294296219d8cd388a86b0d595cacf80f28f",
     "sensing.cfg": "2f1e2c0bdce4d1a9c62e0ecefbd0aa788b0f4432583b3897a401b3fe14fa95bb",
     "spatial/original_spatial.c": "2b54c71e0d9983f2494e988517542fe8ef60cc78ebbcdaa03d639fcbce4cb2bd",
     "spatial/original_spatial.h": "0e62581995f289c1010711124999ea721a2687268184655a873fd197c8d5b670",
@@ -33,6 +33,6 @@
     "src/sensing_config.h": "5ed84f9de87259a4e4e7d2fc156d73c2b61a052116e051218d2cc2fe9ca87541",
     "src/serial_line.c": "41f6928ab63e20bb1dbfdab43049dc9f9ce637557ea1449a5566303f6bc6a7dd",
     "src/serial_line.h": "a0fdb463ee3091f169afd6db703e918b6d8e2fd896970c00c56c86236af37001",
-    "tools/update_build_identity.py": "6fbaced16ef9d7e115931c0433d7a86826691cbe74ad45baf3a8c69059a5015e"
+    "tools/update_build_identity.py": "d6854422b38a037b2c510e178d085d2950f82f3a354ff2c8eb094360b5164412"
   }
 }
