@@ -172,7 +172,7 @@ static void json(void)
     assert(strstr(out,"\"antenna_offset_m\":null")&&strstr(out,"\"truncated\":true"));
     assert(or_frame_json(guard,1,&cfg,&spatial,&result,&timing)==0);
     assert(guard[1]=='B'&&guard[2]=='C'&&guard[3]=='D');
-    printf("Worst-case numeric frame length: %lu bytes (cap1800)\n",(unsigned long)n);
+    printf("Numeric-extreme frame without spatial estimates: %lu bytes (cap1800)\n",(unsigned long)n);
     memset(&result,0,sizeof(result));result.range_bin_m=0.1953125f;result.velocity_bin_mps=0.306f;
     result.detection_count=1;result.detections[0].range_m=2.34375f;result.detections[0].power=100.0f;
     for(rx=0;rx<4;++rx)result.detections[0].rx_phasor[rx].real=10.0f;
@@ -181,4 +181,56 @@ static void json(void)
     result.range_bin_m=NAN;result.detections[0].power=INFINITY;
     n=or_frame_json(out,sizeof(out),&cfg,&spatial,&result,&timing);assert(n==0);
 }
-int main(void){configuration();byte_assembly();profile_units();ownership();energy();json();puts("PASS: bounded config, state/epoch ownership, incomplete-frame rejection, strict JSON/nulls and UART budget");return 0;}
+static size_t width(float x){char text[32];return (size_t)snprintf(text,sizeof(text),"%.5g",(double)x);}
+/* True serialization worst case for the firmware path in main.c begin_run():
+ * known signed offset and three valid in-FOV sensor_xyz estimates, every float at
+ * maximum %.5g width and every counter at maximum. world_xyz stays null because
+ * firmware never asserts RX phase or axis calibration. */
+static void json_worst_case(void)
+{
+    OrLinkSession link={"0123456789abcdef0123456789abcdef",UINT32_MAX,UINT32_MAX,0,1,0,0,0};
+    OrTiming timing={UINT32_MAX,UINT32_MAX,UINT32_MAX,UINT32_MAX,UINT32_MAX,{FLT_MAX,FLT_MAX,FLT_MAX},&link};
+    /* Raw RX phases (degrees) of one plane wave after the AOP (+1,-1,+1,-1) feed
+     * polarity: both direction cosines negative and every raw component negative. */
+    static const float degrees[4]={236.0f,186.0f,241.0f,191.0f};
+    OrConfig worst;OrRfPhysical physical;os_config spatial;os_complex phasors[4];os_result point;
+    char out[OR_JSON_MAX+1U];const char *cursor;size_t n,sensors=0U;unsigned i,rx;
+    or_config_reset(&worst);
+    assert(or_config_line(&worst,"orConfig 1",0)==OR_CMD_CHANGED);
+    assert(or_config_line(&worst,"profile room64_v1",0)==OR_CMD_CHANGED);
+    assert(or_config_line(&worst,"mount 4999 -44999 -998",0)==OR_CMD_CHANGED);
+    assert(or_config_line(&worst,"detect 4 30 64 8",0)==OR_CMD_CHANGED);
+    assert(or_config_line(&worst,"session continuous",0)==OR_CMD_CHANGED);
+    assert(or_config_line(&worst,"commit",0)==OR_CMD_COMMIT && worst.antenna_offset_known);
+    assert(or_rf_physical(2.7,&physical)==0);
+    os_iwr6843aop_config(&spatial,(float)physical.carrier_hz);
+    spatial.bracket_height_m=worst.bracket_top_mm/1000.0f;spatial.down_tilt_deg=worst.down_tilt_mdeg/1000.0f;
+    spatial.antenna_offset_known=1U;spatial.antenna_vertical_offset_m=worst.antenna_vertical_offset_mm/1000.0f;
+    memset(&result,0,sizeof(result));
+    result.sequence=UINT32_MAX;result.timestamp_us=UINT64_MAX;result.missed_frames=UINT32_MAX;
+    result.quality_flags=UINT32_MAX;result.range_bin_m=FLT_MAX;result.velocity_bin_mps=FLT_MAX;
+    result.detection_count=RADAR_DSP_MAX_DETECTIONS;
+    for(i=0;i<RADAR_DSP_MAX_DETECTIONS;++i) {
+        RadarDetection *d=&result.detections[i];
+        /* Near FLT_MAX, chosen so range and all three coordinates keep 5 digits. */
+        d->range_m=3.3926255e38f;d->radial_velocity_mps=-FLT_MAX;d->power=FLT_MAX;
+        for(rx=0;rx<4;++rx) {
+            d->rx_phasor[rx].real=3.1234567e38f*cosf(degrees[rx]*3.14159265f/180.0f);
+            d->rx_phasor[rx].imag=3.1234567e38f*sinf(degrees[rx]*3.14159265f/180.0f);
+            phasors[rx].real=d->rx_phasor[rx].real;phasors[rx].imag=d->rx_phasor[rx].imag;
+            assert(width(phasors[rx].real)==11U && width(phasors[rx].imag)==11U);
+        }
+    }
+    /* Prove the inputs really reach the widest valid spatial output. */
+    assert(width(result.detections[0].range_m)==10U && os_estimate(&spatial,phasors,result.detections[0].range_m,&point)==1 && point.flags==(OS_NUMERIC_VALID|OS_ANGLE_IN_FOV));
+    assert(width(point.x_sensor_m)==11U && width(point.y_sensor_m)==10U && width(point.z_sensor_m)==11U);
+    n=or_frame_json(out,sizeof(out),&worst,&spatial,&result,&timing);
+    assert(n>0U && n<=OR_JSON_MAX && n==strlen(out) && out[n-1U]=='\n');
+    for(cursor=out;(cursor=strstr(cursor,"\"sensor_xyz_m\":["))!=NULL;++cursor)++sensors;
+    assert(sensors==OR_JSON_MAX_DETECTIONS && strstr(out,"\"truncated\":true"));
+    assert(strstr(out,"\"antenna_offset_m\":-0.998,\"antenna_height_m\":4.001,") && strstr(out,"\"down_tilt_deg\":-44.999,"));
+    assert(strstr(out,"\"world_height_valid\":false") && !strstr(out,"\"world_xyz_m\":["));
+    assert(strstr(out,"\"session_mode\":\"continuous\""));
+    printf("True worst-case frame (known offset, three sensor_xyz): %lu bytes (cap1800)\n",(unsigned long)n);
+}
+int main(void){configuration();byte_assembly();profile_units();ownership();energy();json();json_worst_case();puts("PASS: bounded config, state/epoch ownership, incomplete-frame rejection, strict JSON/nulls and UART budget");return 0;}

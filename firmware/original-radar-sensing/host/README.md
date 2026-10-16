@@ -1,4 +1,6 @@
-# Original-firmware JSONL collector
+# LEGACY original-radar-v1 JSONL collector
+
+> **Legacy, historical v1 only.** Current firmware (the 0.3.2-rc1 candidate and the unreleased 0.3.3-dev source) speaks `original-radar-v2` on two UARTs: control at 115200 and a separate data lane at 921600, with nonce pairing and keepalives. This collector implements none of that. It rejects every v2 record as "Not original-radar-v1", and with `--configure`, `--start` or `--stop` it stops after its initial `status` query because no v1 acknowledgement arrives, so it sends no configuration or Start to current firmware. Use the specifically accepted v2 viewer for current firmware. The collector, its replay mode and its 13 tests are kept unchanged for historical v1 data; `tests/run_tests.sh` labels them as legacy v1 tests.
 
 This separate collector is for `original-radar-v1` at 115200 baud, not TI TLVs or the existing v0.5/v0.6 TI capture/learning workflow. It preserves session labels, raw coherent per-RX phasors, selected-bin total/static/variance energy summaries, range/velocity/power, calibration flags, null geometry, packet faults and timing. It does not infer posture or improve accuracy by itself. Firmware, UART operation and RF sensing remain hardware-unverified.
 
@@ -6,9 +8,9 @@ This separate collector is for `original-radar-v1` at 115200 baud, not TI TLVs o
 
 Use Python 3.10 or newer. Create a virtual environment if desired and install `python -m pip install -r host/requirements.txt`. pyserial 3.5 is the only serial dependency. Offline replay/tests use only the Python standard library. No auto-discovery chooses or opens a board port. The collector never flashes or modifies boot switches.
 
-## Passive collection
+## Passive collection (historical v1 firmware only)
 
-After an independently authorized firmware/board bring-up, select its explicit UART port:
+After an independently authorized bring-up of a **v1** firmware image, select its explicit UART port:
 
 ```
 python host/original_capture.py --port YOUR_PORT --output sitting_001.jsonl --label sitting --duration 65
@@ -16,9 +18,9 @@ python host/original_capture.py --port YOUR_PORT --output sitting_001.jsonl --la
 
 Without command flags this only reads the selected UART. An output file must not already exist. Labels are supplied by the person conducting the recording; they are not algorithm predictions. Use separate sessions for empty-room background, sitting, standing, walking, and transitions. Keep furniture, mounting and antenna offset provenance; do not silently merge differently calibrated datasets.
 
-## Configure without starting RF
+## Configure without starting RF (historical v1 firmware only)
 
-First copy `config/current_mount.cfg.template` to `config/current_mount_verified.cfg`, measure the actual downward tilt and replace its placeholder in millidegrees. Leave the uncertain offset as `unknown`. The parser accepts integer millimeters, so 1219 mm is the rounded 1219.2 mm reference; retain the exact value and uncertainty in the supplied metadata. The historical `room64_v1.cfg` is not the current setup. Do not run the intentionally incomplete template unchanged.
+These steps describe the v1 workflow. Against current v2 firmware the collector fails closed at the status query. First copy `config/current_mount.cfg.template` to `config/current_mount_verified.cfg`, measure the actual downward tilt and replace its placeholder in millidegrees. Leave the uncertain offset as `unknown`. The parser accepts integer millimeters, so 1219 mm is the rounded 1219.2 mm reference; retain the exact value and uncertainty in the supplied metadata. The historical `room64_v1.cfg` is not the current setup. Do not run the intentionally incomplete template unchanged.
 
 ```
 python host/original_capture.py --port YOUR_PORT --configure config/current_mount_verified.cfg --output configured_001.jsonl --duration 2
@@ -26,13 +28,13 @@ python host/original_capture.py --port YOUR_PORT --configure config/current_moun
 
 Before configuration the collector sends a harmless `status` query and requires a correctly tagged, command-correlated original-protocol acknowledgement. TI firmware or an unknown protocol fails closed. Each configure-only line must be acknowledged; a rejection or timeout stops further commands. The config validator explicitly rejects `start`, `stop` and unknown command families in config files. Config alone never requests RF calibration or transmission.
 
-## Explicit start, only after hardware bring-up is approved
+## Explicit start (historical v1 firmware only; not usable with current firmware)
 
 ```
 python host/original_capture.py --port YOUR_PORT --configure config/current_mount_verified.cfg --start --output walking_001.jsonl --label walking --duration 65
 ```
 
-`--start` explicitly requests RF calibration/transmission. Do not run this against unreviewed/unvalidated hardware simply because the image compiled. The supplied board config has a finite 60-second run, independent of the host duration. If this collector requested start, it attempts stop on exit/interruption even if start acknowledgement was lost. A failed stop acknowledgement is logged rather than called successful. `--stop` separately requests stopping a pre-existing original-firmware run; it is never sent in passive mode.
+`--start` explicitly requests RF calibration/transmission on **v1** firmware. Do not run this against unreviewed/unvalidated hardware simply because the image compiled. Against current v2 firmware it never reaches Start, because the v1 status handshake fails first. The finite 60-second run once supplied for v1 does not apply to current firmware: `src/sensing_config.c` accepts only `session 1` to `session 5` or `session continuous`, rejects `session 0` and 60-second numeric sessions, and a continuous run needs v2 pairing and keepalives that this collector cannot send. The host `--duration` limit is a collector setting, not a firmware run length. If this collector requested start, it attempts stop on exit/interruption even if start acknowledgement was lost. A failed stop acknowledgement is logged rather than called successful. `--stop` separately requests stopping a pre-existing original-firmware run; it is never sent in passive mode.
 
 Serial port opening sets DTR/RTS false before opening, but physical USB bridge behavior remains untested. The port is exclusive on POSIX when supported. The collector does not have an automatic reconnect/restart policy.
 
@@ -43,7 +45,7 @@ python host/original_capture.py --input raw_original_uart.jsonl --output replay_
 python -m unittest discover -s host -p 'test_*.py' -v
 ```
 
-Replay accepts raw UART JSONL lines, not the wrapped capture file it produces, and labels its source `replay`; it cannot send commands. The supplied test frame is synthetic and never evidence of board operation. Test coverage includes every byte-split boundary, malformed/non-finite/oversized lines, frame counts, unknown-height invariants, command correlation, refusal to send start from a config, timeouts, sequence wrap/gaps, no-overwrite behavior and offline replay.
+Replay accepts raw v1 UART JSONL lines, not the wrapped capture file it produces, and labels its source `replay`; it cannot send commands. The supplied test frame is synthetic and never evidence of board operation. Test coverage includes every byte-split boundary, malformed/non-finite/oversized lines, frame counts, unknown-height invariants, command correlation, refusal to send start from a config, timeouts, sequence wrap/gaps, no-overwrite behavior and offline replay.
 
 ## File format
 

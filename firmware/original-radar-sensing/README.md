@@ -1,4 +1,17 @@
-# Original Radar Sensing 0.3.2-rc1
+# Original Radar Sensing 0.3.3-dev (unreleased source)
+
+## Status of this source tree
+
+This source is unreleased **0.3.3-dev**. It has **not** been built with the TI toolchain, **not** flashed and **not** physically tested; no 0.3.3-dev BIN exists, so no binary carries its version or its `BUILD_IDENTITY.json` build ID. The **0.3.2-rc1** candidate in `build/0.3.2-rc1/` (build `87589b2c32638ae119334c72`) remains the binary the matching viewer accepts. The rollback chain is unchanged: 0.3.2-rc1 candidate, then the 0.3.1-rc1 `build/original_radar_sensing.bin`. The 0.3.2-rc1 source documentation and identity are preserved verbatim under `HISTORY/v0.3.2-rc1/`.
+
+0.3.2-rc1 later ran on hardware on 2026-10-12 ([first combined run](../../docs/FIRST_COMBINED_RUN_2026-10-12.md)): one owner-run IWR6843AOPEVM paired, streamed 283 complete consecutive 5 Hz frames over 56.4 seconds with zero reported faults, accepted 53 keepalives and returned to fault-free idle after a manual Stop. That brief acquisition/Stop test was reviewed by the development agent; it is not independent validation. Deliberate keepalive-loss/disconnect Stop, endurance, timestamp rollover, calibration, position and activity accuracy remain untested on hardware. `build/0.3.2-rc1/BUILD_RECEIPT.json` (and `RELEASE_MANIFEST_0.3.2-rc1.json`) are unmodified build-time records: their pending physical-acceptance fields describe the state when they were written and were deliberately not edited after that run.
+
+0.3.3-dev changes, host-tested only, with the wire protocol, commands, ACK formats and fault-code meanings unchanged:
+
+- A rejected RF stop, or a stop with no frame-end event, now leaves the radio marked started and open; the next `stop` (accepted in fault state) retries, and RF is closed only after the frame end. The success path is unchanged.
+- The status `fault` field keeps the first fault cause. A later failure (for example a revoked lease, failed RF stop or busy DSP) no longer replaces it.
+- `make clean` removes only generated intermediates and refuses a receipted release folder. `CGT_ROOT` follows `TI_ROOT`, `tools/package_firmware.sh` shares the Makefile's `TI_ROOT`/`SDK_ROOT` defaults, and builds check `armcl --compiler_revision` against 16.9.6 (override `ALLOW_UNPINNED_CGT=1` for a non-release experiment). The guard has not been run on a TI host.
+- Release-tool checks no longer use Python `assert`, so `python -O` cannot turn a failure into success. Host-test outputs go to `build/host-tests/`. New host tests compile the real `src/radio.c` and `src/acquisition.c` against host fakes in `tests/stubs/`, and the frame-size test covers the true worst case.
 
 Supervised **continuous-session dual-UART candidate**. Explicit `session continuous` runs the existing 5 Hz FMCW frames until manual Stop, a fault, or loss of a matching active-session control keepalive. Successful keepalives impose no fixed duration cap. Bounded `session 1` through `session 5` remain available. See [CONTINUOUS_SESSION.md](CONTINUOUS_SESSION.md) for the exact keepalive and timestamp contract, and [WINDOWS_BUILD.md](WINDOWS_BUILD.md) for the actual installed official build chain. The original sensing/DSP/spatial implementation remains independently authored; TI supplies device support, RF link and runtime. This is a three-peak exploratory stream, not a validated people/activity classifier or full-session recorder.
 
@@ -42,7 +55,7 @@ The current user-reported mount reference is **4 feet (1.2192 m) from floor to t
 
 ## Build and verification
 
-See PROTOCOL.md for the exact contract, VALIDATION.md for evidence and limits, and BUILD_IDENTITY.json for source/toolchain identity. Run `bash tests/run_tests.sh` for host checks. Rebuild with the official SDK 03.06.02.00-LTS, TI ARM compiler 16.9.6.LTS, SYS/BIOS 6.73.01.01 and XDCtools 3.50.08.24:
+See PROTOCOL.md for the exact contract, VALIDATION.md for evidence and limits, and BUILD_IDENTITY.json for source/toolchain identity. Run `bash tests/run_tests.sh` for host checks; every output goes to `build/host-tests/`. The 0.3.2-rc1 candidate was built with the official SDK 03.06.02.00-LTS, TI ARM compiler 16.9.6.LTS, SYS/BIOS 6.73.01.01 and XDCtools 3.50.08.24 using:
 
 ```
 make TI_ROOT=/opt/ti CGT_ROOT=/opt/ti/ti-cgt-arm_16.9.6.LTS BUILD=build/0.3.2-rc1 all
@@ -50,11 +63,13 @@ ELF="$PWD/build/0.3.2-rc1/original_radar_sensing.xer4f" SDK_ROOT=/opt/ti/mmwave_
 python3 tools/verify_sensing.py build/0.3.2-rc1/original_radar_sensing.xer4f build/0.3.2-rc1/original_radar_sensing.map
 ```
 
+These commands record how the candidate was made; do not rerun them into `build/0.3.2-rc1/`. A future 0.3.3-dev build must use a new folder, for example `BUILD=build/0.3.3-dev` with matching ELF/BIN paths. `make clean` never removes BIN/RPRC, receipts or verification files and refuses a folder holding `BUILD_RECEIPT.json`. The compiler-revision guard runs before configuration and compilation.
+
 The package script documents Mono and optional official compatibility-tool variables. Never flash emulator-only test ELFs. The public install/source package omits private debug ELF/map/link XML and raw build logs; those are retained separately for audit. No private board capture is included.
 
-The 0.3.2 candidate is kept separately under `build/0.3.2-rc1/`. The historical `build/original_radar_sensing.bin` and `RELEASE_MANIFEST.json` remain 0.3.1-rc1 bytes, preserved with their source documentation/identity under `HISTORY/v0.3.1-rc1/`. Do not relabel the prior BIN. The candidate has its own receipt and `RELEASE_MANIFEST_0.3.2-rc1.json`; physical acceptance remains pending. Build/packaging never flash a board. Retain the prior accepted BIN and matching viewer as the rollback artifacts.
+The 0.3.2 candidate is kept separately under `build/0.3.2-rc1/`. The historical `build/original_radar_sensing.bin` and `RELEASE_MANIFEST.json` remain 0.3.1-rc1 bytes, preserved with their source documentation/identity under `HISTORY/v0.3.1-rc1/`. Do not relabel the prior BIN. The candidate has its own receipt and `RELEASE_MANIFEST_0.3.2-rc1.json`; both still read pending because they are unmodified build-time records. The candidate later ran on hardware on 2026-10-12 within the limits stated above. Build/packaging never flash a board. Retain the prior accepted BIN and matching viewer as the rollback artifacts.
 
-The legacy `host/` collector and its tests are retained for historical v1 replay; they are not a dual-port v2 controller. Use the specifically accepted v2 viewer for this candidate.
+The legacy `host/` collector and its tests are retained for historical v1 replay; they are not a dual-port v2 controller, and `tests/run_tests.sh` labels them as legacy v1 tests. Use the specifically accepted v2 viewer for this candidate.
 
 ## Licensing and history
 

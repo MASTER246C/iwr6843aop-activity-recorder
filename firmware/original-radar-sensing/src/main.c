@@ -78,6 +78,11 @@ static int32_t transport_write(void *context,const uint8_t *text,uint32_t length
 {
     return UART_write(context!=NULL?data_uart:uart,(uint8_t *)text,length);
 }
+/* Latch only the first application fault cause; later failures never replace it. */
+static void set_fault(uint32_t code)
+{
+    if(app_fault==0U)app_fault=code;
+}
 static int send_lane(const char *text,size_t length,int data)
 {
     OrRecordTxOps ops={NULL,transport_ready,transport_ticks,transport_yield,transport_write};
@@ -85,13 +90,13 @@ static int send_lane(const char *text,size_t length,int data)
     GateMutex_Handle lock=data?data_tx_lock:tx_lock;
     OrRecordTx *state=data?&data_record_tx:&record_tx;
     if((data?data_uart:uart)==NULL || lock==NULL) {
-        state->failed=1U;app_fault=data?484U:401U;or_link_revoke(&link_session);return -1;
+        state->failed=1U;set_fault(data?484U:401U);or_link_revoke(&link_session);return -1;
     }
     if(data)ops.context=(void *)1;
     key=GateMutex_enter(lock);begin=Clock_getTicks();
     status=or_record_tx_send(state,&ops,text,length);
     if(data)previous_tx_us=(uint32_t)(Clock_getTicks()-begin)*1000U;
-    if(status<0){app_fault=data?484U:401U;or_link_revoke(&link_session);}
+    if(status<0){set_fault(data?484U:401U);or_link_revoke(&link_session);}
     GateMutex_leave(lock,key);
     return status;
 }
@@ -159,8 +164,8 @@ static int end_run(void)
     or_acquisition_stop();
     begin=Clock_getTicks();
     while(dsp_busy && (uint32_t)(Clock_getTicks()-begin)<500U)Task_sleep(1U);
-    if(dsp_busy)app_fault=402U;
-    if(radio_result<0)app_fault=403U;
+    if(radio_result<0)set_fault(403U);
+    if(dsp_busy)set_fault(402U);
     app_state=app_fault?APP_FAULT:APP_IDLE;
     return app_fault?-1:0;
 }
@@ -173,7 +178,7 @@ static int begin_run(void)
     if(or_link_consume(&link_session)<0)return -27;
     app_state=APP_STARTING;
     status=or_radio_prepare(&config,&physical);
-    if(status<0){app_fault=(uint32_t)(420-status);(void)end_run();return -21;}
+    if(status<0){set_fault((uint32_t)(420-status));(void)end_run();return -21;}
     memset(&settings,0,sizeof(settings));settings.adc_samples=OR_ADC_SAMPLES;
     settings.chirps=OR_CHIRPS;settings.receivers=OR_RX;
     settings.first_range_bin=config.first_range_bin;settings.last_range_bin=config.last_range_bin;
@@ -181,7 +186,7 @@ static int begin_run(void)
     settings.sample_rate_hz=2500000.0f;settings.chirp_slope_hz_per_s=(float)physical.slope_hz_per_s;
     settings.chirp_period_s=0.000250f;settings.carrier_hz=(float)physical.carrier_hz;
     settings.minimum_power=(float)config.minimum_power;settings.noise_multiplier=(float)config.noise_multiplier;
-    if(radar_dsp_init(&dsp,&settings)!=RADAR_DSP_OK){app_fault=440U;(void)end_run();return -22;}
+    if(radar_dsp_init(&dsp,&settings)!=RADAR_DSP_OK){set_fault(440U);(void)end_run();return -22;}
     os_iwr6843aop_config(&spatial,settings.carrier_hz);
     spatial.bracket_height_m=config.bracket_top_mm/1000.0f;
     spatial.down_tilt_deg=config.down_tilt_mdeg/1000.0f;
@@ -189,13 +194,13 @@ static int begin_run(void)
     if(config.antenna_offset_known)spatial.antenna_vertical_offset_m=config.antenna_vertical_offset_mm/1000.0f;
     /* RX phase and axes remain explicitly uncalibrated, even when offset is known. */
     while(Semaphore_pend(frame_ready,0U)){}
-    if(or_acquisition_arm()<0){app_fault=441U;(void)end_run();return -23;}
+    if(or_acquisition_arm()<0){set_fault(441U);(void)end_run();return -23;}
     deadline_misses=0U;previous_tx_us=0U;start_ms=Clock_getTicks();
     app_state=APP_RUNNING;
     if(config.session_seconds==0U && or_link_lease_begin(&link_session,start_ms)<0) {
-        app_fault=443U;(void)end_run();return -35;
+        set_fault(443U);(void)end_run();return -35;
     }
-    if(or_radio_start()<0){app_fault=442U;(void)end_run();return -24;}
+    if(or_radio_start()<0){set_fault(442U);(void)end_run();return -24;}
     return 0;
 }
 static void radio_task(UArg unused0,UArg unused1)
@@ -218,28 +223,29 @@ static void processing_task(UArg unused0,UArg unused1)
         processed=radar_dsp_process(&dsp,samples,OR_FRAME_SAMPLES,&frame,&result);
         still_valid=or_acquisition_release(slot,generation);
         if(processed!=RADAR_DSP_OK||still_valid<0||app_state!=APP_RUNNING||or_acquisition_fault()) {
-            if(app_state==APP_RUNNING)app_fault=450U;
+            if(app_state==APP_RUNNING)set_fault(450U);
             dsp_busy=0U;continue;
         }
-        if(or_profile_energy(&dsp,timing.profile_energy)<0){app_fault=453U;dsp_busy=0U;continue;}
+        if(or_profile_energy(&dsp,timing.profile_energy)<0){set_fault(453U);dsp_busy=0U;continue;}
         timing.link=&link_session;
         timing.processing_us=(uint32_t)(Clock_getTicks()-begin)*1000U;
         timing.frame_events=or_acquisition_frame_events();timing.previous_tx_us=previous_tx_us;timing.deadline_misses=deadline_misses;timing.capture_fault=0U;
         size=or_frame_json(text,sizeof(text),&config,&spatial,&result,&timing);
-        if(size==0U){app_fault=451U;dsp_busy=0U;continue;}
+        if(size==0U){set_fault(451U);dsp_busy=0U;continue;}
         if(app_state==APP_RUNNING&&!or_acquisition_fault())(void)send_data(text,size);
-        if((uint32_t)(Clock_getTicks()-begin)>=180U){++deadline_misses;app_fault=452U;}
+        if((uint32_t)(Clock_getTicks()-begin)>=180U){++deadline_misses;set_fault(452U);}
         dsp_busy=0U;
     }
 }
 static void watchdog(void)
 {
     if(app_state!=APP_RUNNING)return;
-    if(or_radio_fault())app_fault=460U;
-    if(or_acquisition_fault())app_fault=461U;
-    if((uint32_t)(Clock_getTicks()-or_acquisition_last_ms())>1000U)app_fault=462U;
+    /* First cause wins; checks run from the most specific hardware cause. */
+    if(or_radio_fault())set_fault(460U);
+    if(or_acquisition_fault())set_fault(461U);
+    if((uint32_t)(Clock_getTicks()-or_acquisition_last_ms())>1000U)set_fault(462U);
     if(config.session_seconds==0U && (!link_session.paired || !link_session.lease_active ||
-       or_link_lease_expired(&link_session,Clock_getTicks())))app_fault=463U;
+       or_link_lease_expired(&link_session,Clock_getTicks())))set_fault(463U);
     if(app_fault || or_radio_frame_end() ||
        (config.session_seconds!=0U &&
         (uint32_t)(Clock_getTicks()-start_ms)>(uint32_t)config.session_seconds*1000U+1000U)) {
@@ -297,7 +303,7 @@ static void handle_line(char *line)
     if(cmd<0){ack(name,(int)cmd);return;}
     if(cmd==OR_CMD_CHANGED)or_link_revoke(&link_session);
     if(cmd==OR_CMD_COMMIT && or_link_commit(&link_session)<0) {
-        config.committed=0U;app_fault=485U;code=-28;
+        config.committed=0U;set_fault(485U);code=-28;
     }
     if(cmd==OR_CMD_START)code=begin_run();
     else if(cmd==OR_CMD_STOP) {
@@ -313,7 +319,7 @@ static void command_task(UArg unused0,UArg unused1)
     (void)unused0;(void)unused1;
     for(;;) {
         watchdog();count=UART_read(uart,&byte,1U);
-        if(count<0){app_fault=470U;watchdog();Task_sleep(10U);continue;}
+        if(count<0){set_fault(470U);watchdog();Task_sleep(10U);continue;}
         if(count==0)continue;
         assembled=or_serial_feed(&line,byte);
         if(assembled<0)ack("invalid",-9);
@@ -345,12 +351,12 @@ static void init_task(UArg unused0,UArg unused1)
     /* PADAJ SDK F14 alias is AOP E2: MSS SCI-B TX-only data output. */
     if(Pinmux_Set_OverrideCtrl(SOC_XWR68XX_PINF14_PADAJ,PINMUX_OUTEN_RETAIN_HW_CTRL,PINMUX_INPEN_RETAIN_HW_CTRL)<0 ||
        Pinmux_Set_FuncSel(SOC_XWR68XX_PINF14_PADAJ,SOC_XWR68XX_PINF14_PADAJ_MSS_UARTB_TX)<0) {
-        app_fault=483U;data_record_tx.failed=1U;
+        set_fault(483U);data_record_tx.failed=1U;
     } else {
         data_tx_lock=GateMutex_create(NULL,NULL);
         uart_options.baudRate=921600U;
         if(data_tx_lock!=NULL)data_uart=UART_open(1U,&uart_options);
-        if(data_tx_lock==NULL || data_uart==NULL){app_fault=483U;data_record_tx.failed=1U;}
+        if(data_tx_lock==NULL || data_uart==NULL){set_fault(483U);data_record_tx.failed=1U;}
     }
     or_config_reset(&config);(void)send_text(identity,strlen(identity));
     /* Deterministic CPU-only acceptance gate BEFORE all acquisition/radio init.
@@ -358,7 +364,7 @@ static void init_task(UArg unused0,UArg unused1)
     boot_selftest_mask=os_spatial_no_rf_selftest();
     boot_selftest_completed=1U;
     if(!selftest_passed() || app_fault) {
-        if(!selftest_passed())app_fault=482U;
+        if(!selftest_passed())set_fault(482U);
         app_state=APP_FAULT;
         Task_Params_init(&task);task.priority=4;task.stackSize=6144U;
         if(Task_create(command_task,&task,NULL)==NULL)fail_boot(-10);
@@ -367,8 +373,8 @@ static void init_task(UArg unused0,UArg unused1)
     }
     Semaphore_Params_init(&sem);sem.mode=Semaphore_Mode_COUNTING;
     frame_ready=Semaphore_create(0,&sem,NULL);if(frame_ready==NULL)fail_boot(-5);
-    if(or_acquisition_init(soc,frame_ready)<0){app_fault=480U;app_state=APP_FAULT;status_message();fail_boot(-6);}
-    if(or_radio_init(soc)<0){app_fault=481U;app_state=APP_FAULT;status_message();fail_boot(-7);}
+    if(or_acquisition_init(soc,frame_ready)<0){set_fault(480U);app_state=APP_FAULT;status_message();fail_boot(-6);}
+    if(or_radio_init(soc)<0){set_fault(481U);app_state=APP_FAULT;status_message();fail_boot(-7);}
     hardware_initialized=1U;
     Task_Params_init(&task);task.priority=6;task.stackSize=6144U;
     if(Task_create(radio_task,&task,NULL)==NULL)fail_boot(-8);

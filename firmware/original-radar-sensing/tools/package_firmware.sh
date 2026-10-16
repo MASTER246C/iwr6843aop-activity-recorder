@@ -3,7 +3,9 @@
 # Creates files only. No serial devices, flasher, network or hardware access.
 set -euo pipefail
 ROOT=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)
-SDK_ROOT=${SDK_ROOT:-/opt/ti/mmwave_sdk_03_06_02_00-LTS}
+# Same TI_ROOT/SDK_ROOT defaults as the Makefile (its SDK is $SDK_ROOT/packages).
+TI_ROOT=${TI_ROOT:-/opt/ti}
+SDK_ROOT=${SDK_ROOT:-$TI_ROOT/mmwave_sdk_03_06_02_00-LTS}
 MONO=${MONO:-mono}
 ELF=${ELF:-$ROOT/build/original_radar_sensing.xer4f}
 OUTPUT=${1:-$ROOT/build/original_radar_sensing.bin}
@@ -33,11 +35,14 @@ run_i386 "$IMAGE_TOOLS/crc_multicore_image/crc_multicore_image" "$WORK/image.bin
 python3 - "$WORK/image.bin" <<'PY'
 from pathlib import Path
 import struct, sys, zlib
+# Explicit exits, not assert: python -O / PYTHONOPTIMIZE must not skip checks.
 p = Path(sys.argv[1]); data = p.read_bytes()
-assert len(data) > 4, 'Empty image'
+if len(data) <= 4:
+    sys.exit('Empty image')
 stored = struct.unpack('<I', data[-4:])[0]
 expected = zlib.crc32(data[:-4]) & 0xffffffff
-assert stored == expected, f'Final CRC mismatch: {stored:#x} != {expected:#x}'
+if stored != expected:
+    sys.exit(f'Final CRC mismatch: {stored:#x} != {expected:#x}')
 print(f'Independent CRC32 check passed: {stored:#010x}; {len(data)} bytes')
 PY
 mkdir -p -- "$(dirname -- "$OUTPUT")"

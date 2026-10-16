@@ -1,6 +1,6 @@
 # Original Radar v2 dual-UART contract
 
-Version 0.3.2-rc1. Every record is one LF-terminated JSON object, with protocol `original-radar-v2`. Unknown numeric quantities are null, never NaN/Infinity. Strict framing is required; concatenated JSON is an error, not a successful receipt. Exact version/build matching selects a viewer that implements the extensions in [CONTINUOUS_SESSION.md](CONTINUOUS_SESSION.md).
+Source version 0.3.3-dev (unreleased; not built with the TI toolchain, not flashed, not physically tested). The wire protocol is unchanged from the 0.3.2-rc1 candidate in `build/0.3.2-rc1/`, which remains the binary the matching viewer accepts; only the reported `firmware_version`/`build_id` values of this source differ. The 0.3.2-rc1 text is preserved in `HISTORY/v0.3.2-rc1/PROTOCOL.md`. Every record is one LF-terminated JSON object, with protocol `original-radar-v2`. Unknown numeric quantities are null, never NaN/Infinity. Strict framing is required; concatenated JSON is an error, not a successful receipt. Exact version/build matching selects a viewer that implements the extensions in [CONTINUOUS_SESSION.md](CONTINUOUS_SESSION.md).
 
 ## Physical channels
 
@@ -19,7 +19,7 @@ No config or pairing command starts RF. Explicit `start` performs calibration an
 ## Cross-port proof and one-shot Start
 
 1. After a fault-free boot self-test and successful config commit, the host generates a fresh 32-character lowercase hexadecimal nonce (128 random bits) for this attempt.
-2. Control command: `pair <nonce>`. Allowed only idle, not processing, valid committed config, passing boot self-test, neither transport latch failed, no app fault. It revokes prior permission and reserves a new session_id. A successful full data transmission emits:
+2. Control command: `pair <nonce>`. Allowed only idle, not processing, valid committed config, passing boot self-test, neither transport latch failed, no app fault. It revokes prior permission and reserves a new session_id. A successful full data transmission emits (example values from the accepted 0.3.2-rc1 candidate):
 
 ```
 {"type":"data_probe","channel":"data","protocol":"original-radar-v2","firmware_version":"0.3.2-rc1","build_id":"<24 hex>","pair_nonce":"<32 lowercase hex>","config_generation":1,"session_id":1,"session_mode":"continuous","session_seconds":0,"keepalive_lease_ms":5000}
@@ -41,7 +41,7 @@ ACK includes type=ack, command (canonical recognized token or invalid), integer 
 
 Status includes type=status, state (idle/starting/running/stopping/fault), configured:boolean, fault/capture_fault/rf_fault:uint32, rf_error:int32, frames/deadline_misses:uint32, firmware_version:string, build_id:24-hex string, selftest_version:2, selftest_ok:boolean, selftest_mask:uint32, paired:boolean, pair_nonce:string (empty before first probe), config_generation/session_id:uint32, control_tx_fault/data_tx_fault:boolean, and common control fields.
 
-Start error -25: no passing boot self-test; -26: application/transport fault; -20: invalid state/config; -27: no unconsumed paired permission. Pair errors -29: state/gate failure, -30: malformed nonce, -31: missing/mismatched probe confirmation, -32: exhausted session counter, -33: failed probe transmission. Faults 401/483/484/485 mean control transport/data setup/data transport/config-counter exhaustion. Boot self-test failure is fault 482.
+Start error -25: no passing boot self-test; -26: application/transport fault; -20: invalid state/config; -27: no unconsumed paired permission. Pair errors -29: state/gate failure, -30: malformed nonce, -31: missing/mismatched probe confirmation, -32: exhausted session counter, -33: failed probe transmission. Faults 401/483/484/485 mean control transport/data setup/data transport/config-counter exhaustion. Boot self-test failure is fault 482. Meanings are unchanged in 0.3.3-dev source, but status `fault` now keeps the first cause: a later failure never replaces a nonzero fault (0.3.2-rc1 let later codes overwrite it). `selftest_ok`, `control_tx_fault`, `data_tx_fault`, `rf_fault` and `rf_error` still report their own conditions. In fault state, `stop` retries an RF stop that previously failed; its ACK code stays negative while a fault is latched.
 
 ## Data frames
 

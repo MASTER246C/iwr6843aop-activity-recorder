@@ -1,4 +1,12 @@
-# 0.3.2-rc1 provenance
+# Provenance
+
+## 0.3.3-dev source (unreleased)
+
+The 0.3.3-dev changes are original application, build-script, tool and host-test edits. They were not compiled with the TI ARM compiler, not packaged, not flashed and not physically tested; no 0.3.3-dev binary exists. `BUILD_IDENTITY.json` was regenerated with `tools/update_build_identity.py` and identifies source/config plus pinned tool versions only. The `tests/stubs/` headers are original host-test declarations written from the `src/radio.c` and `src/acquisition.c` call sites; no TI header or driver source was copied, and they are never used for a target build. Vendor notices, licenses and the 0.3.2-rc1/0.3.1-rc1 artifacts and manifests are unchanged. The 0.3.2-rc1 source documents are preserved verbatim under `HISTORY/v0.3.2-rc1/`.
+
+## 0.3.2-rc1 candidate
+
+`build/0.3.2-rc1/BUILD_RECEIPT.json` is the unmodified build-time receipt. Its `hardware_accessed:false` and `PENDING` fields describe the build. The candidate later ran on hardware on 2026-10-12, as recorded in [the first combined run](../../docs/FIRST_COMBINED_RUN_2026-10-12.md). That was a brief owner-run acquisition/Stop test reviewed by the development agent, not independent validation, and that report lists the checks still outstanding.
 
 The continuous-session extension was compiled and linked locally with installed official Windows SDK 03.06.02.00-LTS, ARM CGT 16.9.6.LTS, SYS/BIOS 6.73.01.01 and XDCtools 3.50.08.24. Exact tool roots and commands are in WINDOWS_BUILD.md. Unmodified official Windows ImageCreator tools produced the separately named candidate BIN; an independent appended CRC32 comparison and structural ELF checks passed. No board, flasher or serial port was accessed. Current artifact identity belongs to `build/0.3.2-rc1/`; the original root BIN and RELEASE_MANIFEST remain 0.3.1-rc1 and are not relabeled.
 

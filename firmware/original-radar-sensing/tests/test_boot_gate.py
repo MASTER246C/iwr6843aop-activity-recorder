@@ -4,7 +4,8 @@ Production source is not changed or preprocessor-instrumented for this test.
 """
 from pathlib import Path
 import subprocess,os
-root=Path(__file__).resolve().parents[1];rc=root/'rc' if (root/'rc').is_dir() else root;dest=root/'checks';dest.mkdir(exist_ok=True)
+root=Path(__file__).resolve().parents[1];rc=root/'rc' if (root/'rc').is_dir() else root
+dest=Path(os.environ.get('HOST_TEST_OUTPUT') or root/'build/host-tests')/'boot_gate';dest.mkdir(parents=True,exist_ok=True)
 source=(rc/'src/main.c').read_text()
 lines=[]
 for line in source.splitlines():
@@ -47,7 +48,8 @@ typedef struct { int clockCfg,mpuCfg,dssCfg;} SOC_Cfg;
 #define SOC_MPUCfg_CONFIG 0
 #define SOC_DSSCfg_HALT 0
 static unsigned hardware_calls,starts,task_creates,chosen_mask,fail_data_open;
-static unsigned control_writes,data_writes;
+static unsigned control_writes,data_writes,stops,sleep_advances;
+static int radio_stop_result;
 static uint32_t mock_now;
 static char last_message[1024];
 static int Pinmux_Set_OverrideCtrl(int a,int b,int c){(void)a;(void)b;(void)c;return 0;}
@@ -61,7 +63,7 @@ static void UART_Params_init(UART_Params*p){memset(p,0,sizeof(*p));}
 static UART_Handle UART_open(unsigned a,UART_Params*b){assert(b->baudRate==(a?921600U:115200U));if(a && fail_data_open)return NULL;return a?(void*)2:(void*)1;}
 static int32_t UART_write(UART_Handle a,uint8_t*b,uint32_t n){if(a==(void*)2)++data_writes;else ++control_writes;assert(n<sizeof(last_message));memcpy(last_message,b,n);last_message[n]=0;return (int32_t)n;}
 static int32_t UART_read(UART_Handle a,uint8_t*b,uint32_t c){(void)a;(void)b;(void)c;return 0;}
-static void Task_sleep(unsigned n){(void)n;}
+static void Task_sleep(unsigned n){if(sleep_advances)mock_now+=n;}
 static void Task_Params_init(Task_Params*p){memset(p,0,sizeof(*p));}
 static void *Task_create(void(*f)(UArg,UArg),Task_Params*p,void*x){(void)f;(void)p;(void)x;task_creates++;return (void*)1;}
 static void Semaphore_Params_init(Semaphore_Params*p){memset(p,0,sizeof(*p));}
@@ -85,7 +87,7 @@ static int32_t or_radio_error(void){hardware_calls++;return 0;}
 static uint32_t or_radio_frame_end(void){hardware_calls++;return 0;}
 static int or_radio_init(SOC_Handle a){(void)a;hardware_calls++;return 0;}
 static void or_radio_execute(void){hardware_calls++;}
-static int or_radio_stop(void){hardware_calls++;return 0;}
+static int or_radio_stop(void){hardware_calls++;stops++;return radio_stop_result;}
 static int or_radio_prepare(const OrConfig*a,OrRfPhysical*b){(void)a;hardware_calls++;return or_rf_physical(2.7,b);}
 static int or_radio_start(void){hardware_calls++;starts++;return 0;}
 '''
@@ -99,7 +101,7 @@ int main(void){
   init_task(0,0);
   assert(!selftest_passed());assert(app_state==APP_FAULT);assert(app_fault==482);
   assert(hardware_calls==0);assert(starts==0);assert(task_creates==1);
-  assert(strstr(last_message,"\"selftest_ok\":false"));assert(strstr(last_message,"\"firmware_version\":\"0.3.2-rc1\""));
+  assert(strstr(last_message,"\"selftest_ok\":false"));assert(strstr(last_message,"\"firmware_version\":\"0.3.3-dev\""));
   {char status[]="status";char stop[]="stop";char start[]="start";handle_line(status);handle_line(stop);handle_line(start);}
   assert(hardware_calls==0);assert(starts==0);assert(app_state==APP_FAULT);
  }
@@ -215,6 +217,33 @@ int main(void){
  mock_now=6000U;watchdog();assert(app_state==APP_RUNNING);
  mock_now=6001U;watchdog();assert(app_state==APP_IDLE && !link_session.paired);
  mock_now=0U;
+ /* The first fault cause survives a later failed radio stop (403). */
+ config.session_seconds=0U;stops=0U;
+ assert(pairing_command("pair","pair 0123456789abcdef0123456789abcdef")==0);
+ assert(pairing_command("pairConfirm","pairConfirm 0123456789abcdef0123456789abcdef")==0);
+ assert(begin_run()==0 && link_session.lease_active);
+ radio_stop_result=-1;mock_now=5000U;watchdog();
+ assert(app_state==APP_FAULT && app_fault==463U && stops==1U);
+ /* Stop in fault state reaches the radio again; the cause is kept either way. */
+ {char stop[]="stop";handle_line(stop);}
+ assert(stops==2U && app_state==APP_FAULT && app_fault==463U);
+ assert(strstr(last_message,"\"command\":\"stop\"") && strstr(last_message,"\"code\":-1"));
+ radio_stop_result=0;
+ {char stop[]="stop";handle_line(stop);}
+ assert(stops==3U && app_state==APP_FAULT && app_fault==463U);
+ status_message();assert(strstr(last_message,"\"fault\":463,"));
+ /* Data transport loss (484) is not replaced by the revoked lease (463),
+  * a failed radio stop (403) or a DSP still busy at stop (402). */
+ app_fault=0;app_state=APP_IDLE;mock_now=0U;
+ assert(pairing_command("pair","pair 0123456789abcdef0123456789abcdef")==0);
+ assert(pairing_command("pairConfirm","pairConfirm 0123456789abcdef0123456789abcdef")==0);
+ assert(begin_run()==0 && link_session.lease_active);
+ mock_sci_b.SCIFLR=0;assert(send_data("{}\n",3)<0);
+ assert(app_fault==484U && !link_session.paired && app_state==APP_RUNNING);
+ radio_stop_result=-1;dsp_busy=1U;sleep_advances=1U;watchdog();
+ assert(app_state==APP_FAULT && app_fault==484U && stops==4U);
+ status_message();assert(strstr(last_message,"\"fault\":484,"));
+ dsp_busy=0U;sleep_advances=0U;radio_stop_result=0;mock_sci_b.SCIFLR=256U;mock_now=0U;config.session_seconds=5U;
  /* Data open failure must preserve control/status and create no RF resources. */
  fail_data_open=1;data_uart=NULL;data_record_tx.failed=0;app_fault=0;app_state=APP_IDLE;
  hardware_initialized=0;hardware_calls=0;starts=0;task_creates=0;

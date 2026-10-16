@@ -9,7 +9,7 @@
 #include "radio.h"
 static MMWave_Handle handle;
 static SOC_Handle soc_handle;
-static int opened,started;
+static int opened,started,stop_accepted;
 static volatile int32_t last_error;
 static volatile uint32_t fault,frame_end;
 static int32_t radio_event(uint16_t message,uint16_t subblock,uint16_t length,uint8_t *payload)
@@ -106,14 +106,20 @@ int or_radio_stop(void)
     int32_t error=0;int result=0;MMWave_ErrorLevel level;int16_t mmcode,subcode;
     uint32_t begin;
     if(started) {
-        if(MMWave_stop(handle,&error)<0) {
-            MMWave_decodeError(error,&level,&mmcode,&subcode);
-            if(level==MMWave_ErrorLevel_ERROR){last_error=error;result=-1;}
+        /* An accepted stop (success or warning) is not reissued; a retry only re-waits. */
+        if(!stop_accepted) {
+            if(MMWave_stop(handle,&error)<0) {
+                MMWave_decodeError(error,&level,&mmcode,&subcode);
+                if(level==MMWave_ErrorLevel_ERROR){last_error=error;result=-1;}
+            }
+            if(result==0)stop_accepted=1;
         }
         begin=Clock_getTicks();
         while(!frame_end && (uint32_t)(Clock_getTicks()-begin)<1000U)Task_sleep(1U);
         if(!frame_end){fault=205U;result=-2;}
-        started=0;
+        /* RF may still be framing: stay started, never close, let a later stop retry. */
+        if(result<0)return result;
+        started=0;stop_accepted=0;
     }
     if(opened) {
         if(MMWave_close(handle,&error)<0){last_error=error;result=-3;}
