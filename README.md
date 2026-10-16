@@ -109,6 +109,7 @@ no change. The second confirms the tests left release artifacts untouched.
 Shared software, from the repository root:
 
 ```sh
+npx prettier@3.8.1 --check $(git ls-files '*.js' '*.mjs')   # formatting; --write to fix
 node tests/run-all.js
 (cd original_training && python3 -B -m unittest discover -s tests -v && python3 -B -m unittest test_camera_import -v)
 node tools/check-shared-modules.js
