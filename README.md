@@ -1,6 +1,8 @@
 > **First combined physical run, 2026-10-12:** [results and remaining checks](https://github.com/MASTER246C/iwr6843aop-activity-recorder/blob/main/docs/FIRST_COMBINED_RUN_2026-10-12.md). Firmware 0.3.2-rc1 with Radar Studio v0.9.0-preview.5 recorded 283 consecutive radar frames over 56.4 seconds, acknowledged manual Stop and returned to fault-free idle. The C920e recording passed file-integrity and video-decoding checks. The tested camera-label segment stayed unknown; timing alignment and radar training eligibility remain unresolved. No recordings or dataset samples were published.
 
-> **Current release path:** [sensing-v0.3.2-rc1](https://github.com/MASTER246C/iwr6843aop-activity-recorder/releases/tag/sensing-v0.3.2-rc1), [viewer v0.9.0-preview.5](https://github.com/MASTER246C/radar-studio-chromebook/releases/tag/v0.9.0-preview.5), and [current camera/training workflow](original_training/README.md). Version-specific 0.3.1 / preview.3 sections below describe the retained earlier timed-test release; they do not supersede the current continuous-run report.
+> **Current release path:** [sensing-v0.3.2-rc1](https://github.com/MASTER246C/iwr6843aop-activity-recorder/releases/tag/sensing-v0.3.2-rc1), [viewer v0.9.0-preview.5](https://github.com/MASTER246C/radar-studio-chromebook/releases/tag/v0.9.0-preview.5), and [current camera/training workflow](original_training/README.md). Version-specific 0.3.1-rc1 sections below describe the retained earlier timed-test release; they do not supersede the current continuous-run report.
+
+> **Firmware source status:** [`firmware/original-radar-sensing/`](firmware/original-radar-sensing/README.md) now holds unreleased **0.3.3-dev** source (build ID `30528454ec253ca4d5710162`). It is host-tested only; no 0.3.3-dev BIN exists. The **0.3.2-rc1** BIN (build `87589b2c32638ae119334c72`) remains the accepted binary, and 0.3.1-rc1 (`abb27b48c1bdb956c0de704b`) remains for timed tests and rollback.
 
 # IWR6843AOP Activity Recorder
 
@@ -20,18 +22,12 @@ Use only the viewer workflow matching the firmware already on your IWR6843AOP bo
 
 Recordings are handled in your browser and saved through explicit local downloads; opening the site does not submit recordings to GitHub or the dataset. Review consent and privacy before sharing any export. The software remains **source-available under its existing no-resale license**; required notices and separate third-party terms still apply.
 
-The hosted viewer must match the installed firmware and its exact reviewed build. The **0.3.1-rc1 AOP-polarity candidate requires [Radar Studio v0.9.0-preview.3 source](https://github.com/MASTER246C/radar-studio-chromebook) or the [hosted viewer](https://radar-studio.master246c.chatgpt.site)**; check the displayed version when using the hosted site. Do not use the older single-port viewer or its 0.2.1-rc1 gate for this image. Initial physical acceptance is a no-RF control/data pairing capture, followed by review before any separately authorized 1–5 second sensing test. Hosting does not establish hardware acceptance or measurement accuracy.
+The hosted viewer must match the installed firmware and its exact reviewed build. **Radar Studio v0.8.0-preview.2 and later accept the 0.3.1-rc1 AOP-polarity candidate for timed tests only; continuous runs need 0.3.2-rc1 and v0.9.0-preview.4 or later.** Use the [current release](https://github.com/MASTER246C/radar-studio-chromebook/releases/tag/v0.9.0-preview.5) or the [hosted viewer](https://radar-studio.master246c.chatgpt.site), and check the displayed version when using the hosted site. Do not use the older single-port viewer or its 0.2.1-rc1 gate for either image. Initial physical acceptance is a no-RF control/data pairing capture, followed by review before any separately authorized 1–5 second sensing test. Hosting does not establish hardware acceptance or measurement accuracy.
 
 
-**Mount height is configurable. Current user-reported reference: 4 feet (1.2192 m) from floor to the flat TOP of the bracket, excluding screws.**
+**Mount height is configurable.** Radar Studio pre-fills editable 1219 mm / 0° starting values that must be measured and confirmed before use; they are not a default calibration, and 4 ft (1.2192 m) to the flat top of the bracket is a historical project reference. See [MOUNTING.md](https://github.com/MASTER246C/radar-studio-chromebook/blob/main/MOUNTING.md) for antenna height, its uncertainty and the earlier 2.00 m / 15-degree arrangement.
 
-The chip center is above that reference in the photographed arrangement. Its signed vertical offset is **estimated at +0.003175 to +0.00635 m**, giving an **estimated antenna-height interval of 1.222375–1.22555 m**. The midpoint is about **1.224 m**; it is not a calibrated measurement. **Actual downward tilt is unconfirmed.** Measure the final geometry after setting the physical tilt, and preserve the uncertainty in capture metadata.
-
-**Antenna-center height = measured mount-top reference height + measured signed vertical chip-center offset after final tilt.** The mount reference is not the chip height. Do not guess the offset, replace it with zero, or apply an extra cosine to an already vertical offset. Verify point and track coordinate conventions separately before applying a transform; do not infer a firmware `sensorPosition` or claim calibrated angles from these estimates.
-
-The earlier **2.00 m / 15-degree** arrangement was a planned experimental reference and remains in historical examples and frozen releases. It is **not the current setup, a mandatory height, a universal optimum or a proven most-accurate setting**. Earlier underside-to-board-bottom measurements are not used for the chip-center offset. Physical calibration remains unverified.
-
-**Experimental v0.6-bundle2 — original reusable recorder and motion modules.**
+**Experimental v0.6-bundle3 — original reusable recorder and motion modules.**
 
 The reusable collection component of Radar Studio Chromebook, built for the
 **Texas Instruments IWR6843AOPEVM (IWR6843AOP), Rev G**. Planned initial input is
@@ -43,7 +39,7 @@ accuracy remain unverified. No participant captures are included.
 
 ## Historical sensing firmware 0.3.1-rc1
 
-[Dual-UART acceptance candidate, source, configuration and notices](firmware/original-radar-sensing/README.md) are included. Download the complete [sensing-v0.3.1-rc1 prerelease](https://github.com/MASTER246C/iwr6843aop-activity-recorder/releases/tag/sensing-v0.3.1-rc1) and verify its checksum. The matching dual-port viewer is [Radar Studio v0.9.0-preview.3 source](https://github.com/MASTER246C/radar-studio-chromebook) or the [hosted viewer](https://radar-studio.master246c.chatgpt.site); the existing single-port viewer and legacy collector are not compatible controllers for this image.
+The [0.3.1-rc1 source documentation](firmware/original-radar-sensing/HISTORY/v0.3.1-rc1/README.md) and its BIN (`firmware/original-radar-sensing/build/original_radar_sensing.bin`) are retained; the current source tree is later. Download the complete [sensing-v0.3.1-rc1 prerelease](https://github.com/MASTER246C/iwr6843aop-activity-recorder/releases/tag/sensing-v0.3.1-rc1) and verify its checksum. Radar Studio v0.8.0-preview.2 and later, including the [current source](https://github.com/MASTER246C/radar-studio-chromebook) and the [hosted viewer](https://radar-studio.master246c.chatgpt.site), accept this image for timed tests; the existing single-port viewer and legacy collector are not compatible controllers for this image.
 
 This candidate adds the documented physical RX0–3 AOP feed-polarity correction **+1, −1, +1, −1**. It is a fixed hardware convention, not per-device calibration. Generic estimator thresholds, direction-disk rejection, profile and safety gates remain unchanged. Boot self-test version **2** adds an analytic AOP-inversion case; the exact build is **abb27b48c1bdb956c0de704b**. Raw phasors remain raw; compensation is confined to spatial estimation. New-build physical validation remains pending.
 
@@ -63,11 +59,11 @@ The BIN includes original application code plus identified TI/runtime support. P
 
 ## Original-protocol host training tools
 
-[Original radar host training tools v0.1.0-preview.3](original_training/README.md) provide a separate Python 3.10+ standard-library workflow for original-radar dataset export v1: validate, prepare, train and evaluate. Use the corrected source in `original_training/`. The [v0.1.0-preview.1 prerelease ZIP](https://github.com/MASTER246C/iwr6843aop-activity-recorder/releases/tag/original-training-v0.1.0-preview.1) remains a historical archive and does not contain the cross-window continuity fix.
+[Original radar host training tools](original_training/README.md) provide a separate Python 3.10+ standard-library workflow for original-radar dataset export v1: validate, prepare, train and evaluate. The published [v0.1.0-preview.3 prerelease](https://github.com/MASTER246C/iwr6843aop-activity-recorder/releases/tag/original-training-v0.1.0-preview.3) is unchanged. The source in `original_training/` is unreleased **v0.1.0-preview.4**, with atomic output writes and camera-import rounding and label-source fixes. The [v0.1.0-preview.1 prerelease ZIP](https://github.com/MASTER246C/iwr6843aop-activity-recorder/releases/tag/original-training-v0.1.0-preview.1) remains a historical archive and does not contain the cross-window continuity fix.
 
 **These are host analysis tools, not firmware to flash.** Python is not a prerequisite for the browser viewer. No recordings, trained weights, cloud inference, uploads or camera hardware are included. Training requires suitable human-reviewed exports with explicit session and participant-group splits; synthetic tests do not establish recognition accuracy. Labels cannot repair rejected sensor data. The tool independently hashes input bytes and frozen canonical inputs but does not authenticate the producer's embedded hash or an absent original capture. Read its admission, split and resource limits before use.
 
-The shared TI offline feature extractor now excludes windows overlapped by unfinished or incomplete human events. Both repositories use the same v0.6-bundle2 exact pins. The firmware pin, no-RF pairing and manual 1–5 second sensing gates remain separate and unchanged. The current viewer supplies explicit local camera recording and MediaPipe-assisted review; the C920e was physically tested in the linked first-run report. Alignment and activity accuracy remain unvalidated. Software licensing and separate capture-consent requirements still apply.
+The shared TI offline feature extractor now excludes windows overlapped by unfinished or incomplete human events. Both repositories use the same v0.6-bundle3 exact pins. The firmware pin, no-RF pairing and manual 1–5 second sensing gates remain separate and unchanged. The current viewer supplies explicit local camera recording and MediaPipe-assisted review; the C920e was physically tested in the linked first-run report. Alignment and activity accuracy remain unvalidated. Software licensing and separate capture-consent requirements still apply.
 
 ## Use and reproduce checks
 
@@ -76,10 +72,11 @@ See [RECORDER_API.md](RECORDER_API.md) for browser/CommonJS APIs and
 Run `node tests/motion.test.js` and `node tests/capture.test.js` from this folder:
 29 motion logic tests and 24 capture tests pass using synthetic inputs.
 
-`SHARED_MODULES.json` pins 23 exact module/test/support files by SHA-256 in
-current **v0.6-bundle2**, matched byte-for-byte to Radar Studio v0.9.0-preview.3.
-There is no runtime remote loading. Both copies must be reconciled and tested
-before updates. The historical v0.6-bundle1 originated in the Radar Studio v0.6
+`SHARED_MODULES.json` pins 32 exact module/test/support/doc files by SHA-256 in
+current **v0.6-bundle3**, matched byte-for-byte to the unreleased Radar Studio
+v0.9.0-preview.6 source. There is no runtime remote loading. Both copies must be
+reconciled and tested before updates; `node tools/check-shared-modules.js`
+verifies the pins. The historical v0.6-bundle1 originated in the Radar Studio v0.6
 archive, ZIP SHA-256
 `0253759439843f3452aa0c8d5cd152990d3ce8ee0cf08a50921db335cd32a805`;
 that archive is unchanged and does not contain the current event-overlap fix.
@@ -88,6 +85,45 @@ Planned capture labels include sitting, standing and walking. Sit-to-stand and
 motion-onset events belong on a separate annotation axis with boundaries and
 uncertainty; movement onset alone is not proof of walking. Original labels and
 AI proposals must remain distinguishable from final human-reviewed annotations.
+
+## Development checks
+
+CI ([`.github/workflows/ci.yml`](.github/workflows/ci.yml)) runs these commands on
+every push and pull request, with Node 22 and Python 3.12. It uses no TI
+toolchain, board, RF, camera or credentials. Passing checks show software
+behavior on synthetic inputs only.
+
+Firmware host tests, from `firmware/original-radar-sensing/` (gcc with
+AddressSanitizer and UBSan):
+
+```sh
+bash tests/run_tests.sh
+python3 -B tools/update_build_identity.py
+git diff --exit-code -- BUILD_IDENTITY.json src/build_identity.h
+git diff --exit-code -- build/ RELEASE_MANIFEST.json RELEASE_MANIFEST_0.3.2-rc1.json HISTORY/
+```
+
+The identity tool regenerates the identity files; the first `git diff` must show
+no change. The second confirms the tests left release artifacts untouched.
+
+Shared software, from the repository root:
+
+```sh
+node tests/run-all.js
+(cd original_training && python3 -B -m unittest discover -s tests -v && python3 -B -m unittest test_camera_import -v)
+node tools/check-shared-modules.js
+python3 -B tools/release_manifest.py original_training/RELEASE_MANIFEST.json
+(cd hardware/enclosure-r02 && sha256sum --check --strict SHA256SUMS.txt)
+python3 -B tools/check_links.py
+```
+
+The dataset JSON Schema check also needs `jsonschema` (`pip install 'jsonschema>=4.18,<5'`):
+
+```sh
+OUT=$(mktemp -d)
+python3 -B schemas/make_samples.py "$OUT"
+python3 -B schemas/check_schema.py schemas/original-radar-dataset.v1.schema.json "$OUT"/*.json
+```
 
 ## Privacy and data
 
